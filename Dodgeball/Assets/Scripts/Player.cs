@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public GameObject ballPrefab;
+    public float throwSpeed;
 
 
     // Start is called before the first frame update
@@ -18,15 +19,31 @@ public class Player : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePos.z = 0;
-            Vector2 dir = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
-            dir.Normalize();
-            Debug.Log(dir);
+            Throw();
+        }
+    }
 
-            GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
-            Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
-            b.velocity = dir * 30.0f;
+    private void Throw()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
+        Vector2 dir = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
+        dir.Normalize();
+        Debug.Log(dir);
+
+        GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+        ball.tag = "PlayerBall";
+        ball.layer = 9; // player layer
+        Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
+        b.velocity = dir * throwSpeed;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "EnemyBall")
+        {
+            this.transform.DetachChildren();
+            Destroy(this.gameObject);
         }
     }
 }
