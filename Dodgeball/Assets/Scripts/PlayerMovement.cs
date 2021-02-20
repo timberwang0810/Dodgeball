@@ -5,11 +5,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed;
-    public float accleration;
+    public float dashBoost;
+    //public float accleration;
 
     private float horizontalMove = 0.0f;
     private float verticalMove = 0.0f;
     private Rigidbody2D rb;
+    private bool isDashing;
 
     Vector2 previous;
     public Vector2 velocity = new Vector2(0, 0);
@@ -19,20 +21,26 @@ public class PlayerMovement : MonoBehaviour
     {
         previous = transform.position;
         rb = GetComponent<Rigidbody2D>();
+        isDashing = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         //if (GameManager.S.gameState != GameManager.GameState.playing) return;
-
         //horizontalMove = Mathf.Lerp(horizontalMove, Input.GetAxisRaw("Horizontal") * speed, accleration * Time.deltaTime);
         //verticalMove = Mathf.Lerp(verticalMove, Input.GetAxisRaw("Vertical") * speed, accleration * Time.deltaTime);
         horizontalMove = Input.GetAxisRaw("Horizontal");
         verticalMove = Input.GetAxisRaw("Vertical");
         Vector2 movement = new Vector3(horizontalMove, verticalMove).normalized;
-        rb.velocity = movement * speed;
-
+        float finalSpeed = speed;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            finalSpeed += dashBoost;
+            isDashing = true;
+        }
+        else isDashing = false;
+        rb.velocity = movement * finalSpeed;
         //Vector2 newVel = new Vector2(transform.position.x - previous.x, transform.position.y - previous.y);
 
         //velocity = newVel / Time.deltaTime;

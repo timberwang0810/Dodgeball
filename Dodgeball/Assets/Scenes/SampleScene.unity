@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  accleration: 1
+  dashBoost: 10
   velocity: {x: 0, y: 0}
   magnitude: 0
 --- !u!212 &91734087
