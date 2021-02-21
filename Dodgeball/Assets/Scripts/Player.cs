@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
         //Debug.Log(dir);
 
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+        SoundManager.S.ThrowSound();
         ball.tag = "PlayerBall";
         ball.layer = 8; // player layer
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
@@ -58,6 +59,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "EnemyBall")
         {
+            SoundManager.S.HitSound();
             //this.transform.DetachChildren();
             //Destroy(this.gameObject);
             rb.velocity = new Vector2(0, 0);

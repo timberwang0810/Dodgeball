@@ -45,7 +45,8 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "PlayerBall")
         {
-            Destroy(this.gameObject);
+            SoundManager.S.HitSound();
+            Destroy(this.gameObject, 1.0f);
         }
     }
 
