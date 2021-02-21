@@ -34,6 +34,11 @@ public class PlayerMovement : MonoBehaviour
     private Color lowStaminaColor = Color.red;
     private Color highStaminaColor = Color.green;
 
+    public Slider dodgeCoolDownBar;
+    public Image dodgeCoolDownBarImage;
+    private Color lowCoolDownColor = Color.red;
+    private Color highCoolDownColor = Color.yellow;
+
     private void Start()
     {
         previous = transform.position;
@@ -46,6 +51,11 @@ public class PlayerMovement : MonoBehaviour
         staminaBar.maxValue = origStamina;
         staminaBar.value = stamina;
         staminaBarImage.color = highStaminaColor;
+
+        dodgeCoolDownBar.minValue = 0;
+        dodgeCoolDownBar.maxValue = dodgeCooldown;
+        dodgeCoolDownBar.value = dodgeCooldown;
+        dodgeCoolDownBarImage.color = highCoolDownColor;
     }
 
     // Update is called once per frame
@@ -55,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         //horizontalMove = Mathf.Lerp(horizontalMove, Input.GetAxisRaw("Horizontal") * speed, accleration * Time.deltaTime);
         //verticalMove = Mathf.Lerp(verticalMove, Input.GetAxisRaw("Vertical") * speed, accleration * Time.deltaTime);
         dodgeTimer += Time.deltaTime;
+        if (dodgeTimer <= dodgeCooldown) UpdateDodgeCoolDownBar();
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
         verticalMove = Input.GetAxisRaw("Vertical");
@@ -119,5 +130,12 @@ public class PlayerMovement : MonoBehaviour
     {
         staminaBar.value = stamina;
         staminaBarImage.color = Color.Lerp(lowStaminaColor, highStaminaColor, stamina / origStamina);
+    }
+
+    private void UpdateDodgeCoolDownBar()
+    {
+        float clampedTimer = Mathf.Clamp(dodgeTimer, 0, dodgeCooldown);
+        dodgeCoolDownBar.value = clampedTimer;
+        dodgeCoolDownBarImage.color = Color.Lerp(lowCoolDownColor, highCoolDownColor, clampedTimer/dodgeCooldown);
     }
 }
