@@ -7,16 +7,23 @@ public class Player : MonoBehaviour
     public GameObject ballPrefab;
     public float throwSpeed;
     private bool buffed = false;
+    private Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();   
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.S.gameState != GameManager.GameState.playing)
+        {
+            //Debug.Log("cant play");
+            return;
+        }
+        //Debug.Log("pplay");
         if (Input.GetMouseButtonDown(0))
         {
             Throw();
@@ -52,9 +59,11 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "EnemyBall")
         {
-            this.transform.DetachChildren();
             SoundManager.S.HitSound();
-            Destroy(this.gameObject);
+            //this.transform.DetachChildren();
+            //Destroy(this.gameObject);
+            rb.velocity = new Vector2(0, 0);
+            GameManager.S.playerDied();
         }
     }
 
