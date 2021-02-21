@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
         //Debug.Log(dir);
 
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+        SoundManager.S.ThrowSound();
         ball.tag = "PlayerBall";
         ball.layer = 8; // player layer
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
@@ -52,6 +53,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == "EnemyBall")
         {
             this.transform.DetachChildren();
+            SoundManager.S.HitSound();
             Destroy(this.gameObject);
         }
     }

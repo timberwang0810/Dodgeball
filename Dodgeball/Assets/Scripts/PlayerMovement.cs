@@ -113,6 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown("c") && dodgeTimer >= dodgeCooldown)
         {
+            SoundManager.S.DodgeSound();
             Vector2 velocityCopy = rb.velocity;
             velocityCopy.Normalize();
             //Debug.Log(velocityCopy.magnitude);
