@@ -6,7 +6,14 @@ public class PlayerMovement : MonoBehaviour
 {
     public float speed;
     public float dashBoost;
+    public float stamina;
+    private float origStamina;
     //public float accleration;
+
+    private float regenDelayTimer = 0.0f;
+    public float staminaSpendingRate;
+    public float staminaRegeningRate;
+    public float regenDelay;
 
     private float horizontalMove = 0.0f;
     private float verticalMove = 0.0f;
@@ -27,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         isDashing = false;
         dodgeTimer = dodgeCooldown;
+        origStamina = stamina;
     }
 
     // Update is called once per frame
@@ -45,15 +53,30 @@ public class PlayerMovement : MonoBehaviour
         {
             finalSpeed += dashBoost;
             isDashing = true;
+            stamina = Mathf.Clamp(stamina - (staminaSpendingRate * Time.deltaTime), 0, origStamina);
+            regenDelayTimer = 0;
         }
-        else isDashing = false;
 
+        else
+        {
+            isDashing = false;
+            if (stamina < origStamina)
+            {
+                if (regenDelayTimer >= regenDelay)
+                {
+                    stamina = Mathf.Clamp(stamina + (staminaRegeningRate * Time.deltaTime), 0, origStamina);
+                }
+                else regenDelayTimer += Time.deltaTime;
+            }
+            
+        }
         rb.velocity = movement * finalSpeed;
 
         if (dodgeTimer >= 0.0f && dodgeTimer < 0.2f)
         {
             rb.velocity = rb.velocity * dodgeForce;
         }
+        Debug.Log("stamina " + stamina);
         //Vector2 newVel = new Vector2(transform.position.x - previous.x, transform.position.y - previous.y);
 
         //velocity = newVel / Time.deltaTime;

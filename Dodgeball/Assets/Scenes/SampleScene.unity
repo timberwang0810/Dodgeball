@@ -484,6 +484,16 @@ PrefabInstance:
     - target: {fileID: 6328223287811402117, guid: 2f96d018e16fd416ab7eaae3794acee9, type: 3}
       propertyPath: dodgeForce
       value: 4
+      propertyPath: staminaSpendingRate
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6328223287811402117, guid: 2f96d018e16fd416ab7eaae3794acee9, type: 3}
+      propertyPath: staminaRegeningRate
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6328223287811402117, guid: 2f96d018e16fd416ab7eaae3794acee9, type: 3}
+      propertyPath: regenDelay
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6328223287811402118, guid: 2f96d018e16fd416ab7eaae3794acee9, type: 3}
       propertyPath: m_Name
