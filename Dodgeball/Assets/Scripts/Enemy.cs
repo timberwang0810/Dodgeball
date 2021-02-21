@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
     {
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         ball.tag = "EnemyBall";
-        ball.layer = 10;
+        ball.layer = 9;
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
         Vector2 dir = player.transform.position - transform.position;
         dir.Normalize();

@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     public GameObject ballPrefab;
     public float throwSpeed;
-
+    private bool buffed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,13 +29,22 @@ public class Player : MonoBehaviour
         mousePos.z = 0;
         Vector2 dir = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
         dir.Normalize();
-        Debug.Log(dir);
+        //Debug.Log(dir);
 
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         ball.tag = "PlayerBall";
-        ball.layer = 9; // player layer
+        ball.layer = 8; // player layer
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
-        b.velocity = dir * throwSpeed;
+        if (buffed)
+        {
+            b.velocity = dir * throwSpeed * 2;
+            buffed = false; 
+        }
+        else
+        {
+            b.velocity = dir * throwSpeed;
+        }
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -44,6 +53,19 @@ public class Player : MonoBehaviour
         {
             this.transform.DetachChildren();
             Destroy(this.gameObject);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "EnemyBall")
+        {
+            if (Input.GetKeyDown("space"))
+            {
+                Debug.Log("caught!");
+                Destroy(collision.gameObject);
+                buffed = true;
+            }
         }
     }
 }

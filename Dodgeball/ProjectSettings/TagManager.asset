@@ -17,11 +17,11 @@ TagManager:
   - UI
   - 
   - 
-  - Projectile
+  - PlayerProjectile
+  - EnemyProjectile
   - Player
   - Enemy
-  - 
-  - 
+  - Border
   - 
   - 
   - 
