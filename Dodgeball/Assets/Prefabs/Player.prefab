@@ -102,10 +102,15 @@ MonoBehaviour:
   speed: 10
   dashBoost: 10
   stamina: 100
+  staminaSpendingRate: 20
+  staminaRegeningRate: 20
+  regenDelay: 0.5
   velocity: {x: 0, y: 0}
   magnitude: 0
-  dodgeCooldown: 0
-  dodgeForce: 0
+  dodgeCooldown: 2
+  dodgeForce: 4
+  staminaBar: {fileID: 0}
+  staminaBarImage: {fileID: 0}
 --- !u!50 &6328223287811402122
 Rigidbody2D:
   serializedVersion: 4

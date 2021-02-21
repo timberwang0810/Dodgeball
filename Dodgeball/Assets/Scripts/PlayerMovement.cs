@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -28,6 +29,16 @@ public class PlayerMovement : MonoBehaviour
     private float dodgeTimer;
     public float dodgeForce;
 
+    public Slider staminaBar;
+    public Image staminaBarImage;
+    private Color lowStaminaColor = Color.red;
+    private Color highStaminaColor = Color.green;
+
+    public Slider dodgeCoolDownBar;
+    public Image dodgeCoolDownBarImage;
+    private Color lowCoolDownColor = Color.red;
+    private Color highCoolDownColor = Color.yellow;
+
     private void Start()
     {
         previous = transform.position;
@@ -35,6 +46,16 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
         dodgeTimer = dodgeCooldown;
         origStamina = stamina;
+
+        staminaBar.minValue = 0;
+        staminaBar.maxValue = origStamina;
+        staminaBar.value = stamina;
+        staminaBarImage.color = highStaminaColor;
+
+        dodgeCoolDownBar.minValue = 0;
+        dodgeCoolDownBar.maxValue = dodgeCooldown;
+        dodgeCoolDownBar.value = dodgeCooldown;
+        dodgeCoolDownBarImage.color = highCoolDownColor;
     }
 
     // Update is called once per frame
@@ -44,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         //horizontalMove = Mathf.Lerp(horizontalMove, Input.GetAxisRaw("Horizontal") * speed, accleration * Time.deltaTime);
         //verticalMove = Mathf.Lerp(verticalMove, Input.GetAxisRaw("Vertical") * speed, accleration * Time.deltaTime);
         dodgeTimer += Time.deltaTime;
+        if (dodgeTimer <= dodgeCooldown) UpdateDodgeCoolDownBar();
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
         verticalMove = Input.GetAxisRaw("Vertical");
@@ -51,10 +73,14 @@ public class PlayerMovement : MonoBehaviour
         float finalSpeed = speed;
         if (Input.GetKey(KeyCode.LeftShift) && !(dodgeTimer >= 0.0f && dodgeTimer < 0.2f))
         {
-            finalSpeed += dashBoost;
             isDashing = true;
-            stamina = Mathf.Clamp(stamina - (staminaSpendingRate * Time.deltaTime), 0, origStamina);
             regenDelayTimer = 0;
+            if (stamina > 0)
+            {
+                finalSpeed += dashBoost;
+                stamina = Mathf.Clamp(stamina - (staminaSpendingRate * Time.deltaTime), 0, origStamina);
+                UpdateStaminaBar();
+            }
         }
 
         else
@@ -65,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
                 if (regenDelayTimer >= regenDelay)
                 {
                     stamina = Mathf.Clamp(stamina + (staminaRegeningRate * Time.deltaTime), 0, origStamina);
+                    UpdateStaminaBar();
                 }
                 else regenDelayTimer += Time.deltaTime;
             }
@@ -96,5 +123,19 @@ public class PlayerMovement : MonoBehaviour
                 dodgeTimer = 0.0f;
             }
         }
+
+    }
+
+    private void UpdateStaminaBar()
+    {
+        staminaBar.value = stamina;
+        staminaBarImage.color = Color.Lerp(lowStaminaColor, highStaminaColor, stamina / origStamina);
+    }
+
+    private void UpdateDodgeCoolDownBar()
+    {
+        float clampedTimer = Mathf.Clamp(dodgeTimer, 0, dodgeCooldown);
+        dodgeCoolDownBar.value = clampedTimer;
+        dodgeCoolDownBarImage.color = Color.Lerp(lowCoolDownColor, highCoolDownColor, clampedTimer/dodgeCooldown);
     }
 }
