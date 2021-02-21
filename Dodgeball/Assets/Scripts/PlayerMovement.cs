@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (GameManager.S.gameState != GameManager.GameState.playing) return;
+        if (GameManager.S.gameState != GameManager.GameState.playing) return;
         //horizontalMove = Mathf.Lerp(horizontalMove, Input.GetAxisRaw("Horizontal") * speed, accleration * Time.deltaTime);
         //verticalMove = Mathf.Lerp(verticalMove, Input.GetAxisRaw("Vertical") * speed, accleration * Time.deltaTime);
         dodgeTimer += Time.deltaTime;
@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = rb.velocity * dodgeForce;
         }
-        Debug.Log("stamina " + stamina);
+        //Debug.Log("stamina " + stamina);
         //Vector2 newVel = new Vector2(transform.position.x - previous.x, transform.position.y - previous.y);
 
         //velocity = newVel / Time.deltaTime;
