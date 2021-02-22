@@ -8,11 +8,14 @@ public class Player : MonoBehaviour
     public float throwSpeed;
     private bool buffed = false;
     private Rigidbody2D rb;
+    private bool holding = false;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();   
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -32,6 +35,8 @@ public class Player : MonoBehaviour
 
     private void Throw()
     {
+        animator.SetTrigger("throw");
+
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         Vector2 dir = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);

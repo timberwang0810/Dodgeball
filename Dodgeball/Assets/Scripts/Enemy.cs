@@ -16,9 +16,12 @@ public class Enemy : MonoBehaviour
     private bool ready = false;
     private float attackTimer;
 
+    private Animator animator;
+
     private void Start()
     {
         //GetReady();
+        animator = GetComponent<Animator>();
         attackTimer = timeBetweenAttacks;
     }
 
@@ -51,13 +54,14 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.tag == "PlayerBall")
         {
             SoundManager.S.HitSound();
-            GetComponent<CircleCollider2D>().enabled = false;
+            GetComponent<CapsuleCollider2D>().enabled = false;
             Destroy(this.gameObject, 1.0f);
         }
     }
 
     private void Throw()
     {
+        animator.SetTrigger("throw");
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         ball.tag = "EnemyBall";
         ball.layer = 9;

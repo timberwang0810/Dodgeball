@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.oops;
         currentPlayer.GetComponent<Renderer>().enabled = false;
-        currentPlayer.GetComponent<CircleCollider2D>().enabled = false;
+        currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
         if (lives > 0)
         {
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         statusText.enabled = true;
         yield return new WaitForSeconds(1);
         currentPlayer.GetComponent<Renderer>().enabled = true;
-        currentPlayer.GetComponent<CircleCollider2D>().enabled = true;
+        currentPlayer.GetComponent<CapsuleCollider2D>().enabled = true;
         currentPlayer.transform.position = spawnPos;
         StartNewGame();
     }
