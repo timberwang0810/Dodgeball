@@ -6,16 +6,7 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed;
-    public float dashBoost;
-    public float stamina;
-    private float origStamina;
-    //public float accleration;
-
-    private float regenDelayTimer = 0.0f;
-    public float staminaSpendingRate;
-    public float staminaRegeningRate;
-    public float regenDelay;
-
+    
     private float horizontalMove = 0.0f;
     private float verticalMove = 0.0f;
     private Rigidbody2D rb;
@@ -28,11 +19,6 @@ public class PlayerMovement : MonoBehaviour
     public float dodgeCooldown;
     private float dodgeTimer;
     public float dodgeForce;
-
-    public Slider staminaBar;
-    public Image staminaBarImage;
-    private Color lowStaminaColor = Color.red;
-    private Color highStaminaColor = Color.green;
 
     public Slider dodgeCoolDownBar;
     public Image dodgeCoolDownBarImage;
@@ -48,12 +34,6 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         isDashing = false;
         dodgeTimer = dodgeCooldown;
-        origStamina = stamina;
-
-        staminaBar.minValue = 0;
-        staminaBar.maxValue = origStamina;
-        staminaBar.value = stamina;
-        staminaBarImage.color = highStaminaColor;
 
         dodgeCoolDownBar.minValue = 0;
         dodgeCoolDownBar.maxValue = dodgeCooldown;
@@ -88,37 +68,15 @@ public class PlayerMovement : MonoBehaviour
         verticalMove = Input.GetAxisRaw("Vertical");
         Vector2 movement = new Vector3(horizontalMove, verticalMove).normalized;
         float finalSpeed = speed;
-        if (Input.GetKey(KeyCode.LeftShift) && !(dodgeTimer >= 0.0f && dodgeTimer < 0.2f))
-        {
-            isDashing = true;
-            regenDelayTimer = 0;
-            if (stamina > 0)
-            {
-                finalSpeed += dashBoost;
-                stamina = Mathf.Clamp(stamina - (staminaSpendingRate * Time.deltaTime), 0, origStamina);
-                UpdateStaminaBar();
-            }
-        }
-
-        else
-        {
-            isDashing = false;
-            if (stamina < origStamina)
-            {
-                if (regenDelayTimer >= regenDelay)
-                {
-                    stamina = Mathf.Clamp(stamina + (staminaRegeningRate * Time.deltaTime), 0, origStamina);
-                    UpdateStaminaBar();
-                }
-                else regenDelayTimer += Time.deltaTime;
-            }
-            
-        }
-        rb.velocity = movement * finalSpeed;
+        
 
         if (dodgeTimer >= 0.0f && dodgeTimer < 0.2f)
         {
-            rb.velocity = rb.velocity * dodgeForce;
+            rb.velocity = movement * finalSpeed * dodgeForce;
+        }
+        else
+        {
+            rb.velocity = movement * finalSpeed;
         }
         //Debug.Log("stamina " + stamina);
         //Vector2 newVel = new Vector2(transform.position.x - previous.x, transform.position.y - previous.y);
@@ -128,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         //magnitude = (newVel.magnitude) / Time.deltaTime;
         //previous = transform.position;
 
-        if (Input.GetKeyDown("c") && dodgeTimer >= dodgeCooldown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dodgeTimer >= dodgeCooldown)
         {
             SoundManager.S.DodgeSound();
             Vector2 velocityCopy = rb.velocity;
@@ -143,13 +101,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-
-    private void UpdateStaminaBar()
-    {
-        staminaBar.value = stamina;
-        staminaBarImage.color = Color.Lerp(lowStaminaColor, highStaminaColor, stamina / origStamina);
-    }
-
     private void UpdateDodgeCoolDownBar()
     {
         float clampedTimer = Mathf.Clamp(dodgeTimer, 0, dodgeCooldown);
