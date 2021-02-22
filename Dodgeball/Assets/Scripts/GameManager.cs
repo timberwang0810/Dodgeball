@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
         // recalculate if distance is too close to player
         while (Vector2.Distance(spawnLocation, currentPlayer.transform.position) <= 8)
         {
-            spawnLocation = new Vector2(Random.Range(-15, 15), Random.Range(-23, border.transform.position.y - border.GetComponent<BoxCollider2D>().size.y));
+            spawnLocation = new Vector2(Random.Range(-23, border.transform.position.x - border.GetComponent<BoxCollider2D>().size.x), Random.Range(-15, 15));
         }
         Instantiate(ballPrefab, spawnLocation, Quaternion.identity);
         currNumBall += 1;
