@@ -39,6 +39,9 @@ public class PlayerMovement : MonoBehaviour
     private Color lowCoolDownColor = Color.red;
     private Color highCoolDownColor = Color.yellow;
 
+    private bool facingLeft;
+    private SpriteRenderer mySpriteRenderer;
+
     private void Start()
     {
         previous = transform.position;
@@ -56,6 +59,9 @@ public class PlayerMovement : MonoBehaviour
         dodgeCoolDownBar.maxValue = dodgeCooldown;
         dodgeCoolDownBar.value = dodgeCooldown;
         dodgeCoolDownBarImage.color = highCoolDownColor;
+
+        facingLeft = false;
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -68,6 +74,17 @@ public class PlayerMovement : MonoBehaviour
         if (dodgeTimer <= dodgeCooldown) UpdateDodgeCoolDownBar();
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
+        if (horizontalMove < 0)
+        {
+            facingLeft = true;
+            mySpriteRenderer.flipX = true;
+        }
+        else if (horizontalMove > 0)
+        {
+            facingLeft = false;
+            mySpriteRenderer.flipX = false;
+        }
+
         verticalMove = Input.GetAxisRaw("Vertical");
         Vector2 movement = new Vector3(horizontalMove, verticalMove).normalized;
         float finalSpeed = speed;
