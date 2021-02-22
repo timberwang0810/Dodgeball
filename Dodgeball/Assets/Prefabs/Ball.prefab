@@ -151,3 +151,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21014201e1ac0df47bfc7052151afc64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  takeoffVeloctiy: 10
