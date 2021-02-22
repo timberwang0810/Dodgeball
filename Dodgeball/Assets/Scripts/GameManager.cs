@@ -10,11 +10,16 @@ public class GameManager : MonoBehaviour
     public static GameManager S;
 
     public GameObject currentPlayer;
+    public GameObject ballPrefab;
+    public GameObject border;
 
     public TextMeshProUGUI statusText;
 
     public int lives;
     public int getReadyTime;
+    public int maxBallLimit;
+    public float timeBetweenBallSpawn;
+    private int currNumBall;
 
     private Vector3 spawnPos;
 
@@ -37,6 +42,7 @@ public class GameManager : MonoBehaviour
     {
         spawnPos = currentPlayer.transform.position;
         Cursor.visible = true;
+        currNumBall = GameObject.FindGameObjectsWithTag("Ball").Length;
         StartNewGame();
     }
 
@@ -65,6 +71,7 @@ public class GameManager : MonoBehaviour
     private void StartRound()
     {
         gameState = GameState.playing;
+        StartSpawning();
     }
 
     public void playerDied()
@@ -96,10 +103,33 @@ public class GameManager : MonoBehaviour
         currentPlayer.transform.position = spawnPos;
         StartNewGame();
     }
-    
-    // Update is called once per frame
-    void Update()
+
+    public void OnBallSpawned()
     {
-        
+        currNumBall += 1;
+    }
+
+    public void OnBallDespawned()
+    {
+        currNumBall -= 1;
+    }
+
+    private void StartSpawning()
+    {
+        if (currNumBall < maxBallLimit) StartCoroutine(SpawnBall());
+    }
+
+    private IEnumerator SpawnBall()
+    {
+        yield return new WaitForSeconds(timeBetweenBallSpawn);
+        Vector2 spawnLocation = currentPlayer.transform.position;
+        // recalculate if distance is too close to player
+        while (Vector2.Distance(spawnLocation, currentPlayer.transform.position) <= 8)
+        {
+            spawnLocation = new Vector2(Random.Range(-15, 15), Random.Range(-23, border.transform.position.y - border.GetComponent<BoxCollider2D>().size.y));
+        }
+        Instantiate(ballPrefab, spawnLocation, Quaternion.identity);
+        currNumBall += 1;
+        StartSpawning();
     }
 }

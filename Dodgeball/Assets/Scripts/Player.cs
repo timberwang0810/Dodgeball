@@ -27,9 +27,10 @@ public class Player : MonoBehaviour
             return;
         }
         //Debug.Log("pplay");
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && holding)
         {
             Throw();
+            holding = false;
         }
     }
 
@@ -81,6 +82,16 @@ public class Player : MonoBehaviour
                 Debug.Log("caught!");
                 Destroy(collision.gameObject);
                 buffed = true;
+                holding = true;
+            }
+        }
+        else if (collision.gameObject.tag == "Ball")
+        {
+            if (Input.GetKeyDown("space") && !holding)
+            {
+                Debug.Log("picked up");
+                Destroy(collision.gameObject);
+                holding = true;
             }
         }
     }

@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 680743681644535743, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.6810055
+      value: -9.2
       objectReference: {fileID: 0}
     - target: {fileID: 680743681644535743, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -393,9 +393,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 0
   currentPlayer: {fileID: 91734085}
+  ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
+  border: {fileID: 1528559765}
   statusText: {fileID: 1207682432}
   lives: 3
   getReadyTime: 3
+  maxBallLimit: 10
+  timeBetweenBallSpawn: 5
 --- !u!4 &100921545
 Transform:
   m_ObjectHideFlags: 0
