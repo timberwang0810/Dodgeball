@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.S.gameState != GameManager.GameState.playing) return;
+        if (GameManager.S.gameState != GameManager.GameState.playing || GameManager.S.IsPaused()) return;
         //horizontalMove = Mathf.Lerp(horizontalMove, Input.GetAxisRaw("Horizontal") * speed, accleration * Time.deltaTime);
         //verticalMove = Mathf.Lerp(verticalMove, Input.GetAxisRaw("Vertical") * speed, accleration * Time.deltaTime);
         dodgeTimer += Time.deltaTime;
