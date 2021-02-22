@@ -4,24 +4,45 @@ using UnityEngine;
 
 public class BallScript : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public float takeoffVeloctiy;
+    private bool inAir;
 
+    private void Start()
+    {
+        inAir = true;
+    }
+    private void Update()
+    {
+        if (inAir)
+        {
+            float currVelocity = gameObject.GetComponent<Rigidbody2D>().velocity.magnitude;
+            if (currVelocity <= takeoffVeloctiy) OnBallGrounded();
+        }
+        Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity.magnitude);
+        
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Walls")
         {
             SoundManager.S.WallHitSound();
-            if (this.gameObject.tag.Equals("PlayerBall"))
-            {
-                Destroy(this.gameObject, 5.0f);
-                GameManager.S.OnBallDespawned();
-            }
+            OnBallGrounded();
+        }
+    }
 
-            else if (this.gameObject.tag.Equals("EnemyBall"))
-            {
-                this.gameObject.tag = "Ball";
-            }
+    private void OnBallGrounded()
+    {
+        inAir = false;
+        if (this.gameObject.tag.Equals("PlayerBall"))
+        {
+            Destroy(this.gameObject, 5.0f);
+            GameManager.S.OnBallDespawned();
+        }
+
+        else if (this.gameObject.tag.Equals("EnemyBall"))
+        {
+            this.gameObject.tag = "Ball";
         }
     }
 }
