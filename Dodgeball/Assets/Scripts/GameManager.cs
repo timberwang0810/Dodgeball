@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public GameObject border;
 
     public TextMeshProUGUI statusText;
+    public GameObject pausePanel;
+    private bool paused;
 
     public int lives;
     public int getReadyTime;
@@ -43,7 +45,21 @@ public class GameManager : MonoBehaviour
         spawnPos = currentPlayer.transform.position;
         Cursor.visible = true;
         currNumBall = GameObject.FindGameObjectsWithTag("Ball").Length;
+        pausePanel.SetActive(false);
+        paused = false;
+        Time.timeScale = 1;
         StartNewGame();
+    }
+
+    private void Update()
+    {
+        if (gameState == GameState.playing)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                if (paused) OnUnpause();
+                else OnPause();
+        }
+        
     }
 
     private void StartNewGame()
@@ -131,5 +147,24 @@ public class GameManager : MonoBehaviour
         Instantiate(ballPrefab, spawnLocation, Quaternion.identity);
         currNumBall += 1;
         StartSpawning();
+    }
+
+    private void OnPause()
+    {
+        pausePanel.SetActive(true);
+        paused = true;
+        Time.timeScale = 0;
+    }
+
+    private void OnUnpause()
+    {
+        pausePanel.SetActive(false);
+        paused = false;
+        Time.timeScale = 1;
+    }
+
+    public bool IsPaused()
+    {
+        return paused;
     }
 }
