@@ -12,6 +12,15 @@ public class BallScript : MonoBehaviour
         if (collision.gameObject.tag == "Walls")
         {
             SoundManager.S.WallHitSound();
+            if (this.gameObject.tag.Equals("PlayerBall"))
+            {
+                Destroy(this.gameObject, 5.0f);
+            }
+
+            else if (this.gameObject.tag.Equals("EnemyBall"))
+            {
+                this.gameObject.tag = "Ball";
+            }
         }
     }
 }
