@@ -15,6 +15,7 @@ public class BallScript : MonoBehaviour
             if (this.gameObject.tag.Equals("PlayerBall"))
             {
                 Destroy(this.gameObject, 5.0f);
+                GameManager.S.OnBallDespawned();
             }
 
             else if (this.gameObject.tag.Equals("EnemyBall"))

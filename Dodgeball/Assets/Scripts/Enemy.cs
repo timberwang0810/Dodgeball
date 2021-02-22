@@ -63,6 +63,7 @@ public class Enemy : MonoBehaviour
     {
         animator.SetTrigger("throw");
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+        GameManager.S.OnBallSpawned();
         ball.tag = "EnemyBall";
         ball.layer = 9;
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
