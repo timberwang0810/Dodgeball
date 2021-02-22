@@ -13,9 +13,13 @@ public class Enemy : MonoBehaviour
     public float startDelay;
     public float timeBetweenAttacks;
 
+    private bool ready = false;
+    private float attackTimer;
+
     private void Start()
     {
-        GetReady();
+        //GetReady();
+        attackTimer = timeBetweenAttacks;
     }
 
     private void GetReady()
@@ -25,8 +29,9 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator ReadyDelay()
     {
+        //Debug.Log("getting ready");
         yield return new WaitForSeconds(startDelay);
-        StartAttack();
+        ready = true;
     }
 
     private void StartAttack()
@@ -46,6 +51,7 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.tag == "PlayerBall")
         {
             SoundManager.S.HitSound();
+            GetComponent<CircleCollider2D>().enabled = false;
             Destroy(this.gameObject, 1.0f);
         }
     }
@@ -59,5 +65,32 @@ public class Enemy : MonoBehaviour
         Vector2 dir = player.transform.position - transform.position;
         dir.Normalize();
         b.velocity = dir * throwSpeed;
+    }
+
+    void Update()
+    {
+        if (GameManager.S.gameState != GameManager.GameState.playing)
+        {
+            //Debug.Log("cant play");
+            ready = false;
+            return;
+        } else
+        {
+            GetReady();
+        }
+
+        if (ready)
+        {
+            if (attackTimer >= timeBetweenAttacks)
+            {
+                Throw();
+                attackTimer = 0.0f;
+            }
+            else
+            {
+                attackTimer += Time.deltaTime;
+            }
+        }
+
     }
 }
