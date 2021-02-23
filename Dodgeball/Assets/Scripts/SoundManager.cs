@@ -27,6 +27,31 @@ public class SoundManager : MonoBehaviour
     public AudioClip wallHit4;
     public AudioClip wallHit5;
 
+    public AudioClip Kevin1;
+    public AudioClip Kevin2;
+    public AudioClip Kevin3;
+    public AudioClip Kevin4;
+
+    public AudioClip Jim1;
+    public AudioClip Jim2;
+    public AudioClip Jim3;
+    public AudioClip Jim4;
+
+    public AudioClip KevinIdle;
+    public AudioClip JimIdle;
+
+    public AudioClip KevinWin;
+    public AudioClip JimWin;
+    public AudioClip CrowdWin1;
+    public AudioClip CrowdWin2;
+
+
+    public AudioClip Crowd1;
+    public AudioClip Crowd2;
+    public AudioClip Crowd3;
+    public AudioClip Crowd4;
+
+
     public AudioClip ballThrow1;
 
     public AudioClip dodge;
@@ -39,7 +64,10 @@ public class SoundManager : MonoBehaviour
 
     private int newRandomNumber;
     private int lastRandomNumber;
-        
+    private int newRandomNumber4;
+    private int lastRandomNumber4; 
+    private int newRandomNumber2;
+    private int lastRandomNumber2;
 
 
     private void Awake()
@@ -67,6 +95,83 @@ public class SoundManager : MonoBehaviour
         unmuteButton.gameObject.SetActive(true);
     }
 
+    public IEnumerator KevinCommentary()
+    {
+        int t = lastRandomNumber4;
+        newRandomNumber4 = Random.Range(1, 4);
+        if (newRandomNumber4 != lastRandomNumber4)
+        {
+            t = newRandomNumber4;
+            lastRandomNumber4 = newRandomNumber4;
+            if (t == 1)
+            {
+                audio.PlayOneShot(Kevin1);
+                audio.PlayOneShot(Crowd1);
+                yield return new WaitForSeconds(1.5f);
+                JimCommentary();
+            }
+            else if (t == 2)
+            {
+                audio.PlayOneShot(Kevin2);
+                audio.PlayOneShot(Crowd2);
+                yield return new WaitForSeconds(2.5f);
+                JimCommentary();
+
+            }
+            else if (t == 3)
+            {
+                audio.PlayOneShot(Kevin3);
+                audio.PlayOneShot(Crowd3);
+                yield return new WaitForSeconds(3.0f);
+                JimCommentary();
+
+            }
+            else
+            {
+                audio.PlayOneShot(Kevin4);
+                audio.PlayOneShot(Crowd4);
+                yield return new WaitForSeconds(2.0f);
+                JimCommentary();
+
+            }
+        }
+        else
+        {
+            StartCoroutine(KevinCommentary());
+        }
+
+    }
+
+    public void JimCommentary()
+    {
+        int y = lastRandomNumber2;
+        newRandomNumber2 = Random.Range(1, 4);
+        if (newRandomNumber2 != lastRandomNumber2)
+        {
+            y = newRandomNumber4;
+            lastRandomNumber2 = newRandomNumber2;
+            if (y == 1)
+            {
+                audio.PlayOneShot(Jim1);
+            }
+            else if (y == 2)
+            {
+                audio.PlayOneShot(Jim2);
+            }
+            else if (y == 3)
+            {
+                audio.PlayOneShot(Jim3);
+            }
+            else
+            {
+                audio.PlayOneShot(Jim4);
+            }
+        }
+        else
+        {
+            JimCommentary();
+        }
+    }
     public void HitSound()
     {
         int r = lastRandomNumber;
@@ -74,54 +179,77 @@ public class SoundManager : MonoBehaviour
         if (newRandomNumber != lastRandomNumber)
         {
             r = newRandomNumber;
-            newRandomNumber = lastRandomNumber;
+            lastRandomNumber = newRandomNumber;
             if (r == 1)
             {
                 audio.PlayOneShot(hit1);
+                StartCoroutine(KevinCommentary());
             }
             else if (r == 2)
             {
                 audio.PlayOneShot(hit2);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 3)
             {
                 audio.PlayOneShot(hit3);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 4)
             {
                 audio.PlayOneShot(hit4);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 5)
             {
                 audio.PlayOneShot(hit5);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 6)
             {
                 audio.PlayOneShot(hit6);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 7)
             {
                 audio.PlayOneShot(hit7);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 8)
             {
                 audio.PlayOneShot(hit8);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 9)
             {
                 audio.PlayOneShot(hit9);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 10)
             {
                 audio.PlayOneShot(hit10);
+                StartCoroutine(KevinCommentary());
+
             }
             else if (r == 11)
             {
                 audio.PlayOneShot(hit11);
+                StartCoroutine(KevinCommentary());
+
             }
             else
             {
                 audio.PlayOneShot(hit12);
+                StartCoroutine(KevinCommentary());
+
             }
         }
         else
