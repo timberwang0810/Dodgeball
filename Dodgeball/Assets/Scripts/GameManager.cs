@@ -137,6 +137,7 @@ public class GameManager : MonoBehaviour
         statusText.text = "Level " + LevelManager.S.currLevel + "Complete!";
         statusText.enabled = true;
         yield return new WaitForSeconds(1);
+        RoundWon();
     }
 
     private IEnumerator betweenRoundsLost()

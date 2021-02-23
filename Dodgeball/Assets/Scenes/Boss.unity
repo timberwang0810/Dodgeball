@@ -250,7 +250,7 @@ MonoBehaviour:
   ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
   statusText: {fileID: 1207682432}
   pausePanel: {fileID: 804166645}
-  maxLevel: 4
+  maxLevel: 0
   lives: 3
   getReadyTime: 3
   maxBallLimit: 10
@@ -1504,8 +1504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5837118bd70cf4de7bc7313e06b3d313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currLevel: 1
-  currLevelName: Level 1
+  currLevel: 4
+  currLevelName: Boss Level
   border: {fileID: 1528559765}
 --- !u!4 &1970034123
 Transform:

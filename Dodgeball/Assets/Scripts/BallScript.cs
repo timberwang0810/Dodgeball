@@ -36,6 +36,7 @@ public class BallScript : MonoBehaviour
         inAir = false;
         if (this.gameObject.tag.Equals("PlayerBall"))
         {
+            this.gameObject.tag = "Ball";
             Destroy(this.gameObject, 5.0f);
             GameManager.S.OnBallDespawned();
         }

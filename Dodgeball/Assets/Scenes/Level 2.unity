@@ -247,7 +247,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: 0
-  currentPlayer: {fileID: 91734085}
   ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
   statusText: {fileID: 1207682432}
   pausePanel: {fileID: 804166645}
@@ -1506,6 +1505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currLevel: 2
+  currLevelName: Level 2
   border: {fileID: 1528559765}
 --- !u!4 &1970034123
 Transform:
