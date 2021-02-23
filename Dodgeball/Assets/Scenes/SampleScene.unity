@@ -1099,6 +1099,8 @@ MonoBehaviour:
   JimWin: {fileID: 8300000, guid: f58aaad8d5108b748ac5d73e46185a9b, type: 3}
   CrowdWin1: {fileID: 8300000, guid: f84cb1121be544144a056b91a28721da, type: 3}
   CrowdWin2: {fileID: 8300000, guid: c3f584bef01c3bb489b24ffbcf129258, type: 3}
+  Crowdyell1: {fileID: 8300000, guid: 8198942799d7db54c956d5e25a2efede, type: 3}
+  Crowdyell2: {fileID: 8300000, guid: 31880ffa19df0174185d9cd4333f2bd4, type: 3}
   Crowd1: {fileID: 8300000, guid: 3edc791e495cb624ebb99d567881e41f, type: 3}
   Crowd2: {fileID: 8300000, guid: b596cddea46e65541a464120f3946c74, type: 3}
   Crowd3: {fileID: 8300000, guid: 5405adc37ef25e843b675cc0ef35d3aa, type: 3}

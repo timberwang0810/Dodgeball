@@ -45,7 +45,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip CrowdWin1;
     public AudioClip CrowdWin2;
 
-
+    public AudioClip Crowdyell1;
+    public AudioClip Crowdyell2;
     public AudioClip Crowd1;
     public AudioClip Crowd2;
     public AudioClip Crowd3;
@@ -107,6 +108,7 @@ public class SoundManager : MonoBehaviour
             {
                 audio.PlayOneShot(Kevin1);
                 audio.PlayOneShot(Crowd1);
+                audio.PlayOneShot(Crowdyell1);
                 yield return new WaitForSeconds(1.5f);
                 JimCommentary();
             }
@@ -114,6 +116,8 @@ public class SoundManager : MonoBehaviour
             {
                 audio.PlayOneShot(Kevin2);
                 audio.PlayOneShot(Crowd2);
+                audio.PlayOneShot(Crowdyell1);
+
                 yield return new WaitForSeconds(2.5f);
                 JimCommentary();
 
@@ -122,6 +126,8 @@ public class SoundManager : MonoBehaviour
             {
                 audio.PlayOneShot(Kevin3);
                 audio.PlayOneShot(Crowd3);
+                audio.PlayOneShot(Crowdyell2);
+
                 yield return new WaitForSeconds(3.0f);
                 JimCommentary();
 
@@ -130,6 +136,8 @@ public class SoundManager : MonoBehaviour
             {
                 audio.PlayOneShot(Kevin4);
                 audio.PlayOneShot(Crowd4);
+                audio.PlayOneShot(Crowdyell2);
+
                 yield return new WaitForSeconds(2.0f);
                 JimCommentary();
 
