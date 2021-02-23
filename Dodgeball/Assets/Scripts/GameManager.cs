@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
         lives -= 1;
         if (lives > 0)
         {
-            StartCoroutine(betweenRounds());
+            StartCoroutine(betweenRoundsLost());
         }
         else
         {
@@ -132,7 +132,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator betweenRounds()
+    private IEnumerator betweenRoundsWon()
+    {
+        statusText.text = "Level " + LevelManager.S.currLevel + "Complete!";
+        statusText.enabled = true;
+        yield return new WaitForSeconds(1);
+    }
+
+    private IEnumerator betweenRoundsLost()
     {
         
         statusText.text = "Lives Left:" + lives;
@@ -147,7 +154,7 @@ public class GameManager : MonoBehaviour
     public void OnEnemyDestroyed()
     {
         numEnemies--;
-        if (numEnemies <= 0) RoundWon();
+        if (numEnemies <= 0) StartCoroutine(betweenRoundsWon());
     }
 
     public void OnBallSpawned()
