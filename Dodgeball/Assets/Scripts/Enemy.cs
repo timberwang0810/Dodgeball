@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public float HP;
     public float damage;
     public float throwSpeed;
+    public int score;
 
     public float startDelay;
     public float timeBetweenAttacks;
@@ -55,6 +56,7 @@ public class Enemy : MonoBehaviour
         {
             SoundManager.S.HitSound();
             GetComponent<CapsuleCollider2D>().enabled = false;
+            GameManager.S.OnScoreAdded(score);
             GameManager.S.OnEnemyDestroyed();
             Destroy(this.gameObject, 1.0f);
         }

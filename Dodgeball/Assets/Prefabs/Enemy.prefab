@@ -124,6 +124,7 @@ MonoBehaviour:
   HP: 5
   damage: 1
   throwSpeed: 30
+  score: 200
   startDelay: 3
   timeBetweenAttacks: 3
 --- !u!70 &5230607156769687927

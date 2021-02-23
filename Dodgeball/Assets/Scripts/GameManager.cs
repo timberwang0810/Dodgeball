@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject ballPrefab;
 
     public TextMeshProUGUI statusText;
+    public TextMeshProUGUI scoreText;
     public GameObject pausePanel;
     private bool paused;
     private GameObject currentPlayer;
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     public float timeBetweenBallSpawn;
     private int currNumBall;
     private int numEnemies;
+    private int score;
 
     private Vector3 spawnPos;
 
@@ -49,6 +51,7 @@ public class GameManager : MonoBehaviour
         currNumBall = GameObject.FindGameObjectsWithTag("Ball").Length;
         pausePanel.SetActive(false);
         paused = false;
+        scoreText.text = "Score: " + 0;
         Time.timeScale = 1;
     }
 
@@ -156,6 +159,12 @@ public class GameManager : MonoBehaviour
     {
         numEnemies--;
         if (numEnemies <= 0) StartCoroutine(betweenRoundsWon());
+    }
+
+    public void OnScoreAdded(int addedScore)
+    {
+        score += addedScore;
+        scoreText.text = "Score: " + score;
     }
 
     public void OnBallSpawned()
