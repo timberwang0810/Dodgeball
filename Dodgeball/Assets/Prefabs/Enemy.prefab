@@ -106,7 +106,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &4686012149273405615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,6 +127,8 @@ MonoBehaviour:
   score: 200
   startDelay: 3
   timeBetweenAttacks: 3
+  speed: 10
+  timeBetweenDirectionChange: 2
 --- !u!70 &5230607156769687927
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
