@@ -18,7 +18,7 @@ public class BallScript : MonoBehaviour
             float currVelocity = gameObject.GetComponent<Rigidbody2D>().velocity.magnitude;
             if (currVelocity <= takeoffVeloctiy) OnBallGrounded();
         }
-        Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity.magnitude);
+        //Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity.magnitude);
         
     }
 

@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool facingLeft;
     private SpriteRenderer mySpriteRenderer;
+    private Animator animator;
 
     private void Start()
     {
@@ -42,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
 
         facingLeft = false;
         mySpriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -78,6 +80,15 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = movement * finalSpeed;
         }
+        Debug.Log(rb.velocity.magnitude);
+        if ((horizontalMove == 0 && verticalMove == 0) || rb.velocity.magnitude < 1)
+        {
+            animator.SetBool("running", false);
+        } else
+        {
+            animator.SetBool("running", true);
+        }
+
         //Debug.Log("stamina " + stamina);
         //Vector2 newVel = new Vector2(transform.position.x - previous.x, transform.position.y - previous.y);
 

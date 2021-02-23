@@ -63,6 +63,7 @@ public class Enemy : MonoBehaviour
     {
         animator.SetTrigger("throw");
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+        ball.GetComponent<TrailRenderer>().enabled = false;
         GameManager.S.OnBallSpawned();
         ball.tag = "EnemyBall";
         ball.layer = 9;
