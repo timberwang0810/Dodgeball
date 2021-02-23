@@ -134,9 +134,9 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator betweenRoundsWon()
     {
-        statusText.text = "Level " + LevelManager.S.currLevel + "Complete!";
+        statusText.text = LevelManager.S.currLevelName + " Complete!";
         statusText.enabled = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
         RoundWon();
     }
 
