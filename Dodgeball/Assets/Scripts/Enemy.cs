@@ -55,6 +55,7 @@ public class Enemy : MonoBehaviour
         {
             SoundManager.S.HitSound();
             GetComponent<CapsuleCollider2D>().enabled = false;
+            GameManager.S.OnEnemyDestroyed();
             Destroy(this.gameObject, 1.0f);
         }
     }

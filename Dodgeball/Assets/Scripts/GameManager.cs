@@ -9,19 +9,21 @@ public class GameManager : MonoBehaviour
     public GameState gameState;
     public static GameManager S;
 
-    public GameObject currentPlayer;
     public GameObject ballPrefab;
-    public GameObject border;
 
     public TextMeshProUGUI statusText;
     public GameObject pausePanel;
     private bool paused;
+    private GameObject currentPlayer;
+
+    public int maxLevel;
 
     public int lives;
     public int getReadyTime;
     public int maxBallLimit;
     public float timeBetweenBallSpawn;
     private int currNumBall;
+    private int numEnemies;
 
     private Vector3 spawnPos;
 
@@ -42,13 +44,12 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnPos = currentPlayer.transform.position;
+        DontDestroyOnLoad(this);
         Cursor.visible = true;
         currNumBall = GameObject.FindGameObjectsWithTag("Ball").Length;
         pausePanel.SetActive(false);
         paused = false;
         Time.timeScale = 1;
-        StartNewGame();
     }
 
     private void Update()
@@ -62,9 +63,12 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void StartNewGame()
+    public void StartNewGame()
     {
+        currentPlayer = GameObject.FindGameObjectWithTag("Player");
+        spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
+        numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
         StartCoroutine(GetReady());
     }
 
@@ -88,6 +92,26 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.playing;
         StartSpawning();
+    }
+
+    private void RoundWon()
+    {
+        gameState = GameState.oops;
+        if (LevelManager.S.currLevel >= maxLevel)
+        {
+            GameWon();
+        }
+        else
+        {
+            LevelManager.S.GoToNextLevel();
+        }
+    }
+
+    private void GameWon()
+    {
+        gameState = GameState.gameOver;
+        statusText.text = "Game Won";
+        statusText.enabled = true;
     }
 
     public void playerDied()
@@ -120,6 +144,12 @@ public class GameManager : MonoBehaviour
         StartNewGame();
     }
 
+    public void OnEnemyDestroyed()
+    {
+        numEnemies--;
+        if (numEnemies <= 0) RoundWon();
+    }
+
     public void OnBallSpawned()
     {
         currNumBall += 1;
@@ -139,6 +169,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(timeBetweenBallSpawn);
         Vector2 spawnLocation = currentPlayer.transform.position;
+        GameObject border = LevelManager.S.border;
         // recalculate if distance is too close to player
         while (Vector2.Distance(spawnLocation, currentPlayer.transform.position) <= 8)
         {
