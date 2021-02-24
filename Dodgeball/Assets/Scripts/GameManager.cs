@@ -122,6 +122,7 @@ public class GameManager : MonoBehaviour
     private void RoundWon()
     {
         gameState = GameState.oops;
+        ResetPowerUp();
         if (LevelManager.S.currLevel >= maxLevel)
         {
             GameWon();

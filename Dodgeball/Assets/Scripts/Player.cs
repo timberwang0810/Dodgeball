@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
             return;
         }
         //Debug.Log("pplay");
-        if (isBuffed())
+        if (IsBuffed())
         {
             particles.Play();
             mySpriteRenderer.flipX = false;
@@ -41,10 +41,10 @@ public class Player : MonoBehaviour
         {
             particles.Stop();
         }
-        if (Input.GetMouseButtonDown(0) && holding)
+        if (Input.GetMouseButtonDown(0) && (holding || IsBuffed()))
         {
             Throw();
-            if (!buffed)
+            if (!IsBuffed())
             {
                 holding = false;
                 animator.SetBool("holding", false);
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
         ball.tag = "PlayerBall";
         ball.layer = 8; // player layer
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
-        if (isBuffed())
+        if (IsBuffed())
         {
             b.velocity = dir * throwSpeed * 2;
         }
@@ -134,7 +134,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private bool isBuffed()
+    private bool IsBuffed()
     {
         return GameManager.S.isPowerFilled();
     }
