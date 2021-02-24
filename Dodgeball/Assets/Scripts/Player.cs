@@ -32,11 +32,23 @@ public class Player : MonoBehaviour
             return;
         }
         //Debug.Log("pplay");
+        if (isBuffed())
+        {
+            particles.Play();
+            mySpriteRenderer.flipX = false;
+        }
+        else
+        {
+            particles.Stop();
+        }
         if (Input.GetMouseButtonDown(0) && holding)
         {
             Throw();
-            holding = false;
-            animator.SetBool("holding", false);
+            if (!buffed)
+            {
+                holding = false;
+                animator.SetBool("holding", false);
+            }
         }
     }
 
@@ -64,11 +76,9 @@ public class Player : MonoBehaviour
         ball.tag = "PlayerBall";
         ball.layer = 8; // player layer
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
-        if (buffed)
+        if (isBuffed())
         {
             b.velocity = dir * throwSpeed * 2;
-            buffed = false;
-            particles.Stop();
         }
         else
         {
@@ -80,22 +90,21 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "EnemyBall")
-        {
-            //this.transform.DetachChildren();
-            //Destroy(this.gameObject);
-            rb.velocity = new Vector2(0, 0);
-            particles.Stop();
-            buffed = false;
-            holding = false;
-            animator.SetBool("holding", false);
-            if (GameManager.S.gameState != GameManager.GameState.oops)
-            {
-                Debug.Log("making sound");
-                SoundManager.S.HitSound();
-            }
-            GameManager.S.playerDied();
-        }
+        //if (collision.gameObject.tag == "EnemyBall")
+        //{
+        //    //this.transform.DetachChildren();
+        //    //Destroy(this.gameObject);
+        //    rb.velocity = new Vector2(0, 0);
+        //    particles.Stop();
+        //    holding = false;
+        //    animator.SetBool("holding", false);
+        //    if (GameManager.S.gameState != GameManager.GameState.oops)
+        //    {
+        //        Debug.Log("making sound");
+        //        SoundManager.S.HitSound();
+        //    }
+        //    GameManager.S.playerDied();
+        //}
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -105,13 +114,12 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown("space"))
             {
                 Destroy(collision.gameObject);
-                buffed = true;
                 holding = true;
-                particles.Play();
-                mySpriteRenderer.flipX = false;
+                
                 animator.SetBool("holding", true);
                 animator.SetTrigger("parry");
                 rb.velocity = new Vector2(0, 0);
+                GameManager.S.OnSuccessfulParry();
             }
         }
         else if (collision.gameObject.tag == "Ball")
@@ -124,5 +132,10 @@ public class Player : MonoBehaviour
                 animator.SetBool("holding", true);
             }
         }
+    }
+
+    private bool isBuffed()
+    {
+        return GameManager.S.isPowerFilled();
     }
 }

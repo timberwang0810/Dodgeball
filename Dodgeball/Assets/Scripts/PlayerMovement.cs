@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public Slider dodgeCoolDownBar;
     public Image dodgeCoolDownBarImage;
     private Color lowCoolDownColor = Color.red;
-    private Color highCoolDownColor = Color.yellow;
+    private Color highCoolDownColor = Color.green;
 
     private bool facingLeft;
     private SpriteRenderer mySpriteRenderer;
