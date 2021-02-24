@@ -18,7 +18,7 @@ public class BallScript : MonoBehaviour
             float currVelocity = gameObject.GetComponent<Rigidbody2D>().velocity.magnitude;
             if (currVelocity <= takeoffVeloctiy) OnBallGrounded();
         }
-        Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity.magnitude);
+        //Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity.magnitude);
         
     }
 
@@ -36,6 +36,7 @@ public class BallScript : MonoBehaviour
         inAir = false;
         if (this.gameObject.tag.Equals("PlayerBall"))
         {
+            this.gameObject.tag = "Ball";
             Destroy(this.gameObject, 5.0f);
             GameManager.S.OnBallDespawned();
         }
