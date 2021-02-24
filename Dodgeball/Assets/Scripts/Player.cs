@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
         {
             Throw();
             holding = false;
+            animator.SetBool("holding", false);
         }
     }
 
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            ball.GetComponent<TrailRenderer>().enabled = false;
             b.velocity = dir * throwSpeed;
         }
         
@@ -83,6 +85,7 @@ public class Player : MonoBehaviour
                 Destroy(collision.gameObject);
                 buffed = true;
                 holding = true;
+                animator.SetBool("holding", true);
             }
         }
         else if (collision.gameObject.tag == "Ball")
@@ -92,6 +95,7 @@ public class Player : MonoBehaviour
                 Debug.Log("picked up");
                 Destroy(collision.gameObject);
                 holding = true;
+                animator.SetBool("holding", true);
             }
         }
     }
