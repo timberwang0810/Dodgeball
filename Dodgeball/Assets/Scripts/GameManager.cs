@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(false);
         paused = false;
         scoreText.text = "Score: " + 0;
+        Debug.Log("Screen Width : " + Screen.width);
         Time.timeScale = 1;
     }
 
