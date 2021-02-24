@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject, 1.0f);
         }
 
-        else if (collision.gameObject.tag == "Walls")
+        else if (collision.gameObject.tag == "Walls" || collision.gameObject.tag == "Enemy")
         {
             Debug.Log("Hit Wall");
             GenerateRandomDirection();
