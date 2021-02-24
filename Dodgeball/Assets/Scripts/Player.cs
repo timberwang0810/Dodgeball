@@ -32,11 +32,23 @@ public class Player : MonoBehaviour
             return;
         }
         //Debug.Log("pplay");
-        if (Input.GetMouseButtonDown(0) && holding)
+        if (IsBuffed())
+        {
+            particles.Play();
+            mySpriteRenderer.flipX = false;
+        }
+        else
+        {
+            particles.Stop();
+        }
+        if (Input.GetMouseButtonDown(0) && (holding || IsBuffed()))
         {
             Throw();
-            holding = false;
-            animator.SetBool("holding", false);
+            if (!IsBuffed())
+            {
+                holding = false;
+                animator.SetBool("holding", false);
+            }
         }
 
         if (Input.GetKeyDown("space"))
@@ -70,11 +82,9 @@ public class Player : MonoBehaviour
         ball.tag = "PlayerBall";
         ball.layer = 8; // player layer
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
-        if (buffed)
+        if (IsBuffed())
         {
             b.velocity = dir * throwSpeed * 2;
-            buffed = false;
-            particles.Stop();
         }
         else
         {
@@ -86,6 +96,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if (collision.gameObject.tag == "EnemyBall")
         {
             //this.transform.DetachChildren();
@@ -111,12 +122,19 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "EnemyBall") //parry
         {
-            Destroy(collision.gameObject);
-            buffed = true;
-            holding = true;
-            particles.Play();
-            animator.SetBool("holding", true);
-            rb.velocity = new Vector2(0, 0);
+            if (Input.GetKeyDown("space"))
+            {
+                Destroy(collision.gameObject);
+                holding = true;             
+                animator.SetBool("holding", true);
+                rb.velocity = new Vector2(0, 0);
+                GameManager.S.OnSuccessfulParry();
+            }
         }
+    }
+
+    private bool IsBuffed()
+    {
+        return GameManager.S.isPowerFilled();
     }
 }

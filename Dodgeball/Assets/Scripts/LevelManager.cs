@@ -30,6 +30,6 @@ public class LevelManager : MonoBehaviour
 
     public void GoToNextLevel()
     {
-        SceneManager.LoadScene("Level " + (currLevel + 1));
+        SceneManager.LoadScene("Level" + (currLevel + 1));
     }
 }

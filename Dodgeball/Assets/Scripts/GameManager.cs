@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -11,10 +12,16 @@ public class GameManager : MonoBehaviour
 
     public GameObject ballPrefab;
 
+    // UI Variables
     public TextMeshProUGUI statusText;
     public TextMeshProUGUI scoreText;
     public GameObject pausePanel;
     private bool paused;
+    public Slider powerUpBar;
+    public Image powerUpBarImage;
+    private Color lowPowerUpColor = Color.yellow;
+    private Color highPowerUpColor = Color.red;
+
     private GameObject currentPlayer;
 
     public int maxLevel;
@@ -22,10 +29,16 @@ public class GameManager : MonoBehaviour
     public int lives;
     public int getReadyTime;
     public int maxBallLimit;
+    public int parryPowerUp;
+    public int hitPowerUp;
+    public float buffDuration;
     public float timeBetweenBallSpawn;
+    public float powerUpDecrementRate;
     private int currNumBall;
     private int numEnemies;
     private int score;
+    private bool powerFilled;
+    private float powerUpTimer;
 
     private Vector3 spawnPos;
 
@@ -52,7 +65,13 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(false);
         paused = false;
         scoreText.text = "Score: " + 0;
-        Debug.Log("Screen Width : " + Screen.width);
+
+        powerUpBar.minValue = 0;
+        powerUpBar.maxValue = 100;
+        powerUpBar.value = 0;
+        powerUpBarImage.color = lowPowerUpColor;
+        powerFilled = false;
+
         Time.timeScale = 1;
     }
 
@@ -63,6 +82,8 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape))
                 if (paused) OnUnpause();
                 else OnPause();
+            powerUpTimer += Time.deltaTime;
+            if (!powerFilled && powerUpTimer >= 1.0f) powerUpBar.value = Mathf.Clamp(powerUpBar.value - powerUpDecrementRate, 0, 100);
         }
         
     }
@@ -101,6 +122,7 @@ public class GameManager : MonoBehaviour
     private void RoundWon()
     {
         gameState = GameState.oops;
+        ResetPowerUp();
         if (LevelManager.S.currLevel >= maxLevel)
         {
             GameWon();
@@ -122,6 +144,9 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.oops) return;
         gameState = GameState.oops;
+        ResetPowerUp();
+        currentPlayer.GetComponent<Renderer>().enabled = false;
+
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
         if (lives > 0)
@@ -173,7 +198,13 @@ public class GameManager : MonoBehaviour
     public void OnEnemyDestroyed()
     {
         numEnemies--;
+        IncreasePower(hitPowerUp);
         if (numEnemies <= 0) StartCoroutine(betweenRoundsWon());
+    }
+
+    public void OnSuccessfulParry()
+    {
+        IncreasePower(parryPowerUp);
     }
 
     public void OnScoreAdded(int addedScore)
@@ -229,5 +260,37 @@ public class GameManager : MonoBehaviour
     public bool IsPaused()
     {
         return paused;
+    }
+
+    public bool isPowerFilled()
+    {
+        return powerFilled;
+    }
+
+    private void IncreasePower(int increment)
+    {
+        powerUpBar.value = Mathf.Clamp(powerUpBar.value + increment, 0, 100);
+        powerUpBarImage.color = Color.Lerp(lowPowerUpColor, highPowerUpColor, powerUpBar.value / 100);
+        Debug.Log("Color " + powerUpBarImage.color);
+        if (powerUpBar.value >= 100)
+        {
+            Debug.Log("POWERED UP");
+            StartCoroutine(Buffed());
+        }
+    }
+
+    private IEnumerator Buffed()
+    {
+        powerFilled = true;
+        yield return new WaitForSeconds(buffDuration);
+        ResetPowerUp();
+    }
+
+    private void ResetPowerUp()
+    {
+        powerFilled = false;
+        powerUpBar.value = 0;
+        powerUpBarImage.color = lowPowerUpColor;
+        powerUpTimer = 0;
     }
 }

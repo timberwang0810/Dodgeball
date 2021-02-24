@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour
 
         else if (collision.gameObject.tag == "Walls" || collision.gameObject.tag == "Enemy")
         {
-            Debug.Log("Hit Wall");
+            //Debug.Log("Hit Wall");
             GenerateRandomDirection();
         }
     }
