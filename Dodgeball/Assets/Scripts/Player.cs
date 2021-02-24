@@ -38,6 +38,12 @@ public class Player : MonoBehaviour
             holding = false;
             animator.SetBool("holding", false);
         }
+
+        if (Input.GetKeyDown("space"))
+        {
+            animator.SetTrigger("parry");
+            rb.velocity = new Vector2(0, 0);
+        }
     }
 
     private void Throw()
@@ -88,13 +94,16 @@ public class Player : MonoBehaviour
             particles.Stop();
             buffed = false;
             holding = false;
-            animator.SetBool("holding", false);
+            animator.SetTrigger("hit");
+            
             if (GameManager.S.gameState != GameManager.GameState.oops)
             {
                 Debug.Log("making sound");
                 SoundManager.S.HitSound();
             }
             GameManager.S.playerDied();
+            animator.SetBool("holding", false);
+            animator.SetBool("running", false);
         }
     }
 
@@ -102,27 +111,12 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "EnemyBall") //parry
         {
-            if (Input.GetKeyDown("space"))
-            {
-                Destroy(collision.gameObject);
-                buffed = true;
-                holding = true;
-                particles.Play();
-                mySpriteRenderer.flipX = false;
-                animator.SetBool("holding", true);
-                animator.SetTrigger("parry");
-                rb.velocity = new Vector2(0, 0);
-            }
-        }
-        else if (collision.gameObject.tag == "Ball")
-        {
-            if (Input.GetKeyDown("space") && !holding)
-            {
-                Debug.Log("picked up");
-                Destroy(collision.gameObject);
-                holding = true;
-                animator.SetBool("holding", true);
-            }
+            Destroy(collision.gameObject);
+            buffed = true;
+            holding = true;
+            particles.Play();
+            animator.SetBool("holding", true);
+            rb.velocity = new Vector2(0, 0);
         }
     }
 }
