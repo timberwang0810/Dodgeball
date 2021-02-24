@@ -146,6 +146,7 @@ public class GameManager : MonoBehaviour
         gameState = GameState.oops;
         ResetPowerUp();
         currentPlayer.GetComponent<Renderer>().enabled = false;
+
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
         if (lives > 0)
@@ -154,6 +155,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            StartCoroutine(hidePlayerSprite());
             gameState = GameState.gameOver;
             statusText.text = "Game Over";
             statusText.enabled = true;
@@ -162,10 +164,21 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator betweenRoundsWon()
     {
+        GameObject[] enemyBalls = GameObject.FindGameObjectsWithTag("EnemyBall");
+        foreach (GameObject eb in enemyBalls)
+        {
+            eb.tag = "Ball";
+        }
         statusText.text = LevelManager.S.currLevelName + " Complete!";
         statusText.enabled = true;
         yield return new WaitForSeconds(3);
         RoundWon();
+    }
+
+    private IEnumerator hidePlayerSprite()
+    {
+        yield return new WaitForSeconds(1);
+        currentPlayer.GetComponent<Renderer>().enabled = false;
     }
 
     private IEnumerator betweenRoundsLost()
@@ -173,6 +186,8 @@ public class GameManager : MonoBehaviour
         
         statusText.text = "Lives Left:" + lives;
         statusText.enabled = true;
+        yield return new WaitForSeconds(1);
+        currentPlayer.GetComponent<Renderer>().enabled = false;
         yield return new WaitForSeconds(1);
         currentPlayer.GetComponent<Renderer>().enabled = true;
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = true;

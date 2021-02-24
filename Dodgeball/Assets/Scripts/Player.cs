@@ -50,6 +50,12 @@ public class Player : MonoBehaviour
                 animator.SetBool("holding", false);
             }
         }
+
+        if (Input.GetKeyDown("space"))
+        {
+            animator.SetTrigger("parry");
+            rb.velocity = new Vector2(0, 0);
+        }
     }
 
     private void Throw()
@@ -90,21 +96,26 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (collision.gameObject.tag == "EnemyBall")
-        //{
-        //    //this.transform.DetachChildren();
-        //    //Destroy(this.gameObject);
-        //    rb.velocity = new Vector2(0, 0);
-        //    particles.Stop();
-        //    holding = false;
-        //    animator.SetBool("holding", false);
-        //    if (GameManager.S.gameState != GameManager.GameState.oops)
-        //    {
-        //        Debug.Log("making sound");
-        //        SoundManager.S.HitSound();
-        //    }
-        //    GameManager.S.playerDied();
-        //}
+
+        if (collision.gameObject.tag == "EnemyBall")
+        {
+            //this.transform.DetachChildren();
+            //Destroy(this.gameObject);
+            rb.velocity = new Vector2(0, 0);
+            particles.Stop();
+            buffed = false;
+            holding = false;
+            animator.SetTrigger("hit");
+            
+            if (GameManager.S.gameState != GameManager.GameState.oops)
+            {
+                Debug.Log("making sound");
+                SoundManager.S.HitSound();
+            }
+            GameManager.S.playerDied();
+            animator.SetBool("holding", false);
+            animator.SetBool("running", false);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -114,22 +125,10 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown("space"))
             {
                 Destroy(collision.gameObject);
-                holding = true;
-                
+                holding = true;             
                 animator.SetBool("holding", true);
-                animator.SetTrigger("parry");
                 rb.velocity = new Vector2(0, 0);
                 GameManager.S.OnSuccessfulParry();
-            }
-        }
-        else if (collision.gameObject.tag == "Ball")
-        {
-            if (Input.GetKeyDown("space") && !holding)
-            {
-                Debug.Log("picked up");
-                Destroy(collision.gameObject);
-                holding = true;
-                animator.SetBool("holding", true);
             }
         }
     }
