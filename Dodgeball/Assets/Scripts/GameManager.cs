@@ -145,8 +145,6 @@ public class GameManager : MonoBehaviour
         if (gameState == GameState.oops) return;
         gameState = GameState.oops;
         ResetPowerUp();
-        currentPlayer.GetComponent<Renderer>().enabled = false;
-
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
         if (lives > 0)

@@ -122,14 +122,11 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "EnemyBall") //parry
         {
-            if (Input.GetKeyDown("space"))
-            {
-                Destroy(collision.gameObject);
-                holding = true;             
-                animator.SetBool("holding", true);
-                rb.velocity = new Vector2(0, 0);
-                GameManager.S.OnSuccessfulParry();
-            }
+            Destroy(collision.gameObject);
+            holding = true;             
+            animator.SetBool("holding", true);
+            rb.velocity = new Vector2(0, 0);
+            GameManager.S.OnSuccessfulParry();
         }
     }
 
