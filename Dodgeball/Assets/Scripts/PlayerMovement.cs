@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         if (GameManager.S.gameState != GameManager.GameState.playing || GameManager.S.IsPaused()) return;
         //horizontalMove = Mathf.Lerp(horizontalMove, Input.GetAxisRaw("Horizontal") * speed, accleration * Time.deltaTime);
         //verticalMove = Mathf.Lerp(verticalMove, Input.GetAxisRaw("Vertical") * speed, accleration * Time.deltaTime);
-        dodgeTimer += Time.deltaTime;
+        dodgeTimer += GameManager.S.isPowerFilled() ? Time.deltaTime * 2 : Time.deltaTime;
         if (dodgeTimer <= dodgeCooldown) UpdateDodgeCoolDownBar();
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
