@@ -26,6 +26,7 @@ public class BallScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Walls")
         {
+            GetComponent<TrailRenderer>().enabled = false;
             SoundManager.S.WallHitSound();
             OnBallGrounded();
         }

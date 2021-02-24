@@ -10,12 +10,17 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private bool holding = false;
     private Animator animator;
+    private ParticleSystem particles;
+    private SpriteRenderer mySpriteRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        particles = GetComponent<ParticleSystem>();
+        particles.Stop();
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -38,12 +43,21 @@ public class Player : MonoBehaviour
     private void Throw()
     {
         animator.SetTrigger("throw");
+        rb.velocity = new Vector2(0, 0);
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         Vector2 dir = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
         dir.Normalize();
         //Debug.Log(dir);
+        if (dir.x <= 0)
+        {
+            mySpriteRenderer.flipX = true;
+        }
+        else if (dir.x > 0)
+        {
+            mySpriteRenderer.flipX = false;
+        }
 
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         SoundManager.S.ThrowSound();
@@ -53,7 +67,8 @@ public class Player : MonoBehaviour
         if (buffed)
         {
             b.velocity = dir * throwSpeed * 2;
-            buffed = false; 
+            buffed = false;
+            particles.Stop();
         }
         else
         {
@@ -71,21 +86,28 @@ public class Player : MonoBehaviour
             //this.transform.DetachChildren();
             //Destroy(this.gameObject);
             rb.velocity = new Vector2(0, 0);
+            particles.Stop();
+            buffed = false;
+            holding = false;
+            animator.SetBool("holding", false);
             GameManager.S.playerDied();
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "EnemyBall")
+        if (collision.gameObject.tag == "EnemyBall") //parry
         {
             if (Input.GetKeyDown("space"))
             {
-                Debug.Log("caught!");
                 Destroy(collision.gameObject);
                 buffed = true;
                 holding = true;
+                particles.Play();
+                mySpriteRenderer.flipX = false;
                 animator.SetBool("holding", true);
+                animator.SetTrigger("parry");
+                rb.velocity = new Vector2(0, 0);
             }
         }
         else if (collision.gameObject.tag == "Ball")
