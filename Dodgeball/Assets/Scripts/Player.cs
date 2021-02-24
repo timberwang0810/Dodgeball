@@ -82,7 +82,6 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "EnemyBall")
         {
-            SoundManager.S.HitSound();
             //this.transform.DetachChildren();
             //Destroy(this.gameObject);
             rb.velocity = new Vector2(0, 0);
@@ -90,6 +89,11 @@ public class Player : MonoBehaviour
             buffed = false;
             holding = false;
             animator.SetBool("holding", false);
+            if (GameManager.S.gameState != GameManager.GameState.oops)
+            {
+                Debug.Log("making sound");
+                SoundManager.S.HitSound();
+            }
             GameManager.S.playerDied();
         }
     }

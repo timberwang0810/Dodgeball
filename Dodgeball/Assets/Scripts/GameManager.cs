@@ -119,6 +119,7 @@ public class GameManager : MonoBehaviour
 
     public void playerDied()
     {
+        if (gameState == GameState.oops) return;
         gameState = GameState.oops;
         currentPlayer.GetComponent<Renderer>().enabled = false;
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;

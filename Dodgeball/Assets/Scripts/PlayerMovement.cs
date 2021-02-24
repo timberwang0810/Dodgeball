@@ -80,7 +80,6 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = movement * finalSpeed;
         }
-        Debug.Log(rb.velocity.magnitude);
         if ((horizontalMove == 0 && verticalMove == 0) || rb.velocity.magnitude < 1)
         {
             animator.SetBool("running", false);
