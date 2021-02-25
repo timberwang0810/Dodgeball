@@ -1,7 +1,22 @@
 fileFormatVersion: 2
-guid: bda3a4cd60b8c3d4c97f8df736345adc
+guid: 7e54436ddc6ee2c44a2acbcbab33dd92
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 7715489420547221093
+    second: nerdwalk_ball_0
+  - first:
+      213: 1136376784184225439
+    second: nerdwalk_ball_1
+  - first:
+      213: 2304688699662048266
+    second: nerdwalk_ball_2
+  - first:
+      213: -8038948485764622337
+    second: nerdwalk_ball_3
+  - first:
+      213: 2218387924219160995
+    second: nerdwalk_ball_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -41,12 +56,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 48
+  spritePixelsToUnits: 160
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -99,7 +114,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: nerdwalk_ball_0
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 61
+        width: 623
+        height: 969
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5666004efbce21b60800000000000000
+      internalID: 7715489420547221093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nerdwalk_ball_1
+      rect:
+        serializedVersion: 2
+        x: 1077
+        y: 59
+        width: 469
+        height: 989
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9e2d481aa835cf00800000000000000
+      internalID: 1136376784184225439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nerdwalk_ball_2
+      rect:
+        serializedVersion: 2
+        x: 1759
+        y: 63
+        width: 486
+        height: 974
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0c963d5926ebff10800000000000000
+      internalID: 2304688699662048266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nerdwalk_ball_4
+      rect:
+        serializedVersion: 2
+        x: 2684
+        y: 59
+        width: 441
+        height: 1001
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a96915401c49ce10800000000000000
+      internalID: 2218387924219160995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

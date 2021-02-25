@@ -75,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
         if (dodgeTimer >= 0.0f && dodgeTimer < 0.2f)
         {
             rb.velocity = movement * finalSpeed * dodgeForce;
+            StartCoroutine(dodgeTrail());
         }
         else
         {
@@ -116,5 +117,12 @@ public class PlayerMovement : MonoBehaviour
         float clampedTimer = Mathf.Clamp(dodgeTimer, 0, dodgeCooldown);
         dodgeCoolDownBar.value = clampedTimer;
         dodgeCoolDownBarImage.color = Color.Lerp(lowCoolDownColor, highCoolDownColor, clampedTimer/dodgeCooldown);
+    }
+
+    private IEnumerator dodgeTrail()
+    {
+        GetComponent<TrailRenderer>().enabled = true;
+        yield return new WaitForSeconds(0.2f);
+        GetComponent<TrailRenderer>().enabled = false;
     }
 }

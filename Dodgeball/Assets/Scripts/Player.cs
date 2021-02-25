@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     private Animator animator;
     private ParticleSystem particles;
     private SpriteRenderer mySpriteRenderer;
-    private bool particlesPlaying = false;
 
     // Start is called before the first frame update
     void Start()
@@ -60,35 +59,55 @@ public class Player : MonoBehaviour
         Vector2 dir = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
         dir.Normalize();
         //Debug.Log(dir);
-        GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+
+        float ballAngle = getBallRotation(Input.mousePosition);
+        GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.Euler(new Vector3(0f, 0f, ballAngle)));
+        if ((ballAngle > 90 && ballAngle <= 180) || (ballAngle < -90 && ballAngle >= -180))
+        {
+            ball.GetComponent<SpriteRenderer>().flipX = false;
+            ball.GetComponent<SpriteRenderer>().flipY = true;
+        }
+
         SoundManager.S.ThrowSound();
         ball.tag = "PlayerBall";
         ball.layer = 8; // player layer
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
         if (IsBuffed())
         {
+            ball.GetComponent<ParticleSystem>().Play();
             b.velocity = dir * throwSpeed * 2;
         }
         else
         {
             ball.GetComponent<TrailRenderer>().enabled = false;
+            ball.GetComponent<ParticleSystem>().Stop();
             b.velocity = dir * throwSpeed;
         }
 
         if (dir.x <= 0)
         {
             mySpriteRenderer.flipX = true;
-            ball.GetComponent<SpriteRenderer>().flipX = false;
         }
         else if (dir.x > 0)
         {
             mySpriteRenderer.flipX = false;
-            ball.GetComponent<SpriteRenderer>().flipX = true;
         }
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private float getBallRotation(Vector3 mousePos)
+    {
+        Vector2 position1 = transform.position;
+        Vector2 position2 = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        return AngleBetweenTwoPoints(position1, position2);
+    }
+
+    private float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
+    {
+        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+    }
+
+private void OnCollisionEnter2D(Collision2D collision)
     {
 
         if (collision.gameObject.tag == "EnemyBall")
@@ -97,11 +116,10 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
             rb.velocity = new Vector2(0, 0);
             particles.Stop();
-            particlesPlaying = false;
             buffed = false;
             holding = false;
             animator.SetTrigger("hit");
-            
+            mySpriteRenderer.flipX = false;
             if (GameManager.S.gameState != GameManager.GameState.oops)
             {
                 Debug.Log("making sound");
