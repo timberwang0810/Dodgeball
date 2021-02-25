@@ -2895,7 +2895,7 @@ MonoBehaviour:
   enemySpawner: {fileID: 2032930303}
   maxEnemies:
   - enemyPrefab: {fileID: 3408741559225374891, guid: 4479e88a15590fe43b06d67bf014ade0, type: 3}
-    enemyCount: 40
+    enemyCount: 10
 --- !u!4 &1970034123
 Transform:
   m_ObjectHideFlags: 0
@@ -3092,7 +3092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2032930304}
   m_Layer: 0
-  m_Name: EnemySpanwer
+  m_Name: EnemySpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

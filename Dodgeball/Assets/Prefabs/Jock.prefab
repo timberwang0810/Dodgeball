@@ -159,7 +159,7 @@ MonoBehaviour:
   damage: 1
   throwSpeed: 30
   score: 200
-  startDelay: 3
+  startDelay: 0
   timeBetweenAttacks: 3
   moveTime: 3
   idleTime: 2

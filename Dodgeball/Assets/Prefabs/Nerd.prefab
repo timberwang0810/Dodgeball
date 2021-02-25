@@ -133,21 +133,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c81917ff36dc6149a155bd310e6a1cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missRangeX: 10
-  missRangeY: 10
-  player: {fileID: 0}
   ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
   HP: 3
   damage: 1
   throwSpeed: 25
   score: 100
-  startDelay: 3
+  startDelay: 0
   timeBetweenAttacks: 4
   moveTime: 3
   idleTime: 2
   moveTimer: 0
   speed: 7
   timeBetweenDirectionChange: 3
+  missRangeX: 10
+  missRangeY: 10
 --- !u!50 &6734863058516563028
 Rigidbody2D:
   serializedVersion: 4

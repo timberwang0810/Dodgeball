@@ -104,7 +104,7 @@ public abstract class Enemy : MonoBehaviour
     private void Roam()
     {
         gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(speed * currentDirection.x, speed * currentDirection.y);
-        Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity);
+        //Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity);
     }
 
     void Update()
@@ -187,7 +187,6 @@ public abstract class Enemy : MonoBehaviour
 
             if (attackTimer >= timeBetweenAttacks)
             {
-                // TODO: Does jock need this?
                 animator.SetBool("moving", false);
                 StartCoroutine(throwFreezePos());
                 attackTimer = 0.0f;
@@ -200,7 +199,7 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
-    protected virtual IEnumerator throwFreezePos()
+    private IEnumerator throwFreezePos()
     {
         throwing = true;
         Throw();

@@ -18,9 +18,4 @@ public class Jock : Enemy
         dir.Normalize();
         b.velocity = dir * throwSpeed;
     }
-
-    protected override IEnumerator throwFreezePos()
-    {
-        yield return new WaitForSeconds(0);
-    }
 }

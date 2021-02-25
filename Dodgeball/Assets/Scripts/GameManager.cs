@@ -94,21 +94,9 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(this);
         Cursor.visible = true;
-        currNumBall = GameObject.FindGameObjectsWithTag("Ball").Length;
         pausePanel.SetActive(false);
         paused = false;
         scoreText.text = "Score: " + 0;
-
-        powerUpBar.minValue = 0;
-        powerUpBar.maxValue = 100;
-        powerUpBar.value = 0;
-        powerUpBarImage.color = lowPowerUpColor;
-        powerFilled = false;
-
-        dodgeCoolDownBar.minValue = 0;
-        dodgeCoolDownBar.maxValue = dodgeCooldown;
-        dodgeCoolDownBar.value = dodgeCooldown;
-        dodgeCoolDownBarImage.color = highCoolDownColor;
 
         Time.timeScale = 1;
     }
@@ -140,12 +128,34 @@ public class GameManager : MonoBehaviour
         spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        currNumBall = GameObject.FindGameObjectsWithTag("Ball").Length;
+
+        // TODO: Does enemies number reset or continue?
         foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
         {
             maxEnemies[p.enemyPrefab] = p.enemyCount;
             numEnemiesToSpawn += p.enemyCount;
             currEnemies[p.enemyPrefab.name] = 0;
         }
+        ResetLevel();
+    }
+
+    private void ResetLevel()
+    {
+        hype = 0;
+
+        powerUpTimer = 0;
+        powerUpBar.minValue = 0;
+        powerUpBar.maxValue = 100;
+        powerUpBar.value = 0;
+        powerUpBarImage.color = lowPowerUpColor;
+        powerFilled = false;
+
+        dodgeCoolDownBar.minValue = 0;
+        dodgeCoolDownBar.maxValue = dodgeCooldown;
+        dodgeCoolDownBar.value = dodgeCooldown;
+        dodgeCoolDownBarImage.color = highCoolDownColor;
+
         StartCoroutine(GetReady());
     }
 
@@ -198,6 +208,9 @@ public class GameManager : MonoBehaviour
         numEnemies++;
         numEnemiesOnCourt++;
         numEnemiesToSpawn--;
+
+        Debug.Log("Current Enemies: " + currEnemies);
+        Debug.Log("Enemies Left To Spawn: " + numEnemiesToSpawn);
     }
 
     private void RoundWon()
@@ -271,7 +284,7 @@ public class GameManager : MonoBehaviour
         currentPlayer.GetComponent<Renderer>().enabled = true;
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = true;
         currentPlayer.transform.position = spawnPos;
-        StartNewGame();
+        ResetLevel();
     }
 
     public void OnEnemyDestroyed()
@@ -280,6 +293,7 @@ public class GameManager : MonoBehaviour
         numEnemiesOnCourt--;
         hype += enemyPoints;
         IncreasePower(hitPowerUp);
+        Debug.Log("Enemies remaining:" + numEnemies + "; on floor: " + numEnemiesOnCourt);
         if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
         {
             currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
@@ -357,10 +371,8 @@ public class GameManager : MonoBehaviour
     {
         powerUpBar.value = Mathf.Clamp(powerUpBar.value + increment, 0, 100);
         powerUpBarImage.color = Color.Lerp(lowPowerUpColor, highPowerUpColor, powerUpBar.value / 100);
-        Debug.Log("Color " + powerUpBarImage.color);
         if (powerUpBar.value >= 100)
         {
-            Debug.Log("POWERED UP");
             StartCoroutine(Buffed());
         }
     }
