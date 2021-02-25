@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     // UI Variables
     public TextMeshProUGUI statusText;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI endText;
     public GameObject pausePanel;
     private bool paused;
     public Slider powerUpBar;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     private float powerUpTimer;
 
     private Vector3 spawnPos;
+    public GameObject gameOverPanel;
 
     private void Awake()
     {
@@ -116,7 +118,7 @@ public class GameManager : MonoBehaviour
     private void StartRound()
     {
         gameState = GameState.playing;
-        StartSpawning();
+        //StartSpawning();
     }
 
     private void RoundWon()
@@ -135,9 +137,10 @@ public class GameManager : MonoBehaviour
 
     private void GameWon()
     {
+        statusText.enabled = false;
         gameState = GameState.gameOver;
-        statusText.text = "Game Won";
-        statusText.enabled = true;
+        endText.text = "Game Won";
+        gameOverPanel.SetActive(true);
     }
 
     public void playerDied()
@@ -153,30 +156,27 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(hidePlayerSprite());
+            StartCoroutine(gameOver());
             gameState = GameState.gameOver;
-            statusText.text = "Game Over";
-            statusText.enabled = true;
+            
         }
     }
 
     private IEnumerator betweenRoundsWon()
     {
-        GameObject[] enemyBalls = GameObject.FindGameObjectsWithTag("EnemyBall");
-        foreach (GameObject eb in enemyBalls)
-        {
-            eb.tag = "Ball";
-        }
         statusText.text = LevelManager.S.currLevelName + " Complete!";
         statusText.enabled = true;
         yield return new WaitForSeconds(3);
+        currentPlayer.GetComponent<CapsuleCollider2D>().enabled = true;
         RoundWon();
     }
 
-    private IEnumerator hidePlayerSprite()
+    private IEnumerator gameOver()
     {
+        currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         yield return new WaitForSeconds(1);
         currentPlayer.GetComponent<Renderer>().enabled = false;
+        gameOverPanel.SetActive(true);
     }
 
     private IEnumerator betweenRoundsLost()
@@ -197,7 +197,11 @@ public class GameManager : MonoBehaviour
     {
         numEnemies--;
         IncreasePower(hitPowerUp);
-        if (numEnemies <= 0) StartCoroutine(betweenRoundsWon());
+        if (numEnemies <= 0)
+        {
+            currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
+            StartCoroutine(betweenRoundsWon());
+        }
     }
 
     public void OnSuccessfulParry()
@@ -280,12 +284,14 @@ public class GameManager : MonoBehaviour
     private IEnumerator Buffed()
     {
         powerFilled = true;
+        currentPlayer.GetComponent<ParticleSystem>().Play();
         yield return new WaitForSeconds(buffDuration);
         ResetPowerUp();
     }
 
     private void ResetPowerUp()
     {
+        currentPlayer.GetComponent<ParticleSystem>().Stop();
         powerFilled = false;
         powerUpBar.value = 0;
         powerUpBarImage.color = lowPowerUpColor;
