@@ -11,45 +11,47 @@ public class GameManager : MonoBehaviour
     public static GameManager S;
 
     public GameObject ballPrefab;
+    private GameObject currentPlayer;
 
     // UI Variables
+    [Header("Basic UI Variables")]
     public TextMeshProUGUI statusText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI endText;
     public GameObject pausePanel;
+    public GameObject gameOverPanel;
     private bool paused;
 
+    [Header("Power Bar")]
     public Slider powerUpBar;
     public Image powerUpBarImage;
     private Color lowPowerUpColor = Color.yellow;
     private Color highPowerUpColor = Color.red;
-
-    public Slider dodgeCoolDownBar;
-    public Image dodgeCoolDownBarImage;
-    private Color lowCoolDownColor = Color.red;
-    private Color highCoolDownColor = Color.green;
-
-    private GameObject currentPlayer;
-
-    public int maxLevel;
-
-    public int lives;
-    public int getReadyTime;
-    public int maxBallLimit;
     public int parryPowerUp;
     public int hitPowerUp;
     public float buffDuration;
     public float timeBetweenBallSpawn;
     public float powerUpDecrementRate;
+
+    [Header("Dodge Bar")]
+    public Slider dodgeCoolDownBar;
+    public Image dodgeCoolDownBarImage;
+    private Color lowCoolDownColor = Color.red;
+    private Color highCoolDownColor = Color.green;
+    public float dodgeCooldown;
+
+    [Header("Game Variables")]
+    public int maxLevel;
+    public int lives;
+    public int getReadyTime;
+    public int maxBallLimit;
+    
     private int currNumBall;
     private int numEnemies;
     private int score;
     private bool powerFilled;
     private float powerUpTimer;
-    public float dodgeCooldown;
-
     private Vector3 spawnPos;
-    public GameObject gameOverPanel;
 
 
     [Header("Audience")]

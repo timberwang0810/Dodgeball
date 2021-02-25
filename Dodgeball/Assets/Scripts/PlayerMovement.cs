@@ -6,17 +6,12 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed;
-    
+    public float dodgeForce;
+
     private float horizontalMove = 0.0f;
     private float verticalMove = 0.0f;
     private Rigidbody2D rb;
-    private bool isDashing;
 
-    Vector2 previous;
-    public Vector2 velocity = new Vector2(0, 0);
-    public float magnitude = 0;
-
-    public float dodgeForce;
     private float dodgeTimer;
     private bool facingLeft;
     private SpriteRenderer mySpriteRenderer;
@@ -24,11 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        previous = transform.position;
         rb = GetComponent<Rigidbody2D>();
-        isDashing = false;
         dodgeTimer = GameManager.S.dodgeCooldown;
-
         facingLeft = false;
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -38,8 +30,6 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (GameManager.S.gameState != GameManager.GameState.playing || GameManager.S.IsPaused()) return;
-        //horizontalMove = Mathf.Lerp(horizontalMove, Input.GetAxisRaw("Horizontal") * speed, accleration * Time.deltaTime);
-        //verticalMove = Mathf.Lerp(verticalMove, Input.GetAxisRaw("Vertical") * speed, accleration * Time.deltaTime);
         dodgeTimer += GameManager.S.isPowerFilled() ? Time.deltaTime * 2 : Time.deltaTime;
         if (dodgeTimer <= GameManager.S.dodgeCooldown) GameManager.S.UpdateDodgeCoolDownBar(dodgeTimer);
 
@@ -76,14 +66,6 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("running", true);
         }
-
-        //Debug.Log("stamina " + stamina);
-        //Vector2 newVel = new Vector2(transform.position.x - previous.x, transform.position.y - previous.y);
-
-        //velocity = newVel / Time.deltaTime;
-
-        //magnitude = (newVel.magnitude) / Time.deltaTime;
-        //previous = transform.position;
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && dodgeTimer >= GameManager.S.dodgeCooldown)
         {

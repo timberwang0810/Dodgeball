@@ -6,11 +6,12 @@ public class Enemy : MonoBehaviour
 {
     public GameObject player;
     public GameObject ballPrefab;
+
+    [Header("Enemy Attributes")]
     public float HP;
     public float damage;
     public float throwSpeed;
     public int score;
-
     public float startDelay;
     public float timeBetweenAttacks;
 
