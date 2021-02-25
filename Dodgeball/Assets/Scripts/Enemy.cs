@@ -66,6 +66,7 @@ public class Enemy : MonoBehaviour
             GameManager.S.OnScoreAdded(score);
             GameManager.S.OnEnemyDestroyed();
             Destroy(this.gameObject, 1.0f);
+            Destroy(collision.gameObject);
         }
 
         else if (collision.gameObject.tag == "Walls" || collision.gameObject.tag == "Enemy")
@@ -84,6 +85,7 @@ public class Enemy : MonoBehaviour
         ball.tag = "EnemyBall";
         ball.layer = 9;
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
+        ball.GetComponent<ParticleSystem>().Stop();
         Vector2 dir = player.transform.position - transform.position;
         dir.Normalize();
         b.velocity = dir * throwSpeed;
