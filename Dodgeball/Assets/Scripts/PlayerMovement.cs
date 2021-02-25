@@ -16,15 +16,8 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 velocity = new Vector2(0, 0);
     public float magnitude = 0;
 
-    public float dodgeCooldown;
-    private float dodgeTimer;
     public float dodgeForce;
-
-    public Slider dodgeCoolDownBar;
-    public Image dodgeCoolDownBarImage;
-    private Color lowCoolDownColor = Color.red;
-    private Color highCoolDownColor = Color.green;
-
+    private float dodgeTimer;
     private bool facingLeft;
     private SpriteRenderer mySpriteRenderer;
     private Animator animator;
@@ -34,12 +27,7 @@ public class PlayerMovement : MonoBehaviour
         previous = transform.position;
         rb = GetComponent<Rigidbody2D>();
         isDashing = false;
-        dodgeTimer = dodgeCooldown;
-
-        dodgeCoolDownBar.minValue = 0;
-        dodgeCoolDownBar.maxValue = dodgeCooldown;
-        dodgeCoolDownBar.value = dodgeCooldown;
-        dodgeCoolDownBarImage.color = highCoolDownColor;
+        dodgeTimer = GameManager.S.dodgeCooldown;
 
         facingLeft = false;
         mySpriteRenderer = GetComponent<SpriteRenderer>();
@@ -53,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
         //horizontalMove = Mathf.Lerp(horizontalMove, Input.GetAxisRaw("Horizontal") * speed, accleration * Time.deltaTime);
         //verticalMove = Mathf.Lerp(verticalMove, Input.GetAxisRaw("Vertical") * speed, accleration * Time.deltaTime);
         dodgeTimer += GameManager.S.isPowerFilled() ? Time.deltaTime * 2 : Time.deltaTime;
-        if (dodgeTimer <= dodgeCooldown) UpdateDodgeCoolDownBar();
+        if (dodgeTimer <= GameManager.S.dodgeCooldown) GameManager.S.UpdateDodgeCoolDownBar(dodgeTimer);
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
         if (horizontalMove < 0)
@@ -97,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
         //magnitude = (newVel.magnitude) / Time.deltaTime;
         //previous = transform.position;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && dodgeTimer >= dodgeCooldown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dodgeTimer >= GameManager.S.dodgeCooldown)
         {
             SoundManager.S.DodgeSound();
             Vector2 velocityCopy = rb.velocity;
@@ -111,12 +99,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-    }
-    private void UpdateDodgeCoolDownBar()
-    {
-        float clampedTimer = Mathf.Clamp(dodgeTimer, 0, dodgeCooldown);
-        dodgeCoolDownBar.value = clampedTimer;
-        dodgeCoolDownBarImage.color = Color.Lerp(lowCoolDownColor, highCoolDownColor, clampedTimer/dodgeCooldown);
     }
 
     private IEnumerator dodgeTrail()

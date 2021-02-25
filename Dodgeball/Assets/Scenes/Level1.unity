@@ -327,6 +327,8 @@ MonoBehaviour:
   pausePanel: {fileID: 804166645}
   powerUpBar: {fileID: 2004057301}
   powerUpBarImage: {fileID: 1421075104}
+  dodgeCoolDownBar: {fileID: 67900425}
+  dodgeCoolDownBarImage: {fileID: 849311974}
   maxLevel: 3
   lives: 3
   getReadyTime: 3
@@ -336,6 +338,7 @@ MonoBehaviour:
   buffDuration: 10
   timeBetweenBallSpawn: 5
   powerUpDecrementRate: 0.01
+  dodgeCooldown: 2
   gameOverPanel: {fileID: 1264092164}
   audience: {fileID: 1847539653}
   maxHype: 5

@@ -18,10 +18,16 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI endText;
     public GameObject pausePanel;
     private bool paused;
+
     public Slider powerUpBar;
     public Image powerUpBarImage;
     private Color lowPowerUpColor = Color.yellow;
     private Color highPowerUpColor = Color.red;
+
+    public Slider dodgeCoolDownBar;
+    public Image dodgeCoolDownBarImage;
+    private Color lowCoolDownColor = Color.red;
+    private Color highCoolDownColor = Color.green;
 
     private GameObject currentPlayer;
 
@@ -40,6 +46,7 @@ public class GameManager : MonoBehaviour
     private int score;
     private bool powerFilled;
     private float powerUpTimer;
+    public float dodgeCooldown;
 
     private Vector3 spawnPos;
     public GameObject gameOverPanel;
@@ -81,6 +88,11 @@ public class GameManager : MonoBehaviour
         powerUpBar.value = 0;
         powerUpBarImage.color = lowPowerUpColor;
         powerFilled = false;
+
+        dodgeCoolDownBar.minValue = 0;
+        dodgeCoolDownBar.maxValue = dodgeCooldown;
+        dodgeCoolDownBar.value = dodgeCooldown;
+        dodgeCoolDownBarImage.color = highCoolDownColor;
 
         Time.timeScale = 1;
     }
@@ -316,5 +328,12 @@ public class GameManager : MonoBehaviour
         powerUpBar.value = 0;
         powerUpBarImage.color = lowPowerUpColor;
         powerUpTimer = 0;
+    }
+
+    public void UpdateDodgeCoolDownBar(float currTimer)
+    {
+        float clampedTimer = Mathf.Clamp(currTimer, 0, dodgeCooldown);
+        dodgeCoolDownBar.value = clampedTimer;
+        dodgeCoolDownBarImage.color = Color.Lerp(lowCoolDownColor, highCoolDownColor, clampedTimer / dodgeCooldown);
     }
 }
