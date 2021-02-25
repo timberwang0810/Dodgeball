@@ -86,6 +86,7 @@ public class Nerd : MonoBehaviour
             throwing = false;
             GameManager.S.OnScoreAdded(score);
             GameManager.S.OnEnemyDestroyed();
+            rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
             Destroy(this.gameObject, 1.0f);
             Destroy(collision.gameObject);
