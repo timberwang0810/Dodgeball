@@ -250,10 +250,11 @@ MonoBehaviour:
   ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
   statusText: {fileID: 1207682432}
   scoreText: {fileID: 1231493495}
+  endText: {fileID: 0}
   pausePanel: {fileID: 804166645}
   powerUpBar: {fileID: 0}
   powerUpBarImage: {fileID: 0}
-  maxLevel: 0
+  maxLevel: 3
   lives: 3
   getReadyTime: 3
   maxBallLimit: 10
