@@ -31,6 +31,11 @@ public class BallScript : MonoBehaviour
             Destroy(this.gameObject);
             //OnBallGrounded();
         }
+        if (collision.gameObject.tag == "EnemyBall" || collision.gameObject.tag == "PlayerBall")
+        {
+            GetComponent<TrailRenderer>().enabled = false;
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnBallGrounded()

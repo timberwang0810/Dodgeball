@@ -44,6 +44,14 @@ public class GameManager : MonoBehaviour
     private Vector3 spawnPos;
     public GameObject gameOverPanel;
 
+
+    [Header("Audience")]
+    public GameObject audience;
+    public float maxHype;
+    public float enemyPoints;
+    public float parryPoints;
+    private float hype = 0;
+
     private void Awake()
     {
         // Singleton Definition
@@ -86,6 +94,14 @@ public class GameManager : MonoBehaviour
                 else OnPause();
             powerUpTimer += Time.deltaTime;
             if (!powerFilled && powerUpTimer >= 1.0f) powerUpBar.value = Mathf.Clamp(powerUpBar.value - powerUpDecrementRate, 0, 100);
+
+            if (hype >= maxHype)
+            {
+                audience.GetComponent<Audience>().cheer();
+                hype = 0;
+            }
+            hype -= Time.deltaTime;
+            if (hype < 0) hype = 0;
         }
         
     }
@@ -123,6 +139,7 @@ public class GameManager : MonoBehaviour
 
     private void RoundWon()
     {
+        hype = 0;
         gameState = GameState.oops;
         ResetPowerUp();
         if (LevelManager.S.currLevel >= maxLevel)
@@ -150,6 +167,7 @@ public class GameManager : MonoBehaviour
         ResetPowerUp();
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
+        hype = 0;
         if (lives > 0)
         {
             StartCoroutine(betweenRoundsLost());
@@ -196,6 +214,7 @@ public class GameManager : MonoBehaviour
     public void OnEnemyDestroyed()
     {
         numEnemies--;
+        hype += enemyPoints;
         IncreasePower(hitPowerUp);
         if (numEnemies <= 0)
         {
@@ -206,6 +225,7 @@ public class GameManager : MonoBehaviour
 
     public void OnSuccessfulParry()
     {
+        hype += parryPoints;
         IncreasePower(parryPowerUp);
     }
 
