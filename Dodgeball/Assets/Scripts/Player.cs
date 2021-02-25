@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private Animator animator;
     private ParticleSystem particles;
     private SpriteRenderer mySpriteRenderer;
+    private bool particlesPlaying = false;
 
     // Start is called before the first frame update
     void Start()
@@ -31,16 +32,7 @@ public class Player : MonoBehaviour
             //Debug.Log("cant play");
             return;
         }
-        //Debug.Log("pplay");
-        if (IsBuffed())
-        {
-            particles.Play();
-            mySpriteRenderer.flipX = false;
-        }
-        else
-        {
-            particles.Stop();
-        }
+
         if (Input.GetMouseButtonDown(0) && (holding || IsBuffed()))
         {
             Throw();
@@ -68,15 +60,6 @@ public class Player : MonoBehaviour
         Vector2 dir = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
         dir.Normalize();
         //Debug.Log(dir);
-        if (dir.x <= 0)
-        {
-            mySpriteRenderer.flipX = true;
-        }
-        else if (dir.x > 0)
-        {
-            mySpriteRenderer.flipX = false;
-        }
-
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         SoundManager.S.ThrowSound();
         ball.tag = "PlayerBall";
@@ -91,7 +74,18 @@ public class Player : MonoBehaviour
             ball.GetComponent<TrailRenderer>().enabled = false;
             b.velocity = dir * throwSpeed;
         }
-        
+
+        if (dir.x <= 0)
+        {
+            mySpriteRenderer.flipX = true;
+            ball.GetComponent<SpriteRenderer>().flipX = false;
+        }
+        else if (dir.x > 0)
+        {
+            mySpriteRenderer.flipX = false;
+            ball.GetComponent<SpriteRenderer>().flipX = true;
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -100,9 +94,10 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == "EnemyBall")
         {
             //this.transform.DetachChildren();
-            //Destroy(this.gameObject);
+            Destroy(collision.gameObject);
             rb.velocity = new Vector2(0, 0);
             particles.Stop();
+            particlesPlaying = false;
             buffed = false;
             holding = false;
             animator.SetTrigger("hit");

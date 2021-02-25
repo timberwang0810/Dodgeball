@@ -28,7 +28,8 @@ public class BallScript : MonoBehaviour
         {
             GetComponent<TrailRenderer>().enabled = false;
             SoundManager.S.WallHitSound();
-            OnBallGrounded();
+            Destroy(this.gameObject);
+            //OnBallGrounded();
         }
     }
 

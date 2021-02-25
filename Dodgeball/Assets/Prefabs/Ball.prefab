@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5555275711522900365}
   - component: {fileID: 9034161301051254664}
   - component: {fileID: 1260285194458589293}
+  - component: {fileID: 1372385344287762464}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8545864731801137359}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 7, y: 7, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 8165854211349455927, guid: 9ae421fdf5969ed48a6b20769d8d6db6, type: 3}
   m_Color: {r: 1, g: 0.075979106, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -120,9 +121,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.98, y: 0}
   serializedVersion: 2
-  m_Radius: 0.08598489
+  m_Radius: 1
 --- !u!114 &9034161301051254664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,3 +244,22 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!95 &1372385344287762464
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8545864731801137359}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: abf434e18859e1d4a85d89da982c7f18, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
