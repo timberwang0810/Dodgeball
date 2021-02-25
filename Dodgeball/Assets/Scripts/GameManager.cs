@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,6 +46,9 @@ public class GameManager : MonoBehaviour
     public int lives;
     public int getReadyTime;
     public int maxBallLimit;
+
+    public int maxEnemiesOnCourt;
+    public float timeBetweenEnemySpawn;
     
     private int currNumBall;
     private int numEnemies;
@@ -52,7 +56,10 @@ public class GameManager : MonoBehaviour
     private bool powerFilled;
     private float powerUpTimer;
     private Vector3 spawnPos;
-
+    private Dictionary<GameObject, int> maxEnemies = new Dictionary<GameObject, int>();
+    private Dictionary<string, int> currEnemies = new Dictionary<string, int>();
+    private int numEnemiesOnCourt;
+    private int numEnemiesToSpawn;
 
     [Header("Audience")]
     public GameObject audience;
@@ -60,6 +67,13 @@ public class GameManager : MonoBehaviour
     public float enemyPoints;
     public float parryPoints;
     private float hype = 0;
+
+    [System.Serializable]
+    public struct EnemyCountPair
+    {
+        public GameObject enemyPrefab;
+        public int enemyCount;
+    }
 
     private void Awake()
     {
@@ -126,6 +140,12 @@ public class GameManager : MonoBehaviour
         spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
+        {
+            maxEnemies[p.enemyPrefab] = p.enemyCount;
+            numEnemiesToSpawn += p.enemyCount;
+            currEnemies[p.enemyPrefab.name] = 0;
+        }
         StartCoroutine(GetReady());
     }
 
@@ -149,6 +169,35 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.playing;
         //StartSpawning();
+        StartCoroutine(SpawnEnemies());
+    }
+
+    private IEnumerator SpawnEnemies()
+    {
+        while (gameState == GameState.playing)
+        {
+            if (numEnemiesOnCourt < maxEnemiesOnCourt)
+            {
+                SpawnOneEnemy();
+            }
+            yield return new WaitForSeconds(timeBetweenEnemySpawn);
+        }   
+    }
+
+    private void SpawnOneEnemy()
+    {
+        if (numEnemiesToSpawn <= 0) return;
+        GameObject enemyPrefab = maxEnemies.ElementAt(Random.Range(0, maxEnemies.Count())).Key;
+        while (currEnemies[enemyPrefab.name] >= maxEnemies[enemyPrefab])
+        {
+            enemyPrefab = maxEnemies.ElementAt(Random.Range(0, maxEnemies.Count())).Key;
+        }
+        // TODO: Instantiate enemy at spawn location
+        Instantiate(enemyPrefab, LevelManager.S.enemySpawner.transform);
+        currEnemies[enemyPrefab.name] += 1;
+        numEnemies++;
+        numEnemiesOnCourt++;
+        numEnemiesToSpawn--;
     }
 
     private void RoundWon()
@@ -228,9 +277,10 @@ public class GameManager : MonoBehaviour
     public void OnEnemyDestroyed()
     {
         numEnemies--;
+        numEnemiesOnCourt--;
         hype += enemyPoints;
         IncreasePower(hitPowerUp);
-        if (numEnemies <= 0)
+        if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
         {
             currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
             StartCoroutine(betweenRoundsWon());

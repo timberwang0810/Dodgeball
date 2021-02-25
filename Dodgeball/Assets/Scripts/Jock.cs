@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Nerd : Enemy
+public class Jock : Enemy
 {
-    public float missRangeX;
-    public float missRangeY;
-
     protected override void Throw()
     {
         gameObject.GetComponent<Animator>().SetTrigger("throw");
@@ -17,18 +14,13 @@ public class Nerd : Enemy
         ball.layer = 9;
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
         ball.GetComponent<ParticleSystem>().Stop();
-        
-        Vector3 badPlayerPos = nerdRandomMiss();
-
-        Vector2 dir = badPlayerPos - transform.position;
+        Vector2 dir = player.transform.position - transform.position;
         dir.Normalize();
         b.velocity = dir * throwSpeed;
     }
 
-    private Vector3 nerdRandomMiss()
+    protected override IEnumerator throwFreezePos()
     {
-        float missX = Random.Range(player.transform.position.x - missRangeX, player.transform.position.x + missRangeX);
-        float missY = Random.Range(player.transform.position.y - missRangeY, player.transform.position.y + missRangeY);
-        return new Vector3(missX, missY, 0);
+        yield return new WaitForSeconds(0);
     }
 }
