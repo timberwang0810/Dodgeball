@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     public GameObject ballPrefab;
     public float throwSpeed;
-    private bool buffed = false;
+
     private Rigidbody2D rb;
     private bool holding = false;
     private Animator animator;
@@ -116,7 +116,6 @@ private void OnCollisionEnter2D(Collision2D collision)
             Destroy(collision.gameObject);
             rb.velocity = new Vector2(0, 0);
             particles.Stop();
-            buffed = false;
             holding = false;
             animator.SetTrigger("hit");
             mySpriteRenderer.flipX = false;

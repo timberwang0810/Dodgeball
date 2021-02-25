@@ -9,6 +9,9 @@ public class LevelManager : MonoBehaviour
     public int currLevel;
     public string currLevelName;
     public GameObject border;
+    public GameObject enemySpawner;
+
+    public GameManager.EnemyCountPair[] maxEnemies;
 
     private void Awake()
     {
@@ -33,4 +36,5 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene("Level" + (currLevel + 1));
         currLevel += 1;
     }
+
 }
