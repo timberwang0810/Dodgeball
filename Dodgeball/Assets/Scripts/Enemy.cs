@@ -21,7 +21,7 @@ public abstract class Enemy : MonoBehaviour
     public float moveTime;
     public float idleTime;
     public float moveTimer;
-    private MoveState status = MoveState.idle;
+    private MoveState status = MoveState.moving;
 
     [Header("Enemy Movement AI")]
     public float speed;
@@ -42,6 +42,7 @@ public abstract class Enemy : MonoBehaviour
     {
         //GetReady();
         animator = GetComponent<Animator>();
+        animator.SetBool("moving", true);
         attackTimer = timeBetweenAttacks;
         rb = GetComponent<Rigidbody2D>();
         GetComponent<SpriteRenderer>().flipX = false;
@@ -88,7 +89,10 @@ public abstract class Enemy : MonoBehaviour
             GameManager.S.OnEnemyDestroyed();
             rb.constraints = RigidbodyConstraints2D.None;
             rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
-            Destroy(this.gameObject, 1.0f);
+
+            //change this later
+            Destroy(this.gameObject);
+
             Destroy(collision.gameObject);
         }
 
@@ -112,11 +116,18 @@ public abstract class Enemy : MonoBehaviour
         if (GameManager.S.gameState != GameManager.GameState.playing)
         {
             //Debug.Log("cant play");
-            ready = false;
-            animator.SetBool("moving", false);
-            status = MoveState.idle;
-            rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
-            return;
+            if (onCourt)
+            {
+                ready = false;
+                animator.SetBool("moving", false);
+                status = MoveState.idle;
+                rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
+                return;
+            } else
+            {
+                // just keep running
+            }
+
         } else
         {
             if (onCourt)

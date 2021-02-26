@@ -180,6 +180,7 @@ public class SoundManager : MonoBehaviour
             JimCommentary();
         }
     }
+
     public void HitSound()
     {
         int r = lastRandomNumber;

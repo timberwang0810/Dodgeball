@@ -44,8 +44,8 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown("space"))
         {
-            animator.SetTrigger("parry");
             rb.velocity = new Vector2(0, 0);
+            animator.SetTrigger("parry");
         }
     }
 
@@ -135,6 +135,7 @@ private void OnCollisionEnter2D(Collision2D collision)
         if (collision.gameObject.tag == "EnemyBall") //parry
         {
             Destroy(collision.gameObject);
+            SoundManager.S.WallHitSound();
             holding = true;             
             animator.SetBool("holding", true);
             rb.velocity = new Vector2(0, 0);

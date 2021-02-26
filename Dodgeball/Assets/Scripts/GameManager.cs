@@ -329,12 +329,14 @@ public class GameManager : MonoBehaviour
     {
         powerFilled = true;
         currentPlayer.GetComponent<ParticleSystem>().Play();
+        currentPlayer.GetComponent<Animator>().SetBool("holding", true);
         yield return new WaitForSeconds(buffDuration);
         ResetPowerUp();
     }
 
     private void ResetPowerUp()
     {
+        currentPlayer.GetComponent<Animator>().SetBool("holding", false);
         currentPlayer.GetComponent<ParticleSystem>().Stop();
         powerFilled = false;
         powerUpBarFill.fillAmount = 0;
