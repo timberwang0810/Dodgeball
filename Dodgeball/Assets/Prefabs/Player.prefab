@@ -104,12 +104,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  velocity: {x: 0, y: 0}
-  magnitude: 0
-  dodgeCooldown: 1
   dodgeForce: 1.1
-  dodgeCoolDownBar: {fileID: 0}
-  dodgeCoolDownBarImage: {fileID: 0}
+  dodgeCooldown: 1
 --- !u!50 &6328223287811402122
 Rigidbody2D:
   serializedVersion: 4
