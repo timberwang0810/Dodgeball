@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     public float timeBetweenBallSpawn;
     public float powerUpDecrementRate;
 
+    [Header("Progress Bar")]
+    public Image progressBarFill;
+
     [Header("Game Variables")]
     public int maxLevel;
     public int lives;
@@ -48,6 +51,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, int> currEnemies = new Dictionary<string, int>();
     private int numEnemiesOnCourt;
     private int numEnemiesToSpawn;
+    private int totalNumEnemies;
 
     [Header("Audience")]
     public GameObject audience;
@@ -117,6 +121,7 @@ public class GameManager : MonoBehaviour
         gameState = GameState.getReady;
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
         powerUpBarFill.fillAmount = 0;
+        progressBarFill.fillAmount = 0;
 
         // TODO: Does enemies number reset or continue?
         foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
@@ -125,6 +130,7 @@ public class GameManager : MonoBehaviour
             numEnemiesToSpawn += p.enemyCount;
             currEnemies[p.enemyPrefab.name] = 0;
         }
+        totalNumEnemies = numEnemiesToSpawn;
         ResetLevel();
     }
 
@@ -271,6 +277,7 @@ public class GameManager : MonoBehaviour
         numEnemiesOnCourt--;
         hype += enemyPoints;
         IncreasePower(hitPowerUp);
+        IncreaseProgress();
         Debug.Log("Enemies remaining:" + numEnemies + "; on floor: " + numEnemiesOnCourt);
         if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
         {
@@ -317,6 +324,11 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(Buffed());
         }
+    }
+
+    private void IncreaseProgress()
+    {
+        progressBarFill.fillAmount = (totalNumEnemies - numEnemiesToSpawn) / (float)totalNumEnemies;
     }
 
     private IEnumerator Buffed()
