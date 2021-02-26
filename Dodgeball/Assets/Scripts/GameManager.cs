@@ -24,12 +24,11 @@ public class GameManager : MonoBehaviour
     private bool paused;
 
     [Header("Power Bar")]
-    public Slider powerUpBar;
-    public Image powerUpBarImage;
-    private Color lowPowerUpColor = Color.yellow;
-    private Color highPowerUpColor = Color.red;
-    public int parryPowerUp;
-    public int hitPowerUp;
+    public Image powerUpBarFill;
+    [Range(0,1)]
+    public float parryPowerUp;
+    [Range(0, 1)]
+    public float hitPowerUp;
     public float buffDuration;
     public float timeBetweenBallSpawn;
     public float powerUpDecrementRate;
@@ -109,7 +108,7 @@ public class GameManager : MonoBehaviour
                 if (paused) OnUnpause();
                 else OnPause();
             powerUpTimer += Time.deltaTime;
-            if (!powerFilled && powerUpTimer >= 1.0f) powerUpBar.value = Mathf.Clamp(powerUpBar.value - powerUpDecrementRate, 0, 100);
+            if (!powerFilled && powerUpTimer >= 1.0f) powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount - powerUpDecrementRate, 0, 1);
 
             if (hype >= maxHype)
             {
@@ -145,10 +144,7 @@ public class GameManager : MonoBehaviour
         hype = 0;
 
         powerUpTimer = 0;
-        powerUpBar.minValue = 0;
-        powerUpBar.maxValue = 100;
-        powerUpBar.value = 0;
-        powerUpBarImage.color = lowPowerUpColor;
+        powerUpBarFill.fillAmount = 0;
         powerFilled = false;
 
         dodgeCoolDownBar.minValue = 0;
@@ -367,11 +363,10 @@ public class GameManager : MonoBehaviour
         return powerFilled;
     }
 
-    private void IncreasePower(int increment)
+    private void IncreasePower(float increment)
     {
-        powerUpBar.value = Mathf.Clamp(powerUpBar.value + increment, 0, 100);
-        powerUpBarImage.color = Color.Lerp(lowPowerUpColor, highPowerUpColor, powerUpBar.value / 100);
-        if (powerUpBar.value >= 100)
+        powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount + increment, 0, 1);
+        if (powerUpBarFill.fillAmount >= 1)
         {
             StartCoroutine(Buffed());
         }
@@ -389,8 +384,7 @@ public class GameManager : MonoBehaviour
     {
         currentPlayer.GetComponent<ParticleSystem>().Stop();
         powerFilled = false;
-        powerUpBar.value = 0;
-        powerUpBarImage.color = lowPowerUpColor;
+        powerUpBarFill.fillAmount = 0;
         powerUpTimer = 0;
     }
 
