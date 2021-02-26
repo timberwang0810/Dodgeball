@@ -33,13 +33,6 @@ public class GameManager : MonoBehaviour
     public float timeBetweenBallSpawn;
     public float powerUpDecrementRate;
 
-    [Header("Dodge Bar")]
-    public Slider dodgeCoolDownBar;
-    public Image dodgeCoolDownBarImage;
-    private Color lowCoolDownColor = Color.red;
-    private Color highCoolDownColor = Color.green;
-    public float dodgeCooldown;
-
     [Header("Game Variables")]
     public int maxLevel;
     public int lives;
@@ -147,11 +140,6 @@ public class GameManager : MonoBehaviour
         powerUpBarFill.fillAmount = 0;
         powerFilled = false;
 
-        dodgeCoolDownBar.minValue = 0;
-        dodgeCoolDownBar.maxValue = dodgeCooldown;
-        dodgeCoolDownBar.value = dodgeCooldown;
-        dodgeCoolDownBarImage.color = highCoolDownColor;
-
         StartCoroutine(GetReady());
     }
 
@@ -199,7 +187,7 @@ public class GameManager : MonoBehaviour
             enemyPrefab = maxEnemies.ElementAt(Random.Range(0, maxEnemies.Count())).Key;
         }
         // TODO: Instantiate enemy at spawn location
-        Instantiate(enemyPrefab, LevelManager.S.enemySpawner.transform);
+        Instantiate(enemyPrefab, new Vector3(LevelManager.S.enemySpawner.transform.position.x, Random.Range(-16, 16), 0), Quaternion.identity);
         currEnemies[enemyPrefab.name] += 1;
         numEnemies++;
         numEnemiesOnCourt++;
@@ -386,12 +374,5 @@ public class GameManager : MonoBehaviour
         powerFilled = false;
         powerUpBarFill.fillAmount = 0;
         powerUpTimer = 0;
-    }
-
-    public void UpdateDodgeCoolDownBar(float currTimer)
-    {
-        float clampedTimer = Mathf.Clamp(currTimer, 0, dodgeCooldown);
-        dodgeCoolDownBar.value = clampedTimer;
-        dodgeCoolDownBarImage.color = Color.Lerp(lowCoolDownColor, highCoolDownColor, clampedTimer / dodgeCooldown);
     }
 }
