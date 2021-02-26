@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public float speed;
     public float dodgeForce;
+    public float dodgeCooldown;
 
     private float horizontalMove = 0.0f;
     private float verticalMove = 0.0f;
@@ -20,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        dodgeTimer = GameManager.S.dodgeCooldown;
+        dodgeTimer = dodgeCooldown;
         facingLeft = false;
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
@@ -31,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (GameManager.S.gameState != GameManager.GameState.playing || GameManager.S.IsPaused()) return;
         dodgeTimer += GameManager.S.isPowerFilled() ? Time.deltaTime * 2 : Time.deltaTime;
-        if (dodgeTimer <= GameManager.S.dodgeCooldown) GameManager.S.UpdateDodgeCoolDownBar(dodgeTimer);
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
         if (horizontalMove < 0)
@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("running", true);
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && dodgeTimer >= GameManager.S.dodgeCooldown)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dodgeTimer >= dodgeCooldown)
         {
             SoundManager.S.DodgeSound();
             Vector2 velocityCopy = rb.velocity;

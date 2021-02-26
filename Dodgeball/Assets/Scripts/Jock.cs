@@ -9,7 +9,6 @@ public class Jock : Enemy
         gameObject.GetComponent<Animator>().SetTrigger("throw");
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
         ball.GetComponent<TrailRenderer>().enabled = false;
-        GameManager.S.OnBallSpawned();
         ball.tag = "EnemyBall";
         ball.layer = 9;
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();

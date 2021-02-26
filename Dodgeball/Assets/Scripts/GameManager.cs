@@ -24,33 +24,22 @@ public class GameManager : MonoBehaviour
     private bool paused;
 
     [Header("Power Bar")]
-    public Slider powerUpBar;
-    public Image powerUpBarImage;
-    private Color lowPowerUpColor = Color.yellow;
-    private Color highPowerUpColor = Color.red;
-    public int parryPowerUp;
-    public int hitPowerUp;
+    public Image powerUpBarFill;
+    [Range(0,1)]
+    public float parryPowerUp;
+    [Range(0, 1)]
+    public float hitPowerUp;
     public float buffDuration;
     public float timeBetweenBallSpawn;
     public float powerUpDecrementRate;
-
-    [Header("Dodge Bar")]
-    public Slider dodgeCoolDownBar;
-    public Image dodgeCoolDownBarImage;
-    private Color lowCoolDownColor = Color.red;
-    private Color highCoolDownColor = Color.green;
-    public float dodgeCooldown;
 
     [Header("Game Variables")]
     public int maxLevel;
     public int lives;
     public int getReadyTime;
-    public int maxBallLimit;
-
     public int maxEnemiesOnCourt;
     public float timeBetweenEnemySpawn;
     
-    private int currNumBall;
     private int numEnemies;
     private int score;
     private bool powerFilled;
@@ -109,7 +98,7 @@ public class GameManager : MonoBehaviour
                 if (paused) OnUnpause();
                 else OnPause();
             powerUpTimer += Time.deltaTime;
-            if (!powerFilled && powerUpTimer >= 1.0f) powerUpBar.value = Mathf.Clamp(powerUpBar.value - powerUpDecrementRate, 0, 100);
+            if (!powerFilled && powerUpTimer >= 1.0f) powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount - powerUpDecrementRate, 0, 1);
 
             if (hype >= maxHype)
             {
@@ -128,7 +117,6 @@ public class GameManager : MonoBehaviour
         spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        currNumBall = GameObject.FindGameObjectsWithTag("Ball").Length;
 
         // TODO: Does enemies number reset or continue?
         foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
@@ -145,16 +133,8 @@ public class GameManager : MonoBehaviour
         hype = 0;
 
         powerUpTimer = 0;
-        powerUpBar.minValue = 0;
-        powerUpBar.maxValue = 100;
-        powerUpBar.value = 0;
-        powerUpBarImage.color = lowPowerUpColor;
+        powerUpBarFill.fillAmount = 0;
         powerFilled = false;
-
-        dodgeCoolDownBar.minValue = 0;
-        dodgeCoolDownBar.maxValue = dodgeCooldown;
-        dodgeCoolDownBar.value = dodgeCooldown;
-        dodgeCoolDownBarImage.color = highCoolDownColor;
 
         StartCoroutine(GetReady());
     }
@@ -178,7 +158,6 @@ public class GameManager : MonoBehaviour
     private void StartRound()
     {
         gameState = GameState.playing;
-        //StartSpawning();
         StartCoroutine(SpawnEnemies());
     }
 
@@ -203,7 +182,7 @@ public class GameManager : MonoBehaviour
             enemyPrefab = maxEnemies.ElementAt(Random.Range(0, maxEnemies.Count())).Key;
         }
         // TODO: Instantiate enemy at spawn location
-        Instantiate(enemyPrefab, LevelManager.S.enemySpawner.transform);
+        Instantiate(enemyPrefab, new Vector3(LevelManager.S.enemySpawner.transform.position.x, Random.Range(-16, 16), 0), Quaternion.identity);
         currEnemies[enemyPrefab.name] += 1;
         numEnemies++;
         numEnemiesOnCourt++;
@@ -313,36 +292,6 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
 
-    public void OnBallSpawned()
-    {
-        currNumBall += 1;
-    }
-
-    public void OnBallDespawned()
-    {
-        currNumBall -= 1;
-    }
-
-    private void StartSpawning()
-    {
-        if (currNumBall < maxBallLimit) StartCoroutine(SpawnBall());
-    }
-
-    private IEnumerator SpawnBall()
-    {
-        yield return new WaitForSeconds(timeBetweenBallSpawn);
-        Vector2 spawnLocation = currentPlayer.transform.position;
-        GameObject border = LevelManager.S.border;
-        // recalculate if distance is too close to player
-        while (Vector2.Distance(spawnLocation, currentPlayer.transform.position) <= 8)
-        {
-            spawnLocation = new Vector2(Random.Range(-23, border.transform.position.x - border.GetComponent<BoxCollider2D>().size.x), Random.Range(-15, 15));
-        }
-        Instantiate(ballPrefab, spawnLocation, Quaternion.identity);
-        currNumBall += 1;
-        StartSpawning();
-    }
-
     private void OnPause()
     {
         pausePanel.SetActive(true);
@@ -367,11 +316,10 @@ public class GameManager : MonoBehaviour
         return powerFilled;
     }
 
-    private void IncreasePower(int increment)
+    private void IncreasePower(float increment)
     {
-        powerUpBar.value = Mathf.Clamp(powerUpBar.value + increment, 0, 100);
-        powerUpBarImage.color = Color.Lerp(lowPowerUpColor, highPowerUpColor, powerUpBar.value / 100);
-        if (powerUpBar.value >= 100)
+        powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount + increment, 0, 1);
+        if (powerUpBarFill.fillAmount >= 1)
         {
             StartCoroutine(Buffed());
         }
@@ -389,15 +337,7 @@ public class GameManager : MonoBehaviour
     {
         currentPlayer.GetComponent<ParticleSystem>().Stop();
         powerFilled = false;
-        powerUpBar.value = 0;
-        powerUpBarImage.color = lowPowerUpColor;
+        powerUpBarFill.fillAmount = 0;
         powerUpTimer = 0;
-    }
-
-    public void UpdateDodgeCoolDownBar(float currTimer)
-    {
-        float clampedTimer = Mathf.Clamp(currTimer, 0, dodgeCooldown);
-        dodgeCoolDownBar.value = clampedTimer;
-        dodgeCoolDownBarImage.color = Color.Lerp(lowCoolDownColor, highCoolDownColor, clampedTimer / dodgeCooldown);
     }
 }
