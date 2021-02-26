@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour
         spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        powerUpBarFill.fillAmount = 0;
 
         // TODO: Does enemies number reset or continue?
         foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
@@ -130,9 +131,8 @@ public class GameManager : MonoBehaviour
     private void ResetLevel()
     {
         hype = 0;
-
         powerUpTimer = 0;
-        powerUpBarFill.fillAmount = 0;
+        powerUpBarFill.fillAmount /= 2;
         powerFilled = false;
 
         StartCoroutine(GetReady());
