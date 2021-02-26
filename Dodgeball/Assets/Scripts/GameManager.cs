@@ -7,7 +7,7 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameState { menu, getReady, playing, oops, gameOver };
+    public enum GameState { menu, getReady, playing, paused, oops, gameOver };
     public GameState gameState;
     public static GameManager S;
 
@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI endText;
     public GameObject pausePanel;
     public GameObject gameOverPanel;
-    private bool paused;
 
     [Header("Power Bar")]
     public Image powerUpBarFill;
@@ -84,7 +83,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
         Cursor.visible = true;
         pausePanel.SetActive(false);
-        paused = false;
         scoreText.text = "Score: " + 0;
 
         Time.timeScale = 1;
@@ -95,8 +93,7 @@ public class GameManager : MonoBehaviour
         if (gameState == GameState.playing)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
-                if (paused) OnUnpause();
-                else OnPause();
+                OnPause();
             powerUpTimer += Time.deltaTime;
             if (!powerFilled && powerUpTimer >= 1.0f) powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount - powerUpDecrementRate, 0, 1);
 
@@ -108,6 +105,8 @@ public class GameManager : MonoBehaviour
             hype -= Time.deltaTime;
             if (hype < 0) hype = 0;
         }
+
+        else if (gameState == GameState.paused && Input.GetKeyDown(KeyCode.Escape)) OnUnpause(); 
         
     }
 
@@ -295,20 +294,15 @@ public class GameManager : MonoBehaviour
     private void OnPause()
     {
         pausePanel.SetActive(true);
-        paused = true;
+        gameState = GameState.paused;
         Time.timeScale = 0;
     }
 
     private void OnUnpause()
     {
         pausePanel.SetActive(false);
-        paused = false;
+        gameState = GameState.playing;
         Time.timeScale = 1;
-    }
-
-    public bool IsPaused()
-    {
-        return paused;
     }
 
     public bool isPowerFilled()

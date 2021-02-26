@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.S.gameState != GameManager.GameState.playing || GameManager.S.IsPaused()) return;
+        if (GameManager.S.gameState != GameManager.GameState.playing) return;
         dodgeTimer += GameManager.S.isPowerFilled() ? Time.deltaTime * 2 : Time.deltaTime;
 
         horizontalMove = Input.GetAxisRaw("Horizontal");
