@@ -37,12 +37,9 @@ public class GameManager : MonoBehaviour
     public int maxLevel;
     public int lives;
     public int getReadyTime;
-    public int maxBallLimit;
-
     public int maxEnemiesOnCourt;
     public float timeBetweenEnemySpawn;
     
-    private int currNumBall;
     private int numEnemies;
     private int score;
     private bool powerFilled;
@@ -120,7 +117,6 @@ public class GameManager : MonoBehaviour
         spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        currNumBall = GameObject.FindGameObjectsWithTag("Ball").Length;
 
         // TODO: Does enemies number reset or continue?
         foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
@@ -162,7 +158,6 @@ public class GameManager : MonoBehaviour
     private void StartRound()
     {
         gameState = GameState.playing;
-        //StartSpawning();
         StartCoroutine(SpawnEnemies());
     }
 
@@ -295,36 +290,6 @@ public class GameManager : MonoBehaviour
     {
         score += addedScore;
         scoreText.text = "Score: " + score;
-    }
-
-    public void OnBallSpawned()
-    {
-        currNumBall += 1;
-    }
-
-    public void OnBallDespawned()
-    {
-        currNumBall -= 1;
-    }
-
-    private void StartSpawning()
-    {
-        if (currNumBall < maxBallLimit) StartCoroutine(SpawnBall());
-    }
-
-    private IEnumerator SpawnBall()
-    {
-        yield return new WaitForSeconds(timeBetweenBallSpawn);
-        Vector2 spawnLocation = currentPlayer.transform.position;
-        GameObject border = LevelManager.S.border;
-        // recalculate if distance is too close to player
-        while (Vector2.Distance(spawnLocation, currentPlayer.transform.position) <= 8)
-        {
-            spawnLocation = new Vector2(Random.Range(-23, border.transform.position.x - border.GetComponent<BoxCollider2D>().size.x), Random.Range(-15, 15));
-        }
-        Instantiate(ballPrefab, spawnLocation, Quaternion.identity);
-        currNumBall += 1;
-        StartSpawning();
     }
 
     private void OnPause()

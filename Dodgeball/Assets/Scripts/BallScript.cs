@@ -45,7 +45,6 @@ public class BallScript : MonoBehaviour
         {
             this.gameObject.tag = "Ball";
             Destroy(this.gameObject, 5.0f);
-            GameManager.S.OnBallDespawned();
         }
 
         else if (this.gameObject.tag.Equals("EnemyBall"))

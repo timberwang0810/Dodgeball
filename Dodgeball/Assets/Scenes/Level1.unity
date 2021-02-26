@@ -160,20 +160,16 @@ MonoBehaviour:
   pausePanel: {fileID: 804166645}
   gameOverPanel: {fileID: 1264092164}
   powerUpBarFill: {fileID: 265666984}
-  parryPowerUp: 0.05
-  hitPowerUp: 0.9
+  parryPowerUp: 0.1
+  hitPowerUp: 0.2
   buffDuration: 10
   timeBetweenBallSpawn: 5
-  powerUpDecrementRate: 0.0001
-  dodgeCoolDownBar: {fileID: 0}
-  dodgeCoolDownBarImage: {fileID: 0}
-  dodgeCooldown: 2
+  powerUpDecrementRate: 0.0002
   maxLevel: 3
   lives: 3
   getReadyTime: 3
-  maxBallLimit: 10
   maxEnemiesOnCourt: 5
-  timeBetweenEnemySpawn: 5
+  timeBetweenEnemySpawn: 3
   audience: {fileID: 1847539653}
   maxHype: 5
   enemyPoints: 3
