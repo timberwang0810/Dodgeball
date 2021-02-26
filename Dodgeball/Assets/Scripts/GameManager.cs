@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     public float timeBetweenBallSpawn;
     public float powerUpDecrementRate;
 
+    [Header("Progress Bar")]
+    public Image progressBarFill;
+
     [Header("Game Variables")]
     public int maxLevel;
     public int lives;
@@ -48,6 +51,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, int> currEnemies = new Dictionary<string, int>();
     private int numEnemiesOnCourt;
     private int numEnemiesToSpawn;
+    private int totalNumEnemies;
 
     [Header("Audience")]
     public GameObject audience;
@@ -116,6 +120,8 @@ public class GameManager : MonoBehaviour
         spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        powerUpBarFill.fillAmount = 0;
+        progressBarFill.fillAmount = 0;
 
         // TODO: Does enemies number reset or continue?
         foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
@@ -124,15 +130,15 @@ public class GameManager : MonoBehaviour
             numEnemiesToSpawn += p.enemyCount;
             currEnemies[p.enemyPrefab.name] = 0;
         }
+        totalNumEnemies = numEnemiesToSpawn;
         ResetLevel();
     }
 
     private void ResetLevel()
     {
         hype = 0;
-
         powerUpTimer = 0;
-        powerUpBarFill.fillAmount = 0;
+        powerUpBarFill.fillAmount /= 2;
         powerFilled = false;
 
         StartCoroutine(GetReady());
@@ -181,7 +187,7 @@ public class GameManager : MonoBehaviour
             enemyPrefab = maxEnemies.ElementAt(Random.Range(0, maxEnemies.Count())).Key;
         }
         // TODO: Instantiate enemy at spawn location
-        Instantiate(enemyPrefab, new Vector3(LevelManager.S.enemySpawner.transform.position.x, Random.Range(-16, 16), 0), Quaternion.identity);
+        Instantiate(enemyPrefab, new Vector3(LevelManager.S.enemySpawner.transform.position.x, Random.Range(-15, 15), 0), Quaternion.identity);
         currEnemies[enemyPrefab.name] += 1;
         numEnemies++;
         numEnemiesOnCourt++;
@@ -271,6 +277,7 @@ public class GameManager : MonoBehaviour
         numEnemiesOnCourt--;
         hype += enemyPoints;
         IncreasePower(hitPowerUp);
+        IncreaseProgress();
         Debug.Log("Enemies remaining:" + numEnemies + "; on floor: " + numEnemiesOnCourt);
         if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
         {
@@ -317,6 +324,11 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(Buffed());
         }
+    }
+
+    private void IncreaseProgress()
+    {
+        progressBarFill.fillAmount = (totalNumEnemies - numEnemiesToSpawn) / (float)totalNumEnemies;
     }
 
     private IEnumerator Buffed()
