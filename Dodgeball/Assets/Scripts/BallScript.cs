@@ -33,6 +33,8 @@ public class BallScript : MonoBehaviour
         }
         if (collision.gameObject.tag == "EnemyBall" || collision.gameObject.tag == "PlayerBall")
         {
+            SoundManager.S.WallHitSound();
+            SoundManager.S.WallHitSound();
             GetComponent<TrailRenderer>().enabled = false;
             Destroy(this.gameObject);
         }

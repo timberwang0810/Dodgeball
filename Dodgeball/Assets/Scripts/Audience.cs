@@ -21,6 +21,7 @@ public class Audience : MonoBehaviour
     public void cheer()
     {
         // play big sound here
+        Debug.Log("called cheer");
         animator.SetTrigger("cheer");
     }
 }
