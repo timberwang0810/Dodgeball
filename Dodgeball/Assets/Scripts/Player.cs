@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private ParticleSystem particles;
     private SpriteRenderer mySpriteRenderer;
 
+    private bool iframes = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +47,15 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             animator.SetTrigger("parry");
+            StartCoroutine(parryFrames());
         }
+    }
+
+    private IEnumerator parryFrames()
+    {
+        iframes = true;
+        yield return new WaitForSeconds(0.2f);
+        iframes = false;
     }
 
     private void Throw()
@@ -85,10 +95,12 @@ public class Player : MonoBehaviour
         if (dir.x <= 0)
         {
             mySpriteRenderer.flipX = true;
+            GetComponent<BoxCollider2D>().offset = new Vector2(-2.98f, 0);
         }
         else if (dir.x > 0)
         {
             mySpriteRenderer.flipX = false;
+            GetComponent<BoxCollider2D>().offset = new Vector2(2.98f, 0);
         }
 
     }
@@ -112,19 +124,23 @@ public class Player : MonoBehaviour
         {
             //this.transform.DetachChildren();
             Destroy(collision.gameObject);
-            rb.velocity = new Vector2(0, 0);
-            particles.Stop();
-            holding = false;
-            animator.SetTrigger("hit");
-            mySpriteRenderer.flipX = false;
-            if (GameManager.S.gameState != GameManager.GameState.oops)
+            if (!iframes)
             {
-                Debug.Log("making sound");
-                SoundManager.S.HitSound();
+                rb.velocity = new Vector2(0, 0);
+                particles.Stop();
+                holding = false;
+                animator.SetTrigger("hit");
+                mySpriteRenderer.flipX = false;
+                GetComponent<BoxCollider2D>().offset = new Vector2(2.98f, 0);
+                if (GameManager.S.gameState != GameManager.GameState.oops)
+                {
+                    Debug.Log("making sound");
+                    SoundManager.S.HitSound();
+                }
+                GameManager.S.playerDied();
+                animator.SetBool("holding", false);
+                animator.SetBool("running", false);
             }
-            GameManager.S.playerDied();
-            animator.SetBool("holding", false);
-            animator.SetBool("running", false);
         }
     }
 
