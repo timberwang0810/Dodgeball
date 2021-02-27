@@ -38,11 +38,13 @@ public class PlayerMovement : MonoBehaviour
         {
             facingLeft = true;
             mySpriteRenderer.flipX = true;
+            GetComponent<BoxCollider2D>().offset = new Vector2(-2.98f, 0);
         }
         else if (horizontalMove > 0)
         {
             facingLeft = false;
             mySpriteRenderer.flipX = false;
+            GetComponent<BoxCollider2D>().offset = new Vector2(2.98f, 0);
         }
 
         verticalMove = Input.GetAxisRaw("Vertical");
@@ -53,7 +55,6 @@ public class PlayerMovement : MonoBehaviour
         if (dodgeTimer >= 0.0f && dodgeTimer < 0.2f)
         {
             rb.velocity = movement * finalSpeed * dodgeForce;
-            StartCoroutine(dodgeTrail());
         }
         else
         {
@@ -72,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
             SoundManager.S.DodgeSound();
             Vector2 velocityCopy = rb.velocity;
             velocityCopy.Normalize();
+            StartCoroutine(dodgeTrail());
             //Debug.Log(velocityCopy.magnitude);
             if (velocityCopy.magnitude > 0)
             {
@@ -86,7 +88,14 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator dodgeTrail()
     {
         GetComponent<TrailRenderer>().enabled = true;
+
+        // this let's player still be obstructed by the border
+        this.gameObject.layer = 11;
+        //Debug.Log("it's gone");
         yield return new WaitForSeconds(0.2f);
+        this.gameObject.layer = 10;
+        //Debug.Log("its back");
+        yield return new WaitForSeconds(0.3f);
         GetComponent<TrailRenderer>().enabled = false;
     }
 }

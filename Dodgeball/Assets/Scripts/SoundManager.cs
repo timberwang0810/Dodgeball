@@ -70,6 +70,9 @@ public class SoundManager : MonoBehaviour
     private int newRandomNumber2;
     private int lastRandomNumber2;
 
+    [Header("Commentary cooldown")]
+    public float cooldown;
+    private float cooldownTimer = 0;
 
     private void Awake()
     {
@@ -80,6 +83,11 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         audio = GetComponent<AudioSource>();
+    }
+
+    void Update()
+    {
+        cooldownTimer += Time.deltaTime;
     }
 
     public void playMusic()
@@ -181,10 +189,42 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void HitSound()
+    private void PlayCrowd()
+    {
+        int randomCrowd = Random.Range(1, 6);
+        int randomCrowdYell = Random.Range(1, 3);
+        if (randomCrowd == 1)
+        {
+            audio.PlayOneShot(Crowd1);
+        }
+        else if (randomCrowd == 2)
+        {
+            audio.PlayOneShot(Crowd2);
+        }
+        else if (randomCrowd == 3)
+        {
+            audio.PlayOneShot(Crowd3);
+        }
+        else if (randomCrowd == 4)
+        {
+            audio.PlayOneShot(Crowd4);
+        }
+
+        if (randomCrowdYell == 1)
+        {
+            audio.PlayOneShot(Crowdyell1, 0.8f);
+        }
+        else if (randomCrowdYell == 2)
+        {
+            audio.PlayOneShot(Crowdyell2, 0.8f);
+        }
+    }
+
+    private void HitSoundNoCommentary()
     {
         int r = lastRandomNumber;
-        newRandomNumber = Random.Range(1, 12);
+        newRandomNumber = Random.Range(1, 13);
+        PlayCrowd();
         if (newRandomNumber != lastRandomNumber)
         {
             r = newRandomNumber;
@@ -192,73 +232,123 @@ public class SoundManager : MonoBehaviour
             if (r == 1)
             {
                 audio.PlayOneShot(hit1);
-                StartCoroutine(KevinCommentary());
             }
             else if (r == 2)
             {
                 audio.PlayOneShot(hit2);
+            }
+            else if (r == 3)
+            {
+                audio.PlayOneShot(hit3);
+            }
+            else if (r == 4)
+            {
+                audio.PlayOneShot(hit4);
+            }
+            else if (r == 5)
+            {
+                audio.PlayOneShot(hit5);
+            }
+            else if (r == 6)
+            {
+                audio.PlayOneShot(hit6);
+            }
+            else if (r == 7)
+            {
+                audio.PlayOneShot(hit7);
+            }
+            else if (r == 8)
+            {
+                audio.PlayOneShot(hit8);
+            }
+            else if (r == 9)
+            {
+                audio.PlayOneShot(hit9);
+            }
+            else if (r == 10)
+            {
+                audio.PlayOneShot(hit10);
+            }
+            else if (r == 11)
+            {
+                audio.PlayOneShot(hit11);
+            }
+            else
+            {
+                audio.PlayOneShot(hit12);
+            }
+        }
+        else
+        {
+            HitSound();
+        }
+    }
+
+    public void HitSound()
+    {
+        int r = lastRandomNumber;
+        newRandomNumber = Random.Range(1, 13);
+        if (newRandomNumber != lastRandomNumber)
+        {
+            if (cooldownTimer >= cooldown)
+            {
                 StartCoroutine(KevinCommentary());
+                cooldownTimer = 0;
+            } else
+            {
+                HitSoundNoCommentary();
+                return;
+            }
+            r = newRandomNumber;
+            lastRandomNumber = newRandomNumber;
+            if (r == 1)
+            {
+                audio.PlayOneShot(hit1);
+            }
+            else if (r == 2)
+            {
+                audio.PlayOneShot(hit2);
 
             }
             else if (r == 3)
             {
                 audio.PlayOneShot(hit3);
-                StartCoroutine(KevinCommentary());
-
             }
             else if (r == 4)
             {
                 audio.PlayOneShot(hit4);
-                StartCoroutine(KevinCommentary());
-
             }
             else if (r == 5)
             {
                 audio.PlayOneShot(hit5);
-                StartCoroutine(KevinCommentary());
-
             }
             else if (r == 6)
             {
                 audio.PlayOneShot(hit6);
-                StartCoroutine(KevinCommentary());
-
             }
             else if (r == 7)
             {
                 audio.PlayOneShot(hit7);
-                StartCoroutine(KevinCommentary());
-
             }
             else if (r == 8)
             {
                 audio.PlayOneShot(hit8);
-                StartCoroutine(KevinCommentary());
-
             }
             else if (r == 9)
             {
                 audio.PlayOneShot(hit9);
-                StartCoroutine(KevinCommentary());
-
             }
             else if (r == 10)
             {
                 audio.PlayOneShot(hit10);
-                StartCoroutine(KevinCommentary());
-
             }
             else if (r == 11)
             {
                 audio.PlayOneShot(hit11);
-                StartCoroutine(KevinCommentary());
-
             }
             else
             {
                 audio.PlayOneShot(hit12);
-                StartCoroutine(KevinCommentary());
-
             }
         }
         else
