@@ -154,6 +154,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
         StartRound();
+        SoundManager.S.StartWhistle();
         statusText.text = "Go!";
         yield return new WaitForSeconds(1);
         statusText.enabled = false;
@@ -214,6 +215,7 @@ public class GameManager : MonoBehaviour
 
     private void GameWon()
     {
+        SoundManager.S.GameWinSound();
         statusText.enabled = false;
         gameState = GameState.gameOver;
         endText.text = "Game Won";
@@ -235,6 +237,7 @@ public class GameManager : MonoBehaviour
         else
         {
             StartCoroutine(gameOver());
+            SoundManager.S.GameLoseSound();
             gameState = GameState.gameOver;
             
         }
@@ -322,6 +325,7 @@ public class GameManager : MonoBehaviour
         powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount + increment, 0, 1);
         if (powerUpBarFill.fillAmount >= 1)
         {
+
             StartCoroutine(Buffed());
         }
     }

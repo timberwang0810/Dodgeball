@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private ParticleSystem particles;
     private SpriteRenderer mySpriteRenderer;
 
+    private float idleTimer;
+
     private bool iframes = false;
 
     // Start is called before the first frame update
@@ -23,6 +25,9 @@ public class Player : MonoBehaviour
         particles = GetComponent<ParticleSystem>();
         particles.Stop();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
+
+        idleTimer = 15.0f;
+
     }
 
     // Update is called once per frame
@@ -49,6 +54,8 @@ public class Player : MonoBehaviour
             animator.SetTrigger("parry");
             StartCoroutine(parryFrames());
         }
+
+
     }
 
     private IEnumerator parryFrames()
@@ -76,6 +83,7 @@ public class Player : MonoBehaviour
             ball.GetComponent<SpriteRenderer>().flipY = true;
         }
 
+        idleTimer = 15.0f;
         SoundManager.S.ThrowSound();
         ball.tag = "PlayerBall";
         ball.layer = 8; // player layer
@@ -135,7 +143,7 @@ public class Player : MonoBehaviour
                 if (GameManager.S.gameState != GameManager.GameState.oops)
                 {
                     Debug.Log("making sound");
-                    SoundManager.S.HitSound();
+                    SoundManager.S.PlayerHitSound();
                 }
                 GameManager.S.playerDied();
                 animator.SetBool("holding", false);
@@ -153,6 +161,7 @@ public class Player : MonoBehaviour
             holding = true;             
             animator.SetBool("holding", true);
             rb.velocity = new Vector2(0, 0);
+            SoundManager.S.ParrySound();
             GameManager.S.OnSuccessfulParry();
         }
     }

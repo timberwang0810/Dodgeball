@@ -79,11 +79,14 @@ public abstract class Enemy : MonoBehaviour
         StartAttack();
     }
 
+    protected abstract void OnHitSound();
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "PlayerBall")
         {
             SoundManager.S.HitSound();
+            OnHitSound();
             GetComponent<CapsuleCollider2D>().enabled = false;
             throwing = false;
             GameManager.S.OnScoreAdded(score);

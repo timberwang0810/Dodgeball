@@ -16,10 +16,14 @@ public class SoundManager : MonoBehaviour
     public AudioClip hit6;
     public AudioClip hit7;
     public AudioClip hit8;
-    public AudioClip hit9;
-    public AudioClip hit10;
-    public AudioClip hit11;
-    public AudioClip hit12;
+    public AudioClip hitNerd1;
+    public AudioClip hitNerd2;
+    public AudioClip hitNerd3;
+    public AudioClip hitNerd4;
+    public AudioClip hitNerd5;
+    public AudioClip hitNerd6;
+    public AudioClip hitNerd7;
+    public AudioClip hitNerd8;
 
     public AudioClip wallHit1;
     public AudioClip wallHit2;
@@ -37,11 +41,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip Jim3;
     public AudioClip Jim4;
 
-    public AudioClip KevinIdle;
-    public AudioClip JimIdle;
+    public AudioClip Idle1;
+    public AudioClip Idle2;
 
-    public AudioClip KevinWin;
-    public AudioClip JimWin;
     public AudioClip CrowdWin1;
     public AudioClip CrowdWin2;
 
@@ -52,6 +54,35 @@ public class SoundManager : MonoBehaviour
     public AudioClip Crowd3;
     public AudioClip Crowd4;
 
+    public AudioClip playerHit1;
+    public AudioClip playerHit2;
+    public AudioClip playerHit3;
+    public AudioClip playerHit4;
+    public AudioClip playerParry1;
+    public AudioClip playerParry2;
+    public AudioClip playerParry3;
+
+    public AudioClip poweredUp;
+    public AudioClip KevinDash;
+    public AudioClip JimDash;
+
+    public AudioClip KevinWin1;
+    public AudioClip KevinWin2;
+    public AudioClip JimWin1;
+    public AudioClip JimWin2;
+
+    public AudioClip KevinLose;
+    public AudioClip JimLose;
+
+    public AudioClip KevinIntro1;
+    public AudioClip KevinIntro2;
+    public AudioClip JimIntro1;
+    public AudioClip JimStart;
+    public AudioClip KevinStart;
+
+    public AudioClip WinJingle;
+    public AudioClip Whistle;
+    public AudioClip LoseJingle;
 
     public AudioClip ballThrow1;
 
@@ -69,6 +100,12 @@ public class SoundManager : MonoBehaviour
     private int lastRandomNumber4; 
     private int newRandomNumber2;
     private int lastRandomNumber2;
+    private int lastRandomIdle;
+    private int newRandomStart;
+    private int lastRandomStart = 0;
+
+    private int newPlayerSound;
+    private int lastPlayerSound;
 
     [Header("Commentary cooldown")]
     public float cooldown;
@@ -117,7 +154,7 @@ public class SoundManager : MonoBehaviour
                 audio.PlayOneShot(Kevin1);
                 audio.PlayOneShot(Crowd1);
                 audio.PlayOneShot(Crowdyell1, 0.8f);
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(1.2f);
                 JimCommentary();
             }
             else if (t == 2)
@@ -126,7 +163,7 @@ public class SoundManager : MonoBehaviour
                 audio.PlayOneShot(Crowd2);
                 audio.PlayOneShot(Crowdyell1, 0.8f);
 
-                yield return new WaitForSeconds(2.5f);
+                yield return new WaitForSeconds(2.0f);
                 JimCommentary();
 
             }
@@ -136,7 +173,7 @@ public class SoundManager : MonoBehaviour
                 audio.PlayOneShot(Crowd3);
                 audio.PlayOneShot(Crowdyell2, 0.8f);
 
-                yield return new WaitForSeconds(3.0f);
+                yield return new WaitForSeconds(1.5f);
                 JimCommentary();
 
             }
@@ -223,7 +260,7 @@ public class SoundManager : MonoBehaviour
     private void HitSoundNoCommentary()
     {
         int r = lastRandomNumber;
-        newRandomNumber = Random.Range(1, 13);
+        newRandomNumber = Random.Range(1, 8);
         PlayCrowd();
         if (newRandomNumber != lastRandomNumber)
         {
@@ -257,25 +294,9 @@ public class SoundManager : MonoBehaviour
             {
                 audio.PlayOneShot(hit7);
             }
-            else if (r == 8)
-            {
-                audio.PlayOneShot(hit8);
-            }
-            else if (r == 9)
-            {
-                audio.PlayOneShot(hit9);
-            }
-            else if (r == 10)
-            {
-                audio.PlayOneShot(hit10);
-            }
-            else if (r == 11)
-            {
-                audio.PlayOneShot(hit11);
-            }
             else
             {
-                audio.PlayOneShot(hit12);
+                audio.PlayOneShot(hit8);
             }
         }
         else
@@ -283,18 +304,65 @@ public class SoundManager : MonoBehaviour
             HitSound();
         }
     }
-
+    private void HitSoundNerdsNoCommentary()
+    {
+        int r = lastRandomNumber;
+        newRandomNumber = Random.Range(1, 8);
+        PlayCrowd();
+        if (newRandomNumber != lastRandomNumber)
+        {
+            r = newRandomNumber;
+            lastRandomNumber = newRandomNumber;
+            if (r == 1)
+            {
+                audio.PlayOneShot(hitNerd1);
+            }
+            else if (r == 2)
+            {
+                audio.PlayOneShot(hitNerd2);
+            }
+            else if (r == 3)
+            {
+                audio.PlayOneShot(hitNerd3);
+            }
+            else if (r == 4)
+            {
+                audio.PlayOneShot(hitNerd4);
+            }
+            else if (r == 5)
+            {
+                audio.PlayOneShot(hitNerd5);
+            }
+            else if (r == 6)
+            {
+                audio.PlayOneShot(hitNerd6);
+            }
+            else if (r == 7)
+            {
+                audio.PlayOneShot(hitNerd7);
+            }
+            else
+            {
+                audio.PlayOneShot(hitNerd8);
+            }
+        }
+        else
+        {
+            HitSoundNerds();
+        }
+    }
     public void HitSound()
     {
         int r = lastRandomNumber;
-        newRandomNumber = Random.Range(1, 13);
+        newRandomNumber = Random.Range(1, 8);
         if (newRandomNumber != lastRandomNumber)
         {
             if (cooldownTimer >= cooldown)
             {
                 StartCoroutine(KevinCommentary());
                 cooldownTimer = 0;
-            } else
+            }
+            else
             {
                 HitSoundNoCommentary();
                 return;
@@ -330,30 +398,73 @@ public class SoundManager : MonoBehaviour
             {
                 audio.PlayOneShot(hit7);
             }
-            else if (r == 8)
-            {
-                audio.PlayOneShot(hit8);
-            }
-            else if (r == 9)
-            {
-                audio.PlayOneShot(hit9);
-            }
-            else if (r == 10)
-            {
-                audio.PlayOneShot(hit10);
-            }
-            else if (r == 11)
-            {
-                audio.PlayOneShot(hit11);
-            }
             else
             {
-                audio.PlayOneShot(hit12);
+                audio.PlayOneShot(hit8);
             }
         }
         else
         {
             HitSound();
+        }
+
+
+    }
+    public void HitSoundNerds()
+    {
+        int r = lastRandomNumber;
+        newRandomNumber = Random.Range(1, 8);
+        if (newRandomNumber != lastRandomNumber)
+        {
+            if (cooldownTimer >= cooldown)
+            {
+                StartCoroutine(KevinCommentary());
+                cooldownTimer = 0;
+            }
+            else
+            {
+                HitSoundNerdsNoCommentary();
+                return;
+            }
+            r = newRandomNumber;
+            lastRandomNumber = newRandomNumber;
+            if (r == 1)
+            {
+                audio.PlayOneShot(hitNerd1);
+            }
+            else if (r == 2)
+            {
+                audio.PlayOneShot(hitNerd2);
+
+            }
+            else if (r == 3)
+            {
+                audio.PlayOneShot(hitNerd3);
+            }
+            else if (r == 4)
+            {
+                audio.PlayOneShot(hitNerd4);
+            }
+            else if (r == 5)
+            {
+                audio.PlayOneShot(hitNerd5);
+            }
+            else if (r == 6)
+            {
+                audio.PlayOneShot(hitNerd6);
+            }
+            else if (r == 7)
+            {
+                audio.PlayOneShot(hitNerd7);
+            }
+            else
+            {
+                audio.PlayOneShot(hitNerd8);
+            }
+        }
+        else
+        {
+            HitSoundNerds();
         }
 
 
@@ -395,5 +506,173 @@ public class SoundManager : MonoBehaviour
         audio.PlayOneShot(ballThrow1);
     }
 
+    public void PlayerHitSound()
+    {
+        int playerHitNumber = lastPlayerSound;
+        newPlayerSound = Random.Range(1, 4);
+        if (newPlayerSound != lastPlayerSound)
+        {
+            playerHitNumber = newPlayerSound;
+            lastPlayerSound = newPlayerSound;
+            if (playerHitNumber == 1)
+            {
+                audio.PlayOneShot(playerHit1, 0.5f);
+            }
+            else if (playerHitNumber == 2)
 
+            {
+                audio.PlayOneShot(playerHit2, 0.5f);
+
+            }
+            else if (playerHitNumber == 3)
+
+            {
+                audio.PlayOneShot(playerHit3, 0.5f);
+
+            }
+            else
+            {
+                audio.PlayOneShot(playerHit4, 0.5f);
+            }
+        }
+        else
+        {
+            StartCoroutine(KevinCommentary());
+        }
+    }
+
+
+    public void TooManyDashSound()
+    {
+        audio.PlayOneShot(KevinDash);
+        StartCoroutine(JimDashSound());
+    }
+
+    public IEnumerator JimDashSound()
+    {
+        yield return new WaitForSeconds(2.0f);
+        audio.PlayOneShot(JimDash);
+    }
+
+    public void StartWhistle()
+    {
+        audio.PlayOneShot(Whistle, 0.3f);
+        StartCoroutine(StartCommentary());
+    }
+
+    public IEnumerator StartCommentary()
+    {
+        int r = lastRandomStart;
+        newRandomStart = Random.Range(0,4);
+        if (newRandomStart != lastRandomStart)
+        {
+            yield return new WaitForSeconds(0.7f);
+            r = newRandomStart;
+            lastRandomStart = newRandomStart;
+            if (r >= 2)
+            {
+                audio.PlayOneShot(JimStart);
+            }
+            else
+            {
+                audio.PlayOneShot(KevinStart);
+
+            }
+        }
+        else
+        {
+            StartCoroutine(StartCommentary());
+        }
+    }
+
+    public void GameWinSound()
+    {
+        audio.PlayOneShot(WinJingle, 0.3f);
+        StartCoroutine(WinCommentary());
+
+    }
+
+    public IEnumerator WinCommentary()
+    {
+        yield return new WaitForSeconds(0.5f);
+        int RandomWin = Random.Range(1, 2);
+        if(RandomWin == 1)
+        {
+            audio.PlayOneShot(KevinWin1);
+            audio.PlayOneShot(JimWin1);
+        }
+        else
+        {
+            audio.PlayOneShot(KevinWin2);
+            audio.PlayOneShot(JimWin2);
+        }
+
+
+    }
+    public void GameLoseSound()
+    {
+        audio.PlayOneShot(LoseJingle, 0.3f);
+        StartCoroutine(LoseCommentary());
+
+    }
+
+    public IEnumerator LoseCommentary()
+    {
+        yield return new WaitForSeconds(0.5f);
+        audio.PlayOneShot(KevinLose);
+        yield return new WaitForSeconds(6.0f);
+        audio.PlayOneShot(JimLose);
+
+
+    }
+
+    public void ParrySound()
+    {
+        int randomParrySound = Random.Range(0, 2);
+        if (randomParrySound == 0)
+        {
+            audio.PlayOneShot(playerParry1, 0.5f);
+        }
+        else if (randomParrySound == 1)
+        {
+            audio.PlayOneShot(playerParry2, 0.5f);
+        }
+        else
+        {
+            audio.PlayOneShot(playerParry3, 0.5f);
+
+        }
+
+
+    }
+
+    public void IdleCommentary()
+    {
+        int randomIdle = lastRandomIdle;
+        int newRandomIdle = Random.Range(0,1);
+        if (newRandomNumber != lastRandomIdle)
+        {
+
+            if (randomIdle == 0)
+            {
+                audio.PlayOneShot(Idle1);
+                newRandomIdle = lastRandomIdle;
+            }
+            else
+            {
+                audio.PlayOneShot(Idle2);
+                newRandomIdle = lastRandomIdle;
+
+            }
+        }
+        else
+        {
+            IdleCommentary();
+        }
+    }
+
+    public void PoweredUpSound()
+    {
+        audio.PlayOneShot(poweredUp);
+    }
 }

@@ -1591,10 +1591,14 @@ MonoBehaviour:
   hit6: {fileID: 8300000, guid: 957cca5f6aff2634f801f0175f62314d, type: 3}
   hit7: {fileID: 8300000, guid: 47819e2c33dd55a47bbce3dab5442a53, type: 3}
   hit8: {fileID: 8300000, guid: 69f623fdc1181ad49ad0bcc224af959b, type: 3}
-  hit9: {fileID: 8300000, guid: 9d9f3b28e3d1f984196a63e5de1dc796, type: 3}
-  hit10: {fileID: 8300000, guid: 178d1ed0274389049a8ab90c6db00042, type: 3}
-  hit11: {fileID: 8300000, guid: 7c4038cb209ee5d4bb34c67422976216, type: 3}
-  hit12: {fileID: 8300000, guid: de362b49f9cf5334896248a07757c62e, type: 3}
+  hitNerd1: {fileID: 8300000, guid: af6a0ac34fcb69d49a6765c77a3304b3, type: 3}
+  hitNerd2: {fileID: 8300000, guid: 4937cf8b5e1f2384a856d2d98686d02e, type: 3}
+  hitNerd3: {fileID: 8300000, guid: ed60784ad2b496d4aa66a025149e8525, type: 3}
+  hitNerd4: {fileID: 8300000, guid: 6902a5a34477227439f0e4524ee0717b, type: 3}
+  hitNerd5: {fileID: 8300000, guid: f31bd8fd007b37143bcf185b6e250e23, type: 3}
+  hitNerd6: {fileID: 8300000, guid: d0c5843a3be61ba409c60ae75cb03be9, type: 3}
+  hitNerd7: {fileID: 8300000, guid: 83fc2ca6d930b114ea0adfc28a403bab, type: 3}
+  hitNerd8: {fileID: 8300000, guid: 3b9018aa072b33b41b3369be7af17395, type: 3}
   wallHit1: {fileID: 8300000, guid: 5fbbbf36d110dc14caab48b11ba643d8, type: 3}
   wallHit2: {fileID: 8300000, guid: 5687496308d1c69459608d4d3c3ac1bb, type: 3}
   wallHit3: {fileID: 8300000, guid: 3475e245cb87e1542a843e135b712efb, type: 3}
@@ -1608,10 +1612,8 @@ MonoBehaviour:
   Jim2: {fileID: 8300000, guid: 00acb487091aec443a1170abbc03457b, type: 3}
   Jim3: {fileID: 8300000, guid: 56407c7eef34a39479d70ad71408d00f, type: 3}
   Jim4: {fileID: 8300000, guid: bc5dba6361594ad4faaa035d1fc7ee6f, type: 3}
-  KevinIdle: {fileID: 8300000, guid: e59f17bd5acb4ce44b2fbda76542a140, type: 3}
-  JimIdle: {fileID: 8300000, guid: 86db0370011e89f43bee8f2a3683398d, type: 3}
-  KevinWin: {fileID: 8300000, guid: 43d0635be79f8924886acd4f9354b69e, type: 3}
-  JimWin: {fileID: 8300000, guid: f58aaad8d5108b748ac5d73e46185a9b, type: 3}
+  Idle1: {fileID: 8300000, guid: 39d554c2cdc5946438a6909742142e08, type: 3}
+  Idle2: {fileID: 8300000, guid: f009116caa97b1644b00fe3ddd7b8e36, type: 3}
   CrowdWin1: {fileID: 8300000, guid: f84cb1121be544144a056b91a28721da, type: 3}
   CrowdWin2: {fileID: 8300000, guid: c3f584bef01c3bb489b24ffbcf129258, type: 3}
   Crowdyell1: {fileID: 8300000, guid: 8198942799d7db54c956d5e25a2efede, type: 3}
@@ -1620,6 +1622,30 @@ MonoBehaviour:
   Crowd2: {fileID: 8300000, guid: b596cddea46e65541a464120f3946c74, type: 3}
   Crowd3: {fileID: 8300000, guid: 5405adc37ef25e843b675cc0ef35d3aa, type: 3}
   Crowd4: {fileID: 8300000, guid: a47b9eb2b84bbca478af8a57e0d01f46, type: 3}
+  playerHit1: {fileID: 8300000, guid: cd411c23a3e002643b2e1ebe02c8431a, type: 3}
+  playerHit2: {fileID: 8300000, guid: 1c87a0ba2504cee43a2193e02a21ee02, type: 3}
+  playerHit3: {fileID: 8300000, guid: b044b775c31204a498df34b3d7ea6103, type: 3}
+  playerHit4: {fileID: 8300000, guid: 3526d218019ab754b8e5547256f005e7, type: 3}
+  playerParry1: {fileID: 8300000, guid: f75ff56686bf96745836491481b02d7e, type: 3}
+  playerParry2: {fileID: 8300000, guid: 1d2a649dd8fca6f4ba40dfa984992332, type: 3}
+  playerParry3: {fileID: 8300000, guid: 63bdcc75292d5494fad4964822cb98cc, type: 3}
+  poweredUp: {fileID: 8300000, guid: f8d2294b844e3724aafb4c7b957b5217, type: 3}
+  KevinDash: {fileID: 8300000, guid: bc76029a610328549b9d7a2f93101689, type: 3}
+  JimDash: {fileID: 8300000, guid: b03184ce3c57b934d9ec256e75ae4361, type: 3}
+  KevinWin1: {fileID: 8300000, guid: d41c4765caa9c5a499b25c59c8769047, type: 3}
+  KevinWin2: {fileID: 8300000, guid: 9669ec7893f8ce54fab9a46f25b42dcc, type: 3}
+  JimWin1: {fileID: 8300000, guid: f58aaad8d5108b748ac5d73e46185a9b, type: 3}
+  JimWin2: {fileID: 8300000, guid: 090b30b38eb05694fa2c7822a630a0ec, type: 3}
+  KevinLose: {fileID: 8300000, guid: 2468acbf8af03e645b3a3b95c185c552, type: 3}
+  JimLose: {fileID: 8300000, guid: eb3cc5265272aec4b94a433e12c28257, type: 3}
+  KevinIntro1: {fileID: 8300000, guid: 74b175ed1b436274ea04c204a6deb360, type: 3}
+  KevinIntro2: {fileID: 8300000, guid: 5ff70a91d227ca0488c9b249e36e21ac, type: 3}
+  JimIntro1: {fileID: 8300000, guid: dd7b98812305ce6439cdcff21acd1bbc, type: 3}
+  JimStart: {fileID: 8300000, guid: 00f0fe4272269114cab4c445197f16dc, type: 3}
+  KevinStart: {fileID: 8300000, guid: a2e4aa690c7dbb64da2118ede367fc3a, type: 3}
+  WinJingle: {fileID: 8300000, guid: 1143257514149834c972785d873d6443, type: 3}
+  Whistle: {fileID: 8300000, guid: b2a9f9995fcf58d429044a6d188b1edf, type: 3}
+  LoseJingle: {fileID: 8300000, guid: 1143257514149834c972785d873d6443, type: 3}
   ballThrow1: {fileID: 8300000, guid: 9fc7f11166e79b246af9e2201bf66565, type: 3}
   dodge: {fileID: 8300000, guid: e5e43028086e9f941baefa7e5b35f406, type: 3}
   bgm: {fileID: 1379000829}
@@ -1654,7 +1680,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
