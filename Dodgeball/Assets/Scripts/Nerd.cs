@@ -38,4 +38,12 @@ public class Nerd : Enemy
         float missY = Random.Range(player.transform.position.y - missRangeY, player.transform.position.y + missRangeY);
         return new Vector3(missX, missY, 0);
     }
+
+    protected override void OnHitSound()
+    {
+        throw new System.NotImplementedException();
+        {
+            //TODO: call nerd hit sound here
+        }
+    }
 }
