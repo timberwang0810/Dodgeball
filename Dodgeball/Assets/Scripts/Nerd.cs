@@ -10,16 +10,24 @@ public class Nerd : Enemy
     protected override void Throw()
     {
         gameObject.GetComponent<Animator>().SetTrigger("throw");
-        GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.identity);
+        
+        Vector3 badPlayerPos = nerdRandomMiss();
+
+        Vector2 dir = badPlayerPos - transform.position;
+
+        float ballAngle = getBallRotation(badPlayerPos);
+        GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.Euler(new Vector3(0f, 0f, ballAngle)));
         ball.GetComponent<TrailRenderer>().enabled = false;
         ball.tag = "EnemyBall";
         ball.layer = 9;
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
         ball.GetComponent<ParticleSystem>().Stop();
-        
-        Vector3 badPlayerPos = nerdRandomMiss();
+        if ((ballAngle > 90 && ballAngle <= 180) || (ballAngle < -90 && ballAngle >= -180))
+        {
+            ball.GetComponent<SpriteRenderer>().flipX = false;
+            ball.GetComponent<SpriteRenderer>().flipY = true;
+        }
 
-        Vector2 dir = badPlayerPos - transform.position;
         dir.Normalize();
         b.velocity = dir * throwSpeed;
     }
