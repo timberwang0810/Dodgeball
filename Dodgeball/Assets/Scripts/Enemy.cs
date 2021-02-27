@@ -37,6 +37,7 @@ public abstract class Enemy : MonoBehaviour
 
     private bool throwing = false;
     private bool onCourt;
+    private bool died = false;
 
     private void Start()
     {
@@ -87,11 +88,12 @@ public abstract class Enemy : MonoBehaviour
             throwing = false;
             GameManager.S.OnScoreAdded(score);
             GameManager.S.OnEnemyDestroyed();
-            rb.constraints = RigidbodyConstraints2D.None;
-            rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
-
+            rb.velocity = new Vector2(0, 0);
+            animator.SetTrigger("die");
+            GetComponent<SpriteRenderer>().flipX = false;
             //change this later
-            Destroy(this.gameObject);
+            died = true;
+            Destroy(this.gameObject, 1);
 
             Destroy(collision.gameObject);
         }
@@ -104,6 +106,17 @@ public abstract class Enemy : MonoBehaviour
     }
 
     protected abstract void Throw();
+
+    protected float getBallRotation(Vector3 position2)
+    {
+        Vector2 position1 = transform.position;
+        return AngleBetweenTwoPoints(position1, position2);
+    }
+
+    private float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
+    {
+        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+    }
 
     private void Roam()
     {
@@ -140,6 +153,7 @@ public abstract class Enemy : MonoBehaviour
                 return;
             }
         }
+        if (died) return;
 
         if (directionChangeTimer >= timeBetweenDirectionChange)
         {

@@ -201,7 +201,7 @@ public class GameManager : MonoBehaviour
     {
         hype = 0;
         gameState = GameState.oops;
-        ResetPowerUp();
+        ResetPowerUp(true);
         if (LevelManager.S.currLevel >= maxLevel)
         {
             GameWon();
@@ -224,7 +224,7 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.oops) return;
         gameState = GameState.oops;
-        ResetPowerUp();
+        ResetPowerUp(false);
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
         hype = 0;
@@ -337,15 +337,15 @@ public class GameManager : MonoBehaviour
         currentPlayer.GetComponent<ParticleSystem>().Play();
         currentPlayer.GetComponent<Animator>().SetBool("holding", true);
         yield return new WaitForSeconds(buffDuration);
-        ResetPowerUp();
+        ResetPowerUp(true);
     }
 
-    private void ResetPowerUp()
+    private void ResetPowerUp(bool reset)
     {
         currentPlayer.GetComponent<Animator>().SetBool("holding", false);
         currentPlayer.GetComponent<ParticleSystem>().Stop();
         powerFilled = false;
-        powerUpBarFill.fillAmount = 0;
+        if (reset) powerUpBarFill.fillAmount = 0;
         powerUpTimer = 0;
     }
 }
