@@ -258,6 +258,7 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.oops) return;
         gameState = GameState.oops;
+        StopAllCoroutines();
         ResetPowerUp(false);
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
