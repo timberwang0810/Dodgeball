@@ -239,7 +239,7 @@ MonoBehaviour:
   powerUpBarCanvas: {fileID: 2093892534}
   powerUpBarFire: {fileID: 843822535}
   parryPowerUp: 0.1
-  hitPowerUp: 0.88
+  hitPowerUp: 0.25
   buffDuration: 10
   timeBetweenBallSpawn: 5
   powerUpDecrementRate: 0.0002
@@ -874,7 +874,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000015258789}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1026359278
@@ -2744,7 +2744,7 @@ MonoBehaviour:
   enemySpawner: {fileID: 2032930303}
   maxEnemies:
   - enemyPrefab: {fileID: 3408741559225374891, guid: 4479e88a15590fe43b06d67bf014ade0, type: 3}
-    enemyCount: 10
+    enemyCount: 40
 --- !u!4 &1970034123
 Transform:
   m_ObjectHideFlags: 0
