@@ -452,12 +452,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 0
   ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
+  cinematic: {fileID: 0}
   statusText: {fileID: 1207682432}
   scoreText: {fileID: 103921798}
   endText: {fileID: 0}
   pausePanel: {fileID: 804166645}
   gameOverPanel: {fileID: 0}
   powerUpBarFill: {fileID: 0}
+  powerUpBarCanvas: {fileID: 0}
   powerUpBarFire: {fileID: 0}
   parryPowerUp: 0
   hitPowerUp: 0
@@ -465,6 +467,7 @@ MonoBehaviour:
   timeBetweenBallSpawn: 5
   powerUpDecrementRate: 0
   progressBarFill: {fileID: 0}
+  progressBarCanvas: {fileID: 0}
   maxLevel: 0
   lives: 3
   getReadyTime: 3
@@ -718,7 +721,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 35.00977, y: 60.000004}
+    oldSize: {x: 35.3634, y: 60.60606}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -744,7 +747,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 35.00977, y: 60.000004}
+    oldSize: {x: 35.3634, y: 60.60606}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -770,7 +773,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 35.00977, y: 60.000004}
+    oldSize: {x: 35.3634, y: 60.60606}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -796,7 +799,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 35.00977, y: 60.000004}
+    oldSize: {x: 35.3634, y: 60.60606}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -864,8 +867,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315258237}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.4, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1.01, z: 1}
   m_Children:
   - {fileID: 1775799825}
   m_Father: {fileID: 0}
