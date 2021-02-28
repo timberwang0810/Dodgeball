@@ -142,6 +142,9 @@ public abstract class Enemy : MonoBehaviour
             } else
             {
                 // just keep running
+                Debug.Log("Enemy " + gameObject.name + " is running in");
+                //RunEntrance();
+                return;
             }
 
         } else
