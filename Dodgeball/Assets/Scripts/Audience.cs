@@ -20,8 +20,12 @@ public class Audience : MonoBehaviour
 
     public void cheer()
     {
-        // play big sound here
-        Debug.Log("called cheer");
+        // play big sound here?
         animator.SetTrigger("cheer");
+    }
+
+    public void resetCheer()
+    {
+        animator.ResetTrigger("cheer");
     }
 }

@@ -236,6 +236,7 @@ public class GameManager : MonoBehaviour
     private void RoundWon()
     {
         hype = 0;
+        audience.GetComponent<Audience>().resetCheer();
         gameState = GameState.oops;
         ResetPowerUp(true);
         if (LevelManager.S.currLevel >= maxLevel)
@@ -266,6 +267,8 @@ public class GameManager : MonoBehaviour
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
         hype = 0;
+        audience.GetComponent<Audience>().resetCheer();
+
         if (lives > 0)
         {
             StartCoroutine(betweenRoundsLost());
@@ -362,7 +365,7 @@ public class GameManager : MonoBehaviour
         powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount + increment, 0, 1);
         if (powerUpBarFill.fillAmount >= 1)
         {
-
+            if (!powerFilled) SoundManager.S.PoweredUpSound();
             StartCoroutine(Buffed());
         }
     }
