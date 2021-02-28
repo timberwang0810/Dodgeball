@@ -220,7 +220,7 @@ public class GameManager : MonoBehaviour
             enemyPrefab = maxEnemies.ElementAt(Random.Range(0, maxEnemies.Count())).Key;
         }
         // TODO: Instantiate enemy at spawn location
-        Instantiate(enemyPrefab, new Vector3(LevelManager.S.enemySpawner.transform.position.x, Random.Range(-15, 15), 0), Quaternion.identity);
+        Instantiate(enemyPrefab, new Vector3(LevelManager.S.enemySpawner.transform.position.x, Random.Range(-13, 13), 0), Quaternion.identity);
         currEnemies[enemyPrefab.name] += 1;
         numEnemies++;
         numEnemiesOnCourt++;
