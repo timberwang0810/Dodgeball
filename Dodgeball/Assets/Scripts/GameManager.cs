@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [Header("Power Bar")]
     public Image powerUpBarFill;
     public GameObject powerUpBarCanvas;
+    public Image powerUpBarFire;
     [Range(0,1)]
     public float parryPowerUp;
     [Range(0, 1)]
@@ -169,6 +170,7 @@ public class GameManager : MonoBehaviour
         hype = 0;
         powerUpTimer = 0;
         powerUpBarFill.fillAmount /= 2;
+        powerUpBarFire.enabled = false;
         powerFilled = false;
 
         StartCoroutine(GetReady());
@@ -350,7 +352,7 @@ public class GameManager : MonoBehaviour
     {
         return powerFilled;
     }
-
+    
     private void IncreasePower(float increment)
     {
         powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount + increment, 0, 1);
@@ -369,6 +371,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator Buffed()
     {
         powerFilled = true;
+        powerUpBarFire.enabled = true;
         currentPlayer.GetComponent<ParticleSystem>().Play();
         currentPlayer.GetComponent<Animator>().SetBool("holding", true);
         yield return new WaitForSeconds(buffDuration);
@@ -380,6 +383,7 @@ public class GameManager : MonoBehaviour
         currentPlayer.GetComponent<Animator>().SetBool("holding", false);
         currentPlayer.GetComponent<ParticleSystem>().Stop();
         powerFilled = false;
+        powerUpBarFire.enabled = false;
         if (reset) powerUpBarFill.fillAmount = 0;
         powerUpTimer = 0;
     }
