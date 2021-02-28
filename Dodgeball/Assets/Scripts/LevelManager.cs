@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
     {
         if (GameManager.S)
         {
-            GameManager.S.StartNewGame();
+            GameManager.S.StartNewGameWrapper();
         }
     }
 

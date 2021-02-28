@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     public GameObject ballPrefab;
     private GameObject currentPlayer;
 
+    public GameObject cinematic;
+    private bool seenCinematic = false;
+
     // UI Variables
     [Header("Basic UI Variables")]
     public TextMeshProUGUI statusText;
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Power Bar")]
     public Image powerUpBarFill;
+    public GameObject powerUpBarCanvas;
     public Image powerUpBarFire;
     [Range(0,1)]
     public float parryPowerUp;
@@ -89,7 +93,6 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         pausePanel.SetActive(false);
         scoreText.text = "Score: " + 0;
-
         Time.timeScale = 1;
     }
 
@@ -115,8 +118,21 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void StartNewGameWrapper()
+    {
+        if (seenCinematic)
+        {
+            StartNewGame();
+        } else
+        {
+            StartCoroutine(showCinematic());
+            seenCinematic = true;
+        }
+    }
+
     public void StartNewGame()
     {
+
         currentPlayer = GameObject.FindGameObjectWithTag("Player");
         spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
@@ -133,6 +149,20 @@ public class GameManager : MonoBehaviour
         }
         totalNumEnemies = numEnemiesToSpawn;
         ResetLevel();
+    }
+
+    private IEnumerator showCinematic()
+    {
+        cinematic.SetActive(true);
+        scoreText.enabled = false;
+        powerUpBarCanvas.SetActive(false);
+        statusText.enabled = false;
+        yield return new WaitForSeconds(3);
+        cinematic.SetActive(false);
+        scoreText.enabled = true;
+        powerUpBarCanvas.SetActive(true);
+        statusText.enabled = true;
+        StartNewGame();
     }
 
     private void ResetLevel()
@@ -235,6 +265,7 @@ public class GameManager : MonoBehaviour
         if (lives > 0)
         {
             StartCoroutine(betweenRoundsLost());
+            SoundManager.S.PlayerHitSound();
         }
         else
         {
@@ -249,6 +280,7 @@ public class GameManager : MonoBehaviour
     {
         statusText.text = LevelManager.S.currLevelName + " Complete!";
         statusText.enabled = true;
+        currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         yield return new WaitForSeconds(3);
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = true;
         RoundWon();
@@ -286,7 +318,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Enemies remaining:" + numEnemies + "; on floor: " + numEnemiesOnCourt);
         if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
         {
-            currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
             StartCoroutine(betweenRoundsWon());
         }
     }

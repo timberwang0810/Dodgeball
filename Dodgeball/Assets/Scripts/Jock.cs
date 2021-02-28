@@ -23,6 +23,6 @@ public class Jock : Enemy
 
     protected override void OnHitSound()
     {
-        //TODO: call to jock hit sound
+        SoundManager.S.HitSound();
     }
 }
