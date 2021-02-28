@@ -41,9 +41,6 @@ public class Nerd : Enemy
 
     protected override void OnHitSound()
     {
-        throw new System.NotImplementedException();
-        {
-            //TODO: call nerd hit sound here
-        }
+        SoundManager.S.HitSoundNerds();
     }
 }
