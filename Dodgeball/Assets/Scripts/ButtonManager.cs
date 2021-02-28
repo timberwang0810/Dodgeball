@@ -17,7 +17,7 @@ public class ButtonManager : MonoBehaviour
         {
             Destroy(GameManager.S.gameObject);
         }
-        StartCoroutine(StartTheGame());
+        SceneManager.LoadScene("Level1");
         Destroy(this.gameObject, 1.0f);
     }
     public IEnumerator StartTheGame()
@@ -28,7 +28,7 @@ public class ButtonManager : MonoBehaviour
 
     public void btn_Instructions()
     {
-        StartCoroutine(Instructions());
+        SceneManager.LoadScene("Instructions");
         Destroy(this.gameObject, 1.0f);
     }
     public IEnumerator Instructions()
@@ -40,7 +40,7 @@ public class ButtonManager : MonoBehaviour
     public void btn_Credits()
     {
         Time.timeScale = 1;
-        StartCoroutine(Credits());
+        SceneManager.LoadScene("Credits");
         Destroy(this.gameObject, 1.0f);
     }
     public IEnumerator Credits()
@@ -52,7 +52,7 @@ public class ButtonManager : MonoBehaviour
     public void btn_QuitGame()
     {
         Time.timeScale = 1;
-        StartCoroutine(Quit());
+        Application.Quit();
         Destroy(this.gameObject, 1.0f);
     }
     public IEnumerator Quit()
@@ -68,7 +68,7 @@ public class ButtonManager : MonoBehaviour
         {
             Destroy(GameManager.S.gameObject);
         }
-        StartCoroutine(Back());
+        SceneManager.LoadScene("Title");
         Destroy(this.gameObject, 1.0f);
     }
     public IEnumerator Back()

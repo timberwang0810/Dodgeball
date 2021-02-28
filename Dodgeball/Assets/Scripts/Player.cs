@@ -140,11 +140,6 @@ public class Player : MonoBehaviour
                 animator.SetTrigger("hit");
                 mySpriteRenderer.flipX = false;
                 GetComponent<BoxCollider2D>().offset = new Vector2(2.98f, 0);
-                if (GameManager.S.gameState != GameManager.GameState.oops)
-                {
-                    Debug.Log("making sound");
-                    SoundManager.S.PlayerHitSound();
-                }
                 GameManager.S.playerDied();
                 animator.SetBool("holding", false);
                 animator.SetBool("running", false);
@@ -156,6 +151,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "EnemyBall") //parry
         {
+            animator.SetTrigger("parried");
             Destroy(collision.gameObject);
             SoundManager.S.WallHitSound();
             holding = true;             

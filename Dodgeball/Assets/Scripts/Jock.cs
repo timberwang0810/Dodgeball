@@ -23,10 +23,6 @@ public class Jock : Enemy
 
     protected override void OnHitSound()
     {
-        throw new System.NotImplementedException();
-        {
-            throw new System.NotImplementedException();
-            //TODO: Replace above statement with call to jock hit sound
-        }
+        SoundManager.S.HitSound();
     }
 }
