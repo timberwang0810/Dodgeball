@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Progress Bar")]
     public Image progressBarFill;
+    public GameObject progressBarCanvas;
 
     [Header("Game Variables")]
     public int maxLevel;
@@ -156,11 +157,13 @@ public class GameManager : MonoBehaviour
         cinematic.SetActive(true);
         scoreText.enabled = false;
         powerUpBarCanvas.SetActive(false);
+        progressBarCanvas.SetActive(false);
         statusText.enabled = false;
         yield return new WaitForSeconds(3);
         cinematic.SetActive(false);
         scoreText.enabled = true;
         powerUpBarCanvas.SetActive(true);
+        progressBarCanvas.SetActive(true);
         statusText.enabled = true;
         StartNewGame();
     }
@@ -258,6 +261,7 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.oops) return;
         gameState = GameState.oops;
+        StopAllCoroutines();
         ResetPowerUp(false);
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;

@@ -244,6 +244,7 @@ MonoBehaviour:
   timeBetweenBallSpawn: 5
   powerUpDecrementRate: 0.0002
   progressBarFill: {fileID: 1378084}
+  progressBarCanvas: {fileID: 1630416391}
   maxLevel: 3
   lives: 3
   getReadyTime: 3
