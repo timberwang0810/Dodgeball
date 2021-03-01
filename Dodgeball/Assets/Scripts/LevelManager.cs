@@ -10,7 +10,6 @@ public class LevelManager : MonoBehaviour
     public string currLevelName;
     public GameObject border;
     public GameObject enemySpawner;
-
     public GameManager.EnemyCountPair[] maxEnemies;
 
     private void Awake()

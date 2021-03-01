@@ -13,8 +13,6 @@ public class Player : MonoBehaviour
     private ParticleSystem particles;
     private SpriteRenderer mySpriteRenderer;
 
-    private float idleTimer;
-
     private bool iframes = false;
 
     // Start is called before the first frame update
@@ -25,9 +23,6 @@ public class Player : MonoBehaviour
         particles = GetComponent<ParticleSystem>();
         particles.Stop();
         mySpriteRenderer = GetComponent<SpriteRenderer>();
-
-        idleTimer = 15.0f;
-
     }
 
     // Update is called once per frame
@@ -35,10 +30,10 @@ public class Player : MonoBehaviour
     {
         if (GameManager.S.gameState != GameManager.GameState.playing)
         {
-            //Debug.Log("cant play");
             return;
         }
 
+        // Throw a ball if it has a ball or is buffed (and left mouse is pressed)
         if (Input.GetMouseButtonDown(0) && (holding || IsBuffed()))
         {
             Throw();
@@ -49,6 +44,7 @@ public class Player : MonoBehaviour
             }
         }
 
+        // Parry if space is pressed
         if (Input.GetKeyDown("space"))
         {
             animator.SetTrigger("parry");
@@ -58,6 +54,7 @@ public class Player : MonoBehaviour
 
     }
 
+    // Parry frames sequence
     private IEnumerator parryFrames()
     {
         iframes = true;
@@ -65,6 +62,7 @@ public class Player : MonoBehaviour
         iframes = false;
     }
 
+    // Throw mechanics
     private void Throw()
     {
         animator.SetTrigger("throw");
@@ -73,7 +71,6 @@ public class Player : MonoBehaviour
         mousePos.z = 0;
         Vector2 dir = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
         dir.Normalize();
-        //Debug.Log(dir);
 
         float ballAngle = getBallRotation(Input.mousePosition);
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.Euler(new Vector3(0f, 0f, ballAngle)));
@@ -83,11 +80,12 @@ public class Player : MonoBehaviour
             ball.GetComponent<SpriteRenderer>().flipY = true;
         }
 
-        idleTimer = 15.0f;
         SoundManager.S.ThrowSound();
         ball.tag = "PlayerBall";
         ball.layer = 8; // player layer
         Rigidbody2D b = ball.GetComponent<Rigidbody2D>();
+
+        // Extra effects for buffed throw
         if (IsBuffed())
         {
             ball.GetComponent<ParticleSystem>().Play();
@@ -100,6 +98,7 @@ public class Player : MonoBehaviour
             b.velocity = dir * throwSpeed;
         }
 
+        // Sprite flipping
         if (dir.x <= 0)
         {
             mySpriteRenderer.flipX = true;
@@ -113,13 +112,15 @@ public class Player : MonoBehaviour
 
     }
 
+    // Get the rotation of the ball
     private float getBallRotation(Vector3 mousePos)
     {
         Vector2 position1 = transform.position;
-        Vector2 position2 = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 position2 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         return AngleBetweenTwoPoints(position1, position2);
     }
 
+    // Helper to determine the angle between two points
     private float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
     {
         return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
@@ -127,10 +128,9 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        // Dies if hit by enemy ball
         if (collision.gameObject.tag == "EnemyBall")
         {
-            //this.transform.DetachChildren();
             Destroy(collision.gameObject);
             if (!iframes)
             {
@@ -162,6 +162,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Helper to determine if player is buffed
     private bool IsBuffed()
     {
         return GameManager.S.isPowerFilled();

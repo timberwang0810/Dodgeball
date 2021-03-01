@@ -4,8 +4,10 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
+    // Move State
     public enum MoveState { moving, idle };
 
+    [Header("Enemy Attributes")]
     public GameObject ballPrefab;
     public float HP;
     public float damage;
@@ -18,6 +20,7 @@ public abstract class Enemy : MonoBehaviour
     private bool ready = false;
     private float attackTimer;
 
+    [Header("Enemy Movement Animation")]
     public float moveTime;
     public float idleTime;
     public float moveTimer;
@@ -41,7 +44,6 @@ public abstract class Enemy : MonoBehaviour
 
     private void Start()
     {
-        //GetReady();
         animator = GetComponent<Animator>();
         animator.SetBool("moving", true);
         attackTimer = timeBetweenAttacks;
@@ -60,6 +62,7 @@ public abstract class Enemy : MonoBehaviour
         StartCoroutine(ReadyDelay());
     }
 
+    // Delay sequence upon enemy entering the court
     private IEnumerator ReadyDelay()
     {
         //Debug.Log("getting ready");
@@ -67,11 +70,13 @@ public abstract class Enemy : MonoBehaviour
         ready = true;
     }
 
+    // Start attack function
     private void StartAttack()
     {
         StartCoroutine(Attack());
     }
 
+    // Attack Sequence
     private IEnumerator Attack()
     {
         Throw();
@@ -79,10 +84,12 @@ public abstract class Enemy : MonoBehaviour
         StartAttack();
     }
 
+    // Sound played when the enemy is hit
     protected abstract void OnHitSound();
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        // Dies if hit by player ball
         if (collision.gameObject.tag == "PlayerBall")
         {
             SoundManager.S.HitSound();
@@ -97,10 +104,9 @@ public abstract class Enemy : MonoBehaviour
             //change this later
             died = true;
             Destroy(this.gameObject, 1);
-
             Destroy(collision.gameObject);
         }
-
+        // Move in a new direction if hit a wall or enemy
         else if (collision.gameObject.tag == "Walls" || collision.gameObject.tag == "Enemy")
         {
             //Debug.Log("Hit Wall");
@@ -108,19 +114,23 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    // Throw mechanics
     protected abstract void Throw();
 
+    // Get the rotation of the ball
     protected float getBallRotation(Vector3 position2)
     {
         Vector2 position1 = transform.position;
         return AngleBetweenTwoPoints(position1, position2);
     }
 
+    // Helper to determine the angle between two points
     private float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
     {
         return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
     }
 
+    // Roaming function (automatic movement)
     private void Roam()
     {
         gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(speed * currentDirection.x, speed * currentDirection.y);
@@ -129,9 +139,9 @@ public abstract class Enemy : MonoBehaviour
 
     void Update()
     {
+        // Pause enemy if on-court or keep enemy running if off-court
         if (GameManager.S.gameState != GameManager.GameState.playing)
         {
-            //Debug.Log("cant play");
             if (onCourt)
             {
                 ready = false;
@@ -147,7 +157,9 @@ public abstract class Enemy : MonoBehaviour
                 return;
             }
 
-        } else
+        }
+        // Get ready to attack if on-court or keep enemy running if off-court
+        else
         {
             if (onCourt)
             {
@@ -159,15 +171,13 @@ public abstract class Enemy : MonoBehaviour
                 return;
             }
         }
+
         if (died) return;
 
-        if (directionChangeTimer >= timeBetweenDirectionChange)
-        {
-            GenerateRandomDirection();
-        }
-
+     
         if (!throwing)
         {
+            // After a certain time, generate a new random direction to go towards
             if (directionChangeTimer >= timeBetweenDirectionChange)
             {
                 GenerateRandomDirection();
@@ -216,6 +226,7 @@ public abstract class Enemy : MonoBehaviour
         {
             directionChangeTimer += Time.deltaTime;
 
+            // Attack the player after a certain time
             if (attackTimer >= timeBetweenAttacks)
             {
                 animator.SetBool("moving", false);
@@ -230,6 +241,7 @@ public abstract class Enemy : MonoBehaviour
 
     }
 
+    // Throwing sequence
     private IEnumerator throwFreezePos()
     {
         throwing = true;
@@ -238,6 +250,7 @@ public abstract class Enemy : MonoBehaviour
         throwing = false;
     }
 
+    // Helper to generate a random direction
     private void GenerateRandomDirection()
     {
         currentDirection.x = Random.Range(-1.0f, 1.0f);
@@ -246,12 +259,14 @@ public abstract class Enemy : MonoBehaviour
         directionChangeTimer = 0;
     }
 
+    // Spawned enemy run in from entrance into the court
     // Assume enemies enter from right side
     private void RunEntrance()
     {
         gameObject.GetComponent<Rigidbody2D>().velocity = speed * Vector2.left;
     }
 
+    // After enemy exit enemy entrance, it activates its roam and attack mechanics
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "EnemyEntrance")
@@ -261,6 +276,7 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    // Helper to flip the sprite
     private void flipSprite()
     {
         float facing = (transform.position.x - previous) / Time.deltaTime;

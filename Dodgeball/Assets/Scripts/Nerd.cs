@@ -32,6 +32,7 @@ public class Nerd : Enemy
         b.velocity = dir * throwSpeed;
     }
 
+    // Helper to add a handicap to nerd enemy type
     private Vector3 nerdRandomMiss()
     {
         float missX = Random.Range(player.transform.position.x - missRangeX, player.transform.position.x + missRangeX);

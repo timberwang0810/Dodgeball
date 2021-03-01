@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
 
     private float dodgeTimer;
-    private bool facingLeft;
     private SpriteRenderer mySpriteRenderer;
     private Animator animator;
 
@@ -22,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         dodgeTimer = dodgeCooldown;
-        facingLeft = false;
         mySpriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
     }
@@ -33,16 +31,15 @@ public class PlayerMovement : MonoBehaviour
         if (GameManager.S.gameState != GameManager.GameState.playing) return;
         dodgeTimer += GameManager.S.isPowerFilled() ? Time.deltaTime * 2 : Time.deltaTime;
 
+        // Determine basic movement
         horizontalMove = Input.GetAxisRaw("Horizontal");
         if (horizontalMove < 0)
         {
-            facingLeft = true;
             mySpriteRenderer.flipX = true;
             GetComponent<BoxCollider2D>().offset = new Vector2(-2.98f, 0);
         }
         else if (horizontalMove > 0)
         {
-            facingLeft = false;
             mySpriteRenderer.flipX = false;
             GetComponent<BoxCollider2D>().offset = new Vector2(2.98f, 0);
         }
@@ -51,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 movement = new Vector3(horizontalMove, verticalMove).normalized;
         float finalSpeed = speed;
         
-
+        // During dodge period
         if (dodgeTimer >= 0.0f && dodgeTimer < 0.2f)
         {
             rb.velocity = movement * finalSpeed * dodgeForce;
@@ -60,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = movement * finalSpeed;
         }
+
+        // Determine whether the player is running for animation purposes
         if ((horizontalMove == 0 && verticalMove == 0) || rb.velocity.magnitude < 1)
         {
             animator.SetBool("running", false);
@@ -68,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("running", true);
         }
 
+        // Dodge mechanics
         if (Input.GetKeyDown(KeyCode.LeftShift) && dodgeTimer >= dodgeCooldown)
         {
             SoundManager.S.DodgeSound();
@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    // Sequence for showing a trail effect when dodging
     private IEnumerator dodgeTrail()
     {
         GetComponent<TrailRenderer>().enabled = true;

@@ -146,7 +146,6 @@ public class GameManager : MonoBehaviour
         powerUpBarFill.fillAmount = 0;
         progressBarFill.fillAmount = 0;
 
-        // TODO: Does enemies number reset or continue?
         foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
         {
             maxEnemies[p.enemyPrefab] = p.enemyCount;
@@ -241,9 +240,6 @@ public class GameManager : MonoBehaviour
         numEnemies++;
         numEnemiesOnCourt++;
         numEnemiesToSpawn--;
-
-        Debug.Log("Current Enemies: " + currEnemies);
-        Debug.Log("Enemies Left To Spawn: " + numEnemiesToSpawn);
     }
 
     // Called when a round is won 
@@ -265,7 +261,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    // Called when the game is won
     private void GameWon()
     {
         SoundManager.S.GameWinSound();
@@ -275,6 +271,7 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(true);
     }
 
+    // Called when the player has died
     public void playerDied()
     {
         if (gameState == GameState.oops) return;
@@ -286,6 +283,7 @@ public class GameManager : MonoBehaviour
         hype = 0;
         audience.GetComponent<Audience>().resetCheer();
 
+        // Go to lose state if all lives are lost, or restart the level
         if (lives > 0)
         {
             StartCoroutine(betweenRoundsLost());
@@ -300,6 +298,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Sequence after a round has been won
     private IEnumerator betweenRoundsWon()
     {
         statusText.text = LevelManager.S.currLevelName + " Complete!";
@@ -310,6 +309,7 @@ public class GameManager : MonoBehaviour
         RoundWon();
     }
 
+    // Sequence after the player has lost all three lives
     private IEnumerator gameOver()
     {
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
@@ -318,6 +318,8 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(true);
     }
 
+
+    // Sequence after a round has been lost
     private IEnumerator betweenRoundsLost()
     {
         
@@ -332,32 +334,39 @@ public class GameManager : MonoBehaviour
         ResetLevel();
     }
 
+    // Called when an enemy has been destroyed
     public void OnEnemyDestroyed()
     {
         numEnemies--;
         numEnemiesOnCourt--;
         hype += enemyPoints;
+
+        // Update progress and power-ups
         IncreasePower(hitPowerUp);
         IncreaseProgress();
-        Debug.Log("Enemies remaining:" + numEnemies + "; on floor: " + numEnemiesOnCourt);
+
+        // Round is won when all enemies are destroyed
         if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
         {
             StartCoroutine(betweenRoundsWon());
         }
     }
 
+    // Called when the player successfully perform a parry
     public void OnSuccessfulParry()
     {
         hype += parryPoints;
         IncreasePower(parryPowerUp);
     }
 
+    // Called when the score is updated
     public void OnScoreAdded(int addedScore)
     {
         score += addedScore;
         scoreText.text = "Score: " + score;
     }
 
+    // Called when the player pauses the game
     private void OnPause()
     {
         pausePanel.SetActive(true);
@@ -365,6 +374,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    // Called when the player unpauses the game
     private void OnUnpause()
     {
         pausePanel.SetActive(false);
@@ -372,11 +382,13 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    // Accessor to powerFilled boolean
     public bool isPowerFilled()
     {
         return powerFilled;
     }
-    
+
+    // Helper to increment the power bar
     private void IncreasePower(float increment)
     {
         powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount + increment, 0, 1);
@@ -386,12 +398,14 @@ public class GameManager : MonoBehaviour
             StartCoroutine(Buffed());
         }
     }
-
+    
+    // Helper to increment the progress bar
     private void IncreaseProgress()
     {
         progressBarFill.fillAmount = (totalNumEnemies - numEnemiesToSpawn) / (float)totalNumEnemies;
     }
 
+    // Sequence during player buff (maxed out power bar)
     private IEnumerator Buffed()
     {
         powerFilled = true;
@@ -402,6 +416,8 @@ public class GameManager : MonoBehaviour
         ResetPowerUp(true);
     }
 
+    // Helper to reset the power bar
+    // Clear powerbar if reset is true
     private void ResetPowerUp(bool reset)
     {
         currentPlayer.GetComponent<Animator>().SetBool("holding", false);
