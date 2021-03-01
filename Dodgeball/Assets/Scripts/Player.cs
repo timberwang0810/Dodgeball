@@ -33,8 +33,8 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // Throw a ball if it has a ball or is buffed (and left mouse is pressed)
-        if (Input.GetMouseButtonDown(0) && (holding || IsBuffed()))
+        // Throw a ball if it has a ball or is buffed 
+        if (Input.GetKeyDown(GameManager.S.currThrowKeyCode) && (holding || IsBuffed()))
         {
             Throw();
             if (!IsBuffed())
@@ -44,8 +44,8 @@ public class Player : MonoBehaviour
             }
         }
 
-        // Parry if space is pressed
-        if (Input.GetKeyDown("space"))
+        // Parry
+        if (Input.GetKeyDown(GameManager.S.currParryKeyCode))
         {
             animator.SetTrigger("parry");
             StartCoroutine(parryFrames());

@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
     public GameObject cinematic;
     private bool seenCinematic = false;
 
+    // Keyboard Bindings
+    [Header("Keyboard Bindings")]
+    public KeyCode currParryKeyCode;
+    public KeyCode currThrowKeyCode;
+
     // UI Variables
     [Header("Basic UI Variables")]
     public TextMeshProUGUI statusText;

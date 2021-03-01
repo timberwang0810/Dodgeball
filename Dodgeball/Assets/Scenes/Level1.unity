@@ -230,6 +230,8 @@ MonoBehaviour:
   gameState: 0
   ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
   cinematic: {fileID: 1026359276}
+  currParryKeyCode: 324
+  currThrowKeyCode: 323
   statusText: {fileID: 1207682432}
   scoreText: {fileID: 1281827725}
   endText: {fileID: 1509809046}
@@ -3041,7 +3043,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -85.3, y: -26.7}
+  m_AnchoredPosition: {x: -85.299805, y: -26.700195}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2093892536
