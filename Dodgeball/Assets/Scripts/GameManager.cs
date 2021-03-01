@@ -7,6 +7,7 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
+    // Game States
     public enum GameState { menu, getReady, playing, paused, oops, gameOver };
     public GameState gameState;
     public static GameManager S;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject ballPrefab;
     private GameObject currentPlayer;
 
+    // Opening Cinematic image
     public GameObject cinematic;
     private bool seenCinematic = false;
 
@@ -66,6 +68,7 @@ public class GameManager : MonoBehaviour
     public float parryPoints;
     private float hype = 0;
 
+    // Struct to organize enemy spawning
     [System.Serializable]
     public struct EnemyCountPair
     {
@@ -119,6 +122,7 @@ public class GameManager : MonoBehaviour
         
     }
 
+    // Called by LevelManager
     public void StartNewGameWrapper()
     {
         if (seenCinematic)
@@ -131,6 +135,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Start a new round
     public void StartNewGame()
     {
 
@@ -152,6 +157,7 @@ public class GameManager : MonoBehaviour
         ResetLevel();
     }
 
+    // Display the opening cinematic
     private IEnumerator showCinematic()
     {
         cinematic.SetActive(true);
@@ -168,6 +174,7 @@ public class GameManager : MonoBehaviour
         StartNewGame();
     }
 
+    // Reset a round (called after new round or after player death)
     private void ResetLevel()
     {
         hype = 0;
@@ -179,6 +186,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GetReady());
     }
 
+    // Get Ready sequence
     private IEnumerator GetReady()
     {
         statusText.enabled = true;
@@ -196,12 +204,14 @@ public class GameManager : MonoBehaviour
         
     }
 
+    // Start a round (start spawning enemy)
     private void StartRound()
     {
         gameState = GameState.playing;
         StartCoroutine(SpawnEnemies());
     }
 
+    // Spawning enemy sequence
     private IEnumerator SpawnEnemies()
     {
         while (gameState == GameState.playing)
@@ -214,15 +224,18 @@ public class GameManager : MonoBehaviour
         }   
     }
 
+    // Spawn a random enemy type dictated by the level description in LevelManager
     private void SpawnOneEnemy()
     {
         if (numEnemiesToSpawn <= 0) return;
+
+        // Choose a random enemy type
         GameObject enemyPrefab = maxEnemies.ElementAt(Random.Range(0, maxEnemies.Count())).Key;
         while (currEnemies[enemyPrefab.name] >= maxEnemies[enemyPrefab])
         {
             enemyPrefab = maxEnemies.ElementAt(Random.Range(0, maxEnemies.Count())).Key;
         }
-        // TODO: Instantiate enemy at spawn location
+        // Instantiate enemy at spawn location
         Instantiate(enemyPrefab, new Vector3(LevelManager.S.enemySpawner.transform.position.x, Random.Range(-13, 13), 0), Quaternion.identity);
         currEnemies[enemyPrefab.name] += 1;
         numEnemies++;
@@ -233,12 +246,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Enemies Left To Spawn: " + numEnemiesToSpawn);
     }
 
+    // Called when a round is won 
     private void RoundWon()
     {
         hype = 0;
         audience.GetComponent<Audience>().resetCheer();
         gameState = GameState.oops;
         ResetPowerUp(true);
+
+        // Go to end if all levels are completed, or go to the next level
         if (LevelManager.S.currLevel >= maxLevel)
         {
             GameWon();
@@ -248,6 +264,7 @@ public class GameManager : MonoBehaviour
             LevelManager.S.GoToNextLevel();
         }
     }
+
 
     private void GameWon()
     {

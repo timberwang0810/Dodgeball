@@ -42,6 +42,7 @@ public class BallScript : MonoBehaviour
 
     private void OnBallGrounded()
     {
+        Debug.Log("GROUNDED");
         inAir = false;
         if (this.gameObject.tag.Equals("PlayerBall"))
         {
