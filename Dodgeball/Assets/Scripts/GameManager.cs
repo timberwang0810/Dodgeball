@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI endText;
     public GameObject pausePanel;
     public GameObject gameOverPanel;
+    public GameObject controlPanel;
 
     [Header("Power Bar")]
     public Image powerUpBarFill;
@@ -96,6 +97,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this);
         Cursor.visible = true;
         pausePanel.SetActive(false);
+        controlPanel.SetActive(false);
         scoreText.text = "Score: " + 0;
         Time.timeScale = 1;
     }
@@ -118,8 +120,11 @@ public class GameManager : MonoBehaviour
             if (hype < 0) hype = 0;
         }
 
-        else if (gameState == GameState.paused && Input.GetKeyDown(KeyCode.Escape)) OnUnpause(); 
-        
+        else if (gameState == GameState.paused) {
+            if (Input.GetKeyDown(KeyCode.Escape)) OnUnpause();
+        }
+
+
     }
 
     // Called by LevelManager
@@ -378,6 +383,7 @@ public class GameManager : MonoBehaviour
     private void OnUnpause()
     {
         pausePanel.SetActive(false);
+        controlPanel.SetActive(false);
         gameState = GameState.playing;
         Time.timeScale = 1;
     }
@@ -426,5 +432,17 @@ public class GameManager : MonoBehaviour
         powerUpBarFire.enabled = false;
         if (reset) powerUpBarFill.fillAmount = 0;
         powerUpTimer = 0;
+    }
+
+    public void ShowControlPanel()
+    {
+        controlPanel.SetActive(true);
+        pausePanel.SetActive(false);
+    }
+
+    public void HideControlPanel()
+    {
+        controlPanel.SetActive(false);
+        pausePanel.SetActive(true);
     }
 }
