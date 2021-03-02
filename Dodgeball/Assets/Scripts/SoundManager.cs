@@ -62,7 +62,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip playerParry2;
     public AudioClip playerParry3;
 
-    public AudioClip poweredUp;
+    public GameObject poweredUp;
     public AudioClip KevinDash;
     public AudioClip JimDash;
 
@@ -673,6 +673,11 @@ public class SoundManager : MonoBehaviour
 
     public void PoweredUpSound()
     {
-        audio.PlayOneShot(poweredUp);
+        poweredUp.GetComponent<AudioSource>().Play();
+    }
+
+    public void StopPoweredUpSound()
+    {
+        poweredUp.GetComponent<AudioSource>().Stop();
     }
 }

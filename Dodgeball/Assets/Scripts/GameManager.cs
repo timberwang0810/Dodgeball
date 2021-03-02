@@ -66,8 +66,12 @@ public class GameManager : MonoBehaviour
     public GameObject audience;
     public float maxHype;
     public float enemyPoints;
-    public float parryPoints;
+    public float hypeCooldown;
+    private float hypeTimer = 0;
     private float hype = 0;
+
+    public Texture2D cursorTexture;
+    private Vector2 cursorOffset;
 
     // Struct to organize enemy spawning
     [System.Serializable]
@@ -100,10 +104,19 @@ public class GameManager : MonoBehaviour
         controlPanel.SetActive(false);
         scoreText.text = "Score: " + 0;
         Time.timeScale = 1;
+        cursorOffset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
+        Cursor.SetCursor(cursorTexture, cursorOffset, CursorMode.Auto);
     }
 
     private void Update()
     {
+        if (!powerFilled && currentPlayer != null) // edge case where you get hit then power up
+        {
+            SoundManager.S.StopPoweredUpSound();
+            currentPlayer.GetComponent<ParticleSystem>().Stop();
+        }
+
+
         if (gameState == GameState.playing)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -111,10 +124,19 @@ public class GameManager : MonoBehaviour
             powerUpTimer += Time.deltaTime;
             if (!powerFilled && powerUpTimer >= 1.0f) powerUpBarFill.fillAmount = Mathf.Clamp(powerUpBarFill.fillAmount - powerUpDecrementRate, 0, 1);
 
+            hypeTimer += Time.deltaTime;
+
             if (hype >= maxHype)
             {
-                audience.GetComponent<Audience>().cheer();
+                if (hypeTimer >= hypeCooldown)
+                {
+                    audience.GetComponent<Audience>().cheer();
+                } else
+                {
+                    //do nothing
+                }
                 hype = 0;
+                hypeTimer = 0;
             }
             hype -= Time.deltaTime;
             if (hype < 0) hype = 0;
@@ -182,6 +204,7 @@ public class GameManager : MonoBehaviour
     private void ResetLevel()
     {
         hype = 0;
+        hypeTimer = 0;
         powerUpTimer = 0;
         powerUpBarFill.fillAmount /= 2;
         powerUpBarFire.enabled = false;
@@ -251,6 +274,7 @@ public class GameManager : MonoBehaviour
     private void RoundWon()
     {
         hype = 0;
+        hypeTimer = 0;
         audience.GetComponent<Audience>().resetCheer();
         gameState = GameState.oops;
         ResetPowerUp(true);
@@ -286,7 +310,9 @@ public class GameManager : MonoBehaviour
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         lives -= 1;
         hype = 0;
+        hypeTimer = 0;
         audience.GetComponent<Audience>().resetCheer();
+        SoundManager.S.StopPoweredUpSound();
 
         // Go to lose state if all lives are lost, or restart the level
         if (lives > 0)
@@ -317,6 +343,8 @@ public class GameManager : MonoBehaviour
     // Sequence after the player has lost all three lives
     private IEnumerator gameOver()
     {
+        SoundManager.S.StopPoweredUpSound();
+        currentPlayer.GetComponent<ParticleSystem>().Stop();
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         yield return new WaitForSeconds(1);
         currentPlayer.GetComponent<Renderer>().enabled = false;
@@ -360,7 +388,6 @@ public class GameManager : MonoBehaviour
     // Called when the player successfully perform a parry
     public void OnSuccessfulParry()
     {
-        hype += parryPoints;
         IncreasePower(parryPowerUp);
     }
 
@@ -377,6 +404,7 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(true);
         gameState = GameState.paused;
         Time.timeScale = 0;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     // Called when the player unpauses the game
@@ -386,6 +414,7 @@ public class GameManager : MonoBehaviour
         controlPanel.SetActive(false);
         gameState = GameState.playing;
         Time.timeScale = 1;
+        Cursor.SetCursor(cursorTexture, cursorOffset, CursorMode.Auto);
     }
 
     // Accessor to powerFilled boolean
