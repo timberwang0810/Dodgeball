@@ -76,4 +76,15 @@ public class ButtonManager : MonoBehaviour
         yield return new WaitForSeconds(.7f);
         SceneManager.LoadScene("Title");
     }
+
+    public void btn_ShowControl()
+    {
+        GameManager.S.ShowControlPanel();
+    }
+
+    public void btn_HideControl()
+    {
+        GameManager.S.HideControlPanel();
+        ControlManager.S.isBindingEditing = false;
+    }
 }
