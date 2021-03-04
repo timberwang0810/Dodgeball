@@ -79,7 +79,8 @@ public abstract class Enemy : MonoBehaviour
     // Attack Sequence
     private IEnumerator Attack()
     {
-        Throw();
+        //Throw();
+        gameObject.GetComponent<Animator>().SetTrigger("throw");
         yield return new WaitForSeconds(startDelay);
         StartAttack();
     }
@@ -242,7 +243,7 @@ public abstract class Enemy : MonoBehaviour
     private IEnumerator throwFreezePos()
     {
         throwing = true;
-        Throw();
+        gameObject.GetComponent<Animator>().SetTrigger("throw");
         yield return new WaitForSeconds(1);
         throwing = false;
     }

@@ -73,6 +73,11 @@ public class GameManager : MonoBehaviour
     public Texture2D cursorTexture;
     private Vector2 cursorOffset;
 
+    [Header("End Effects")]
+    public GameObject confetti1;
+    public GameObject confetti2;
+    public GameObject confetti3;
+
     // Struct to organize enemy spawning
     [System.Serializable]
     public struct EnemyCountPair
@@ -105,6 +110,12 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: " + 0;
         Time.timeScale = 1;
         cursorOffset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
+        StartCoroutine(SetInitialCursor());
+    }
+
+    private IEnumerator SetInitialCursor()
+    {
+        yield return null;
         Cursor.SetCursor(cursorTexture, cursorOffset, CursorMode.Auto);
     }
 
@@ -119,6 +130,7 @@ public class GameManager : MonoBehaviour
 
         if (gameState == GameState.playing)
         {
+            //Cursor.SetCursor(cursorTexture, cursorOffset, CursorMode.Auto);
             if (Input.GetKeyDown(KeyCode.Escape))
                 OnPause();
             powerUpTimer += Time.deltaTime;
@@ -332,10 +344,18 @@ public class GameManager : MonoBehaviour
     // Sequence after a round has been won
     private IEnumerator betweenRoundsWon()
     {
+        confetti1.GetComponent<ParticleSystem>().Play();
+        confetti2.GetComponent<ParticleSystem>().Play();
+        confetti3.GetComponent<ParticleSystem>().Play();
         statusText.text = LevelManager.S.currLevelName + " Complete!";
         statusText.enabled = true;
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1.5f);
+        confetti1.GetComponent<ParticleSystem>().Stop();
+        confetti2.GetComponent<ParticleSystem>().Stop();
+        confetti3.GetComponent<ParticleSystem>().Stop();
+        yield return new WaitForSeconds(1.5f);
+
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = true;
         RoundWon();
     }

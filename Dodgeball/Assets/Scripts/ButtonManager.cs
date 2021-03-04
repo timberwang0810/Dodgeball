@@ -8,7 +8,9 @@ public class ButtonManager : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(this);
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
+
 
     public void btn_StartTheGame()
     {
@@ -63,6 +65,7 @@ public class ButtonManager : MonoBehaviour
 
     public void btn_Back()
     {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         Time.timeScale = 1;
         if (GameManager.S)
         {
