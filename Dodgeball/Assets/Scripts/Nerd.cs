@@ -9,7 +9,6 @@ public class Nerd : Enemy
 
     protected override void Throw()
     {
-        gameObject.GetComponent<Animator>().SetTrigger("throw");
         
         Vector3 badPlayerPos = nerdRandomMiss();
 

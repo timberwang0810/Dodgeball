@@ -6,7 +6,6 @@ public class Jock : Enemy
 {
     protected override void Throw()
     {
-        gameObject.GetComponent<Animator>().SetTrigger("throw");
 
         float ballAngle = getBallRotation(player.transform.position);
         GameObject ball = Instantiate(ballPrefab, transform.position, Quaternion.Euler(new Vector3(0f, 0f, ballAngle)));

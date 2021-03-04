@@ -36,7 +36,8 @@ public class Player : MonoBehaviour
         // Throw a ball if it has a ball or is buffed 
         if (Input.GetKeyDown(ControlManager.S.currThrowKeyCode) && (holding || IsBuffed()))
         {
-            Throw();
+            animator.SetTrigger("throw");
+            //Throw();
             if (!IsBuffed())
             {
                 holding = false;
@@ -65,7 +66,6 @@ public class Player : MonoBehaviour
     // Throw mechanics
     private void Throw()
     {
-        animator.SetTrigger("throw");
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
