@@ -111,6 +111,8 @@ public class SoundManager : MonoBehaviour
     public float cooldown;
     private float cooldownTimer = 0;
 
+    private float currentVolume;
+
     private void Awake()
     {
         S = this;
@@ -120,6 +122,7 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         audio = GetComponent<AudioSource>();
+        currentVolume = audio.volume;
     }
 
     void Update()
@@ -132,6 +135,7 @@ public class SoundManager : MonoBehaviour
         bgm.Play();
         muteButton.gameObject.SetActive(true);
         unmuteButton.gameObject.SetActive(false);
+        audio.volume = currentVolume;
     }
 
     public void stopMusic()
@@ -139,6 +143,7 @@ public class SoundManager : MonoBehaviour
         bgm.Stop();
         muteButton.gameObject.SetActive(false);
         unmuteButton.gameObject.SetActive(true);
+        audio.volume = 0;
     }
 
     public IEnumerator KevinCommentary()
