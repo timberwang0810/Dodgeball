@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public GameObject controlPanel;
+    public GameObject volumePanel;
 
     [Header("Power Bar")]
     public Image powerUpBarFill;
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         pausePanel.SetActive(false);
         controlPanel.SetActive(false);
+        volumePanel.SetActive(false);
         scoreText.text = "Score: " + 0;
         Time.timeScale = 1;
         cursorOffset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
@@ -489,9 +491,16 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(false);
     }
 
-    public void HideControlPanel()
+    public void ShowVolumePanel()
+    {
+        volumePanel.SetActive(true);
+        pausePanel.SetActive(false);
+    }
+
+    public void HideAllPanels()
     {
         controlPanel.SetActive(false);
+        volumePanel.SetActive(false);
         pausePanel.SetActive(true);
     }
 }

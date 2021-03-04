@@ -91,8 +91,11 @@ public class SoundManager : MonoBehaviour
     private AudioSource audio;
     public AudioSource bgm;
 
+    [Header("Volume Control")]
     public Button muteButton;
     public Button unmuteButton;
+    public Slider volumeSlider;
+    private bool muted;
 
     private int newRandomNumber;
     private int lastRandomNumber;
@@ -123,11 +126,24 @@ public class SoundManager : MonoBehaviour
     {
         audio = GetComponent<AudioSource>();
         currentVolume = audio.volume;
+        volumeSlider.value = currentVolume;
     }
 
     void Update()
     {
         cooldownTimer += Time.deltaTime;
+    }
+
+    public void toggleMute()
+    {
+        if (muted) playMusic();
+        else stopMusic();
+    }
+
+    public void AdjustVolume()
+    {
+        audio.volume = volumeSlider.value;
+        currentVolume = audio.volume;
     }
 
     public void playMusic()
@@ -136,6 +152,8 @@ public class SoundManager : MonoBehaviour
         muteButton.gameObject.SetActive(true);
         unmuteButton.gameObject.SetActive(false);
         audio.volume = currentVolume;
+        muted = false;
+        volumeSlider.enabled = true;
     }
 
     public void stopMusic()
@@ -144,6 +162,8 @@ public class SoundManager : MonoBehaviour
         muteButton.gameObject.SetActive(false);
         unmuteButton.gameObject.SetActive(true);
         audio.volume = 0;
+        muted = true;
+        volumeSlider.enabled = false;
     }
 
     public IEnumerator KevinCommentary()

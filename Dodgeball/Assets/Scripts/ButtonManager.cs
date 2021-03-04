@@ -85,9 +85,14 @@ public class ButtonManager : MonoBehaviour
         GameManager.S.ShowControlPanel();
     }
 
-    public void btn_HideControl()
+    public void btn_ShowVolume()
     {
-        GameManager.S.HideControlPanel();
+        GameManager.S.ShowVolumePanel();
+    }
+
+    public void btn_HidePanel()
+    {
+        GameManager.S.HideAllPanels();
         ControlManager.S.isBindingEditing = false;
     }
 }
