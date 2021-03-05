@@ -8046,6 +8046,10 @@ PrefabInstance:
       propertyPath: dodgeCoolDownBarImage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6328223287811402117, guid: 2f96d018e16fd416ab7eaae3794acee9, type: 3}
+      propertyPath: speed
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6328223287811402118, guid: 2f96d018e16fd416ab7eaae3794acee9, type: 3}
       propertyPath: m_Name
       value: Player
