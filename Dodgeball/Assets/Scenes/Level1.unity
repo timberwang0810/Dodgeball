@@ -327,7 +327,7 @@ MonoBehaviour:
   maxHype: 6
   enemyPoints: 3
   hypeCooldown: 6
-  cursorTexture: {fileID: 2800000, guid: f844f98ac395c2241911dbfc98c5e926, type: 3}
+  cursorTexture: {fileID: 2800000, guid: 33b8f87b09a418749b5a88e7423d53d8, type: 3}
   confetti1: {fileID: 103796202}
   confetti2: {fileID: 1022024002}
   confetti3: {fileID: 63301760}
