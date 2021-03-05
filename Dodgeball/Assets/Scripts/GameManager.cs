@@ -156,7 +156,13 @@ public class GameManager : MonoBehaviour
             if (hype < 0) hype = 0;
 
             // Dev button TODO: DELETE
-            if (Input.GetKeyDown(KeyCode.P)) LevelManager.S.GoToNextLevel();
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                numEnemies = 0;
+                numEnemiesOnCourt = 0;
+                numEnemiesToSpawn = 0;
+                StartCoroutine(betweenRoundsWon());
+            }
         }
 
         else if (gameState == GameState.paused) {

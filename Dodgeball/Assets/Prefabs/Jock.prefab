@@ -157,7 +157,7 @@ MonoBehaviour:
   ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
   HP: 5
   damage: 1
-  throwSpeed: 30
+  throwSpeed: 40
   score: 200
   startDelay: 0
   timeBetweenAttacks: 3
