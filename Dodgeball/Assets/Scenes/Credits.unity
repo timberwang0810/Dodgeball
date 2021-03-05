@@ -270,8 +270,8 @@ MonoBehaviour:
     Thomas
     Youn - Sound Designer'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e43db899e3b06ad49a014d864292e3af, type: 2}
-  m_sharedMaterial: {fileID: 4581297287303983723, guid: e43db899e3b06ad49a014d864292e3af, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fc9153e1ca7cfe9468f1ce3e5655e2bc, type: 2}
+  m_sharedMaterial: {fileID: 7573511159553886204, guid: fc9153e1ca7cfe9468f1ce3e5655e2bc, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -295,8 +295,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
