@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
         }
 
         // Throw a ball if it has a ball or is buffed 
-        if (Input.GetKeyDown(ControlManager.S.currThrowKeyCode) && (holding || IsBuffed()))
+        if (Input.GetKeyDown(GlobalManager.S.currThrowKeyCode) && (holding || IsBuffed()))
         {
             animator.SetTrigger("throw");
             //Throw();
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         }
 
         // Parry
-        if (Input.GetKeyDown(ControlManager.S.currParryKeyCode))
+        if (Input.GetKeyDown(GlobalManager.S.currParryKeyCode))
         {
             animator.SetTrigger("parry");
             StartCoroutine(parryFrames());

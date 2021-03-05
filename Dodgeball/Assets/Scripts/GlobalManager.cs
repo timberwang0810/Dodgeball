@@ -5,6 +5,13 @@ using UnityEngine;
 public class GlobalManager : MonoBehaviour
 {
     public static GlobalManager S;
+
+    // Keyboard Bindings
+    [Header("Keyboard Bindings")]
+    public KeyCode currParryKeyCode;
+    public KeyCode currThrowKeyCode;
+    public KeyCode currDodgeKeyCode;
+
     private float currentVolume;
     private bool mute;
 
@@ -25,18 +32,12 @@ public class GlobalManager : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(this);
-        currentVolume = 1;
+        currentVolume = 1; //default
         mute = false;
-    }
-
-    private void Update()
-    {
-        //Debug.Log(mute);
     }
 
     public void ToggleMute()
     {
-        Debug.Log("called");
         mute = !mute;
     }
 

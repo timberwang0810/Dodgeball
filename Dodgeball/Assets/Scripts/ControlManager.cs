@@ -7,15 +7,12 @@ using TMPro;
 public class ControlManager : MonoBehaviour
 {
     public static ControlManager S;
-    public enum GameControl { Parry, Throw, Dodge }
-
-    // Keyboard Bindings
-    [Header("Keyboard Bindings")]
-    public KeyCode currParryKeyCode;
-    public KeyCode currThrowKeyCode;
-    public KeyCode currDodgeKeyCode;
 
     public bool isBindingEditing = false;
+
+    public Button ParryButton;
+    public Button ThrowButton;
+    public Button DodgeButton;
 
     private TextMeshProUGUI currButtonText;
 
@@ -41,13 +38,15 @@ public class ControlManager : MonoBehaviour
     {
         DontDestroyOnLoad(this);
         isBindingEditing = false;
+        ParryButton.GetComponentInChildren<TextMeshProUGUI>().text = GlobalManager.S.currParryKeyCode.ToString();
+        ThrowButton.GetComponentInChildren<TextMeshProUGUI>().text = GlobalManager.S.currThrowKeyCode.ToString();
+        DodgeButton.GetComponentInChildren<TextMeshProUGUI>().text = GlobalManager.S.currDodgeKeyCode.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.S) return;
-        if (GameManager.S.gameState != GameManager.GameState.paused) isBindingEditing = false;
+        if (GameManager.S && GameManager.S.gameState != GameManager.GameState.paused) isBindingEditing = false;
         if (isBindingEditing) DetectKey();
     }
 
@@ -87,20 +86,15 @@ public class ControlManager : MonoBehaviour
         }
     }
 
-    public void ToggleEditing()
-    {
-        isBindingEditing = !isBindingEditing;
-    }
-
     private void DetectKey()
     {
         foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
         {
             if (Input.GetKeyDown(key) && key != KeyCode.Escape)
             {
-                if (isParrySelected) currParryKeyCode = key;
-                else if (isThrowSelected) currThrowKeyCode = key;
-                else if (isDodgeSelected) currDodgeKeyCode = key;
+                if (isParrySelected) GlobalManager.S.currParryKeyCode = key;
+                else if (isThrowSelected) GlobalManager.S.currThrowKeyCode = key;
+                else if (isDodgeSelected) GlobalManager.S.currDodgeKeyCode = key;
                 else return;
                 if (currButtonText) currButtonText.text = key.ToString();
                 isBindingEditing = false;
