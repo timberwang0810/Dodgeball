@@ -195,7 +195,8 @@ public class GameManager : MonoBehaviour
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
         powerUpBarFill.fillAmount = 0;
         progressBarFill.fillAmount = 0;
-
+        maxEnemies.Clear();
+        currEnemies.Clear();
         foreach (EnemyCountPair p in LevelManager.S.maxEnemies)
         {
             maxEnemies[p.enemyPrefab] = p.enemyCount;
@@ -259,6 +260,7 @@ public class GameManager : MonoBehaviour
     // Start a round (start spawning enemy)
     private void StartRound()
     {
+        Debug.Log(maxEnemies.Values.ElementAt(0));
         gameState = GameState.playing;
         StartCoroutine(SpawnEnemies());
     }
