@@ -156,7 +156,13 @@ public class GameManager : MonoBehaviour
             if (hype < 0) hype = 0;
 
             // Dev button TODO: DELETE
-            if (Input.GetKeyDown(KeyCode.P)) LevelManager.S.GoToNextLevel();
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                numEnemies = 0;
+                numEnemiesOnCourt = 0;
+                numEnemiesToSpawn = 0;
+                StartCoroutine(betweenRoundsWon());
+            }
         }
 
         else if (gameState == GameState.paused) {
@@ -383,7 +389,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator betweenRoundsLost()
     {
         
-        statusText.text = "Lives Left:" + lives;
+        statusText.text = "Lives Left: " + lives;
         statusText.enabled = true;
         yield return new WaitForSeconds(1);
         currentPlayer.GetComponent<Renderer>().enabled = false;

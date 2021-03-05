@@ -9,7 +9,6 @@ public class Nerd : Enemy
 
     protected override void Throw()
     {
-        
         Vector3 badPlayerPos = nerdRandomMiss();
 
         Vector2 dir = badPlayerPos - transform.position;

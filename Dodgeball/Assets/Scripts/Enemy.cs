@@ -16,6 +16,7 @@ public abstract class Enemy : MonoBehaviour
 
     public float startDelay;
     public float timeBetweenAttacks;
+    private float actualAttackDelay;
 
     private bool ready = false;
     private float attackTimer;
@@ -47,6 +48,7 @@ public abstract class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         animator.SetBool("moving", true);
         attackTimer = timeBetweenAttacks;
+        actualAttackDelay = timeBetweenAttacks;
         rb = GetComponent<Rigidbody2D>();
         GetComponent<SpriteRenderer>().flipX = false;
         previous = transform.position.x;
@@ -70,20 +72,20 @@ public abstract class Enemy : MonoBehaviour
         ready = true;
     }
 
-    // Start attack function
-    private void StartAttack()
-    {
-        StartCoroutine(Attack());
-    }
+    //// Start attack function
+    //private void StartAttack()
+    //{
+    //    StartCoroutine(Attack());
+    //}
 
-    // Attack Sequence
-    private IEnumerator Attack()
-    {
-        //Throw();
-        gameObject.GetComponent<Animator>().SetTrigger("throw");
-        yield return new WaitForSeconds(startDelay);
-        StartAttack();
-    }
+    //// Attack Sequence
+    //private IEnumerator Attack()
+    //{
+    //    //Throw();
+    //    gameObject.GetComponent<Animator>().SetTrigger("throw");
+    //    yield return new WaitForSeconds(startDelay);
+    //    StartAttack();
+    //}
 
     // Sound played when the enemy is hit
     protected abstract void OnHitSound();
@@ -225,11 +227,13 @@ public abstract class Enemy : MonoBehaviour
             directionChangeTimer += Time.deltaTime;
 
             // Attack the player after a certain time
-            if (attackTimer >= timeBetweenAttacks)
+            if (attackTimer >= actualAttackDelay)
             {
+                Debug.Log(actualAttackDelay);
                 animator.SetBool("moving", false);
                 StartCoroutine(throwFreezePos());
                 attackTimer = 0.0f;
+                actualAttackDelay = timeBetweenAttacks + Random.Range(-2.0f, 2.0f);
             }
             else
             {
