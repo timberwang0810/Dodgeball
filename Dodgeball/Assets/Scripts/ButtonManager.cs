@@ -74,10 +74,9 @@ public class ButtonManager : MonoBehaviour
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         Time.timeScale = 1;
-        if (GameManager.S)
-        {
-            Destroy(GameManager.S.gameObject);
-        }
+        if (GameManager.S) Destroy(GameManager.S.gameObject);
+        if (SoundManager.S) Destroy(SoundManager.S.gameObject);
+        if (ControlManager.S) Destroy(ControlManager.S.gameObject);
         SceneManager.LoadScene("Title");
         Destroy(this.gameObject, 1.0f);
     }
