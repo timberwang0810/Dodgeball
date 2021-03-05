@@ -45,6 +45,13 @@ public class ButtonManager : MonoBehaviour
         SceneManager.LoadScene("Credits");
         Destroy(this.gameObject, 1.0f);
     }
+
+    public void btn_Settings()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Settings");
+        Destroy(this.gameObject, 1.0f);
+    }
     public IEnumerator Credits()
     {
         yield return new WaitForSeconds(.7f);
@@ -85,9 +92,14 @@ public class ButtonManager : MonoBehaviour
         GameManager.S.ShowControlPanel();
     }
 
-    public void btn_HideControl()
+    public void btn_ShowVolume()
     {
-        GameManager.S.HideControlPanel();
+        GameManager.S.ShowVolumePanel();
+    }
+
+    public void btn_HidePanel()
+    {
+        GameManager.S.HideAllPanels();
         ControlManager.S.isBindingEditing = false;
     }
 }

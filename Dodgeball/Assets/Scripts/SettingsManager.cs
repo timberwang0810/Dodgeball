@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ControlManager : MonoBehaviour
+public class SettingsManager : MonoBehaviour
 {
-    public static ControlManager S;
+    public Slider volumeSlider;
+    public Toggle muteToggle;
 
     public bool isBindingEditing = false;
 
@@ -16,37 +17,39 @@ public class ControlManager : MonoBehaviour
 
     private TextMeshProUGUI currButtonText;
 
-    private bool isParrySelected;
-    private bool isThrowSelected;
-    private bool isDodgeSelected;
+    private bool isParrySelected = false;
+    private bool isThrowSelected = false;
+    private bool isDodgeSelected = false;
 
-    private void Awake()
-    {
-        // Singleton Definition
-        if (ControlManager.S)
-        {
-            // singleton exists, delete this object
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            S = this;
-        }
-    }
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(this);
-        isBindingEditing = false;
+        volumeSlider.value = GlobalManager.S.GetVolume();
+        muteToggle.isOn = GlobalManager.S.IsMuted();
+        if (GlobalManager.S.IsMuted()) volumeSlider.enabled = false;
+        else volumeSlider.enabled = true;
+
         ParryButton.GetComponentInChildren<TextMeshProUGUI>().text = GlobalManager.S.currParryKeyCode.ToString();
         ThrowButton.GetComponentInChildren<TextMeshProUGUI>().text = GlobalManager.S.currThrowKeyCode.ToString();
         DodgeButton.GetComponentInChildren<TextMeshProUGUI>().text = GlobalManager.S.currDodgeKeyCode.ToString();
     }
 
+    public void ToggleMute()
+    {
+        if (muteToggle.isOn == GlobalManager.S.IsMuted()) return;
+        GlobalManager.S.ToggleMute();
+        if (GlobalManager.S.IsMuted()) volumeSlider.enabled = false;
+        else volumeSlider.enabled = true;
+    }
+
+    public void AdjustVolume()
+    {
+        GlobalManager.S.AdjustVolume(volumeSlider.value);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.S && GameManager.S.gameState != GameManager.GameState.paused) isBindingEditing = false;
         if (isBindingEditing) DetectKey();
     }
 
@@ -71,7 +74,7 @@ public class ControlManager : MonoBehaviour
             isThrowSelected = true;
             isDodgeSelected = false;
             currButtonText = text;
-        }   
+        }
     }
 
     public void OnDodgeControlPressed(TextMeshProUGUI text)
@@ -101,4 +104,6 @@ public class ControlManager : MonoBehaviour
             }
         }
     }
+
+
 }

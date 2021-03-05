@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Dodge mechanics
-        if (Input.GetKeyDown(ControlManager.S.currDodgeKeyCode) && dodgeTimer >= dodgeCooldown)
+        if (Input.GetKeyDown(GlobalManager.S.currDodgeKeyCode) && dodgeTimer >= dodgeCooldown)
         {
             SoundManager.S.DodgeSound();
             Vector2 velocityCopy = rb.velocity;

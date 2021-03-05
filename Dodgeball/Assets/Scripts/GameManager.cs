@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public GameObject controlPanel;
+    public GameObject volumePanel;
 
     [Header("Power Bar")]
     public Image powerUpBarFill;
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         pausePanel.SetActive(false);
         controlPanel.SetActive(false);
+        volumePanel.SetActive(false);
         scoreText.text = "Score: " + 0;
         Time.timeScale = 1;
         cursorOffset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
@@ -152,6 +154,9 @@ public class GameManager : MonoBehaviour
             }
             hype -= Time.deltaTime;
             if (hype < 0) hype = 0;
+
+            // Dev button TODO: DELETE
+            if (Input.GetKeyDown(KeyCode.P)) LevelManager.S.GoToNextLevel();
         }
 
         else if (gameState == GameState.paused) {
@@ -203,12 +208,14 @@ public class GameManager : MonoBehaviour
         powerUpBarCanvas.SetActive(false);
         progressBarCanvas.SetActive(false);
         statusText.enabled = false;
+        SoundManager.S.muteButton.gameObject.SetActive(false);
         yield return new WaitForSeconds(3);
         cinematic.SetActive(false);
         scoreText.enabled = true;
         powerUpBarCanvas.SetActive(true);
         progressBarCanvas.SetActive(true);
         statusText.enabled = true;
+        SoundManager.S.muteButton.gameObject.SetActive(true);
         StartNewGame();
     }
 
@@ -489,9 +496,16 @@ public class GameManager : MonoBehaviour
         pausePanel.SetActive(false);
     }
 
-    public void HideControlPanel()
+    public void ShowVolumePanel()
+    {
+        volumePanel.SetActive(true);
+        pausePanel.SetActive(false);
+    }
+
+    public void HideAllPanels()
     {
         controlPanel.SetActive(false);
+        volumePanel.SetActive(false);
         pausePanel.SetActive(true);
     }
 }

@@ -91,8 +91,11 @@ public class SoundManager : MonoBehaviour
     private AudioSource audio;
     public AudioSource bgm;
 
+    [Header("Volume Control")]
     public Button muteButton;
     public Button unmuteButton;
+    public Slider volumeSlider;
+    private bool muted;
 
     private int newRandomNumber;
     private int lastRandomNumber;
@@ -111,15 +114,35 @@ public class SoundManager : MonoBehaviour
     public float cooldown;
     private float cooldownTimer = 0;
 
+    private float currentVolume;
+
     private void Awake()
     {
-        S = this;
+       
+        // Singleton Definition
+        if (SoundManager.S)
+        {
+            // singleton exists, delete this object
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            S = this;
+        }
+    
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(this);
         audio = GetComponent<AudioSource>();
+        currentVolume = GlobalManager.S.GetVolume();
+        muted = GlobalManager.S.IsMuted();
+        volumeSlider.value = currentVolume;
+
+        if (muted) stopMusic();
+        else playMusic();
     }
 
     void Update()
@@ -127,11 +150,28 @@ public class SoundManager : MonoBehaviour
         cooldownTimer += Time.deltaTime;
     }
 
+    public void toggleMute()
+    {
+        if (muted) playMusic();
+        else stopMusic();
+        GlobalManager.S.ToggleMute();
+    }
+
+    public void AdjustVolume()
+    {
+        audio.volume = volumeSlider.value;
+        currentVolume = audio.volume;
+        GlobalManager.S.AdjustVolume(currentVolume);
+    }
+
     public void playMusic()
     {
         bgm.Play();
         muteButton.gameObject.SetActive(true);
         unmuteButton.gameObject.SetActive(false);
+        audio.volume = currentVolume;
+        muted = false;
+        volumeSlider.enabled = true;
     }
 
     public void stopMusic()
@@ -139,6 +179,9 @@ public class SoundManager : MonoBehaviour
         bgm.Stop();
         muteButton.gameObject.SetActive(false);
         unmuteButton.gameObject.SetActive(true);
+        audio.volume = 0;
+        muted = true;
+        volumeSlider.enabled = false;
     }
 
     public IEnumerator KevinCommentary()
