@@ -7413,7 +7413,7 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 3797038715456643727, guid: 07698ac5e71dd4e53a592a6a3a6e6ca2, type: 3}
     enemyCount: 15
   - enemyPrefab: {fileID: 3408741559225374891, guid: 4479e88a15590fe43b06d67bf014ade0, type: 3}
-    enemyCount: 15
+    enemyCount: 10
 --- !u!4 &1970034123
 Transform:
   m_ObjectHideFlags: 0
