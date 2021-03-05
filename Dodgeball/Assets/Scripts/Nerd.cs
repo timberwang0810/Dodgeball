@@ -8,8 +8,7 @@ public class Nerd : Enemy
     public float missRangeY;
 
     protected override void Throw()
-    {
-        
+    {        
         Vector3 badPlayerPos = nerdRandomMiss();
 
         Vector2 dir = badPlayerPos - transform.position;

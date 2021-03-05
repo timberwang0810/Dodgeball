@@ -383,7 +383,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator betweenRoundsLost()
     {
         
-        statusText.text = "Lives Left:" + lives;
+        statusText.text = "Lives Left: " + lives;
         statusText.enabled = true;
         yield return new WaitForSeconds(1);
         currentPlayer.GetComponent<Renderer>().enabled = false;
