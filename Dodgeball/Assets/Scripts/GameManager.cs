@@ -208,12 +208,14 @@ public class GameManager : MonoBehaviour
         powerUpBarCanvas.SetActive(false);
         progressBarCanvas.SetActive(false);
         statusText.enabled = false;
+        SoundManager.S.muteButton.gameObject.SetActive(false);
         yield return new WaitForSeconds(3);
         cinematic.SetActive(false);
         scoreText.enabled = true;
         powerUpBarCanvas.SetActive(true);
         progressBarCanvas.SetActive(true);
         statusText.enabled = true;
+        SoundManager.S.muteButton.gameObject.SetActive(true);
         StartNewGame();
     }
 
