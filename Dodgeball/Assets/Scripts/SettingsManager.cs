@@ -95,9 +95,9 @@ public class SettingsManager : MonoBehaviour
         {
             if (Input.GetKeyDown(key) && key != KeyCode.Escape)
             {
-                if (isParrySelected) GlobalManager.S.currParryKeyCode = key;
-                else if (isThrowSelected) GlobalManager.S.currThrowKeyCode = key;
-                else if (isDodgeSelected) GlobalManager.S.currDodgeKeyCode = key;
+                if (isParrySelected && (key != GlobalManager.S.currThrowKeyCode && key != GlobalManager.S.currDodgeKeyCode)) GlobalManager.S.currParryKeyCode = key;
+                else if (isThrowSelected && (key != GlobalManager.S.currParryKeyCode && key != GlobalManager.S.currDodgeKeyCode)) GlobalManager.S.currThrowKeyCode = key;
+                else if (isDodgeSelected && (key != GlobalManager.S.currThrowKeyCode && key != GlobalManager.S.currParryKeyCode)) GlobalManager.S.currDodgeKeyCode = key;
                 else return;
                 if (currButtonText) currButtonText.text = key.ToString();
                 isBindingEditing = false;
