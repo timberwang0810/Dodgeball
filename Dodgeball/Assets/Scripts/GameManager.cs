@@ -154,6 +154,9 @@ public class GameManager : MonoBehaviour
             }
             hype -= Time.deltaTime;
             if (hype < 0) hype = 0;
+
+            // Dev button TODO: DELETE
+            if (Input.GetKeyDown(KeyCode.P)) LevelManager.S.GoToNextLevel();
         }
 
         else if (gameState == GameState.paused) {

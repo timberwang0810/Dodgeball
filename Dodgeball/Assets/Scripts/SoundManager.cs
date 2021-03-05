@@ -118,15 +118,31 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        S = this;
+       
+        // Singleton Definition
+        if (SoundManager.S)
+        {
+            // singleton exists, delete this object
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            S = this;
+        }
+    
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(this);
         audio = GetComponent<AudioSource>();
-        currentVolume = audio.volume;
+        currentVolume = GlobalManager.S.GetVolume();
+        muted = GlobalManager.S.IsMuted();
         volumeSlider.value = currentVolume;
+
+        if (muted) stopMusic();
+        else playMusic();
     }
 
     void Update()
@@ -138,12 +154,14 @@ public class SoundManager : MonoBehaviour
     {
         if (muted) playMusic();
         else stopMusic();
+        GlobalManager.S.ToggleMute();
     }
 
     public void AdjustVolume()
     {
         audio.volume = volumeSlider.value;
         currentVolume = audio.volume;
+        GlobalManager.S.AdjustVolume(currentVolume);
     }
 
     public void playMusic()

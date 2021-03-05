@@ -46,6 +46,7 @@ public class ControlManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!GameManager.S) return;
         if (GameManager.S.gameState != GameManager.GameState.paused) isBindingEditing = false;
         if (isBindingEditing) DetectKey();
     }

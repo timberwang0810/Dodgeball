@@ -45,6 +45,13 @@ public class ButtonManager : MonoBehaviour
         SceneManager.LoadScene("Credits");
         Destroy(this.gameObject, 1.0f);
     }
+
+    public void btn_Settings()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Settings");
+        Destroy(this.gameObject, 1.0f);
+    }
     public IEnumerator Credits()
     {
         yield return new WaitForSeconds(.7f);
