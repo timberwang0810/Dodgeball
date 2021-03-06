@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private GameObject currentPlayer;
 
     // Opening Cinematic image
-    public GameObject cinematic;
+    public GameObject[] cinematics;
     private bool seenCinematic = false;
 
     // UI Variables
@@ -210,14 +210,22 @@ public class GameManager : MonoBehaviour
     // Display the opening cinematic
     private IEnumerator showCinematic()
     {
-        cinematic.SetActive(true);
         scoreText.enabled = false;
         powerUpBarCanvas.SetActive(false);
         progressBarCanvas.SetActive(false);
         statusText.enabled = false;
         SoundManager.S.muteButton.gameObject.SetActive(false);
-        yield return new WaitForSeconds(3);
-        cinematic.SetActive(false);
+        for (int i = 0; i < cinematics.Length; i++)
+        {
+            GameObject cinematic = cinematics[i];
+            cinematic.SetActive(true);
+            yield return new WaitForSeconds(3);
+            cinematic.SetActive(false);
+            if (i == 0)
+            {
+                // TODO: PAN camera
+            }
+        }
         scoreText.enabled = true;
         powerUpBarCanvas.SetActive(true);
         progressBarCanvas.SetActive(true);
@@ -254,7 +262,6 @@ public class GameManager : MonoBehaviour
         statusText.text = "Go!";
         yield return new WaitForSeconds(1);
         statusText.enabled = false;
-        
     }
 
     // Start a round (start spawning enemy)
