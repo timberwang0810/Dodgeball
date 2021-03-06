@@ -17,7 +17,11 @@ public class GameManager : MonoBehaviour
 
     // Opening Cinematic image
     public GameObject[] cinematics;
+    public GameObject cinematicEnemies;
+    public Camera cam;
+    public float panningSpeed;
     private bool seenCinematic = false;
+    private bool isPanning = false;
 
     // UI Variables
     [Header("Basic UI Variables")]
@@ -112,6 +116,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: " + 0;
         Time.timeScale = 1;
         cursorOffset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
+        currentPlayer = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(SetInitialCursor());
     }
 
@@ -123,12 +128,18 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (isPanning)
+        {
+            Vector3 camPos = cam.transform.position;
+            camPos.x = Mathf.Clamp(camPos.x + panningSpeed * Time.deltaTime, -12, 12);
+            cam.transform.position = camPos;
+        }
+
         if (!powerFilled && currentPlayer != null) // edge case where you get hit then power up
         {
             SoundManager.S.StopPoweredUpSound();
             currentPlayer.GetComponent<ParticleSystem>().Stop();
         }
-
 
         if (gameState == GameState.playing)
         {
@@ -223,9 +234,17 @@ public class GameManager : MonoBehaviour
             cinematic.SetActive(false);
             if (i == 0)
             {
-                // TODO: PAN camera
+                currentPlayer.SetActive(false);
+                cam.orthographicSize = 10;
+                isPanning = true;
+                yield return new WaitForSeconds(3);
+                isPanning = false;
+                cam.orthographicSize = 17.2f;
+                cam.transform.position = new Vector3(0.4f, 0.1f, -10);
+                Destroy(cinematicEnemies, 2.0f);
             }
         }
+        currentPlayer.SetActive(true);
         scoreText.enabled = true;
         powerUpBarCanvas.SetActive(true);
         progressBarCanvas.SetActive(true);
