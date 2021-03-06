@@ -20,8 +20,12 @@ public class GameManager : MonoBehaviour
     public GameObject cinematicEnemies;
     public Camera cam;
     public float panningSpeed;
+    public float zoomingSpeed;
     private bool seenCinematic = false;
     private bool isPanning = false;
+    private bool isZoomingIn = false;
+    private bool isZoomingOut = false;
+    private GameObject currentCinematic;
 
     // UI Variables
     [Header("Basic UI Variables")]
@@ -135,6 +139,16 @@ public class GameManager : MonoBehaviour
             cam.transform.position = camPos;
         }
 
+        if (isZoomingIn)
+        {
+            ZoomIn();
+        }
+
+        if (isZoomingOut)
+        {
+            ZoomOut();
+        }
+
         if (!powerFilled && currentPlayer != null) // edge case where you get hit then power up
         {
             SoundManager.S.StopPoweredUpSound();
@@ -228,10 +242,22 @@ public class GameManager : MonoBehaviour
         SoundManager.S.muteButton.gameObject.SetActive(false);
         for (int i = 0; i < cinematics.Length; i++)
         {
-            GameObject cinematic = cinematics[i];
-            cinematic.SetActive(true);
+            currentCinematic = cinematics[i];
+            currentCinematic.SetActive(true);
+            if (i == 0)
+            {
+                currentCinematic.transform.localScale = new Vector3(3, 3, 3);
+                isZoomingOut = true;
+            }
+            else if (i == 1)
+            {
+                currentCinematic.transform.localScale = new Vector3(1, 1, 1);
+                isZoomingIn = true;
+            }
             yield return new WaitForSeconds(3);
-            cinematic.SetActive(false);
+            currentCinematic.SetActive(false);
+            isZoomingIn = false;
+            isZoomingOut = false;
             if (i == 0)
             {
                 currentPlayer.SetActive(false);
@@ -251,6 +277,24 @@ public class GameManager : MonoBehaviour
         statusText.enabled = true;
         SoundManager.S.muteButton.gameObject.SetActive(true);
         StartNewGame();
+    }
+
+    private void ZoomIn()
+    {
+        Vector3 currentScale = currentCinematic.transform.localScale;
+        currentScale.x = Mathf.Clamp(currentScale.x + zoomingSpeed * Time.deltaTime, 1, 3);
+        currentScale.y = Mathf.Clamp(currentScale.y + zoomingSpeed * Time.deltaTime, 1, 3);
+        currentScale.z = Mathf.Clamp(currentScale.z + zoomingSpeed * Time.deltaTime, 1, 3);
+        currentCinematic.transform.localScale = currentScale;
+    }
+
+    private void ZoomOut()
+    {
+        Vector3 currentScale = currentCinematic.transform.localScale;
+        currentScale.x = Mathf.Clamp(currentScale.x - zoomingSpeed * Time.deltaTime, 1, 3);
+        currentScale.y = Mathf.Clamp(currentScale.y - zoomingSpeed * Time.deltaTime, 1, 3);
+        currentScale.z = Mathf.Clamp(currentScale.z - zoomingSpeed * Time.deltaTime, 1, 3);
+        currentCinematic.transform.localScale = currentScale;
     }
 
     // Reset a round (called after new round or after player death)
