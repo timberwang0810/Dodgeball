@@ -433,7 +433,7 @@ public class GameManager : MonoBehaviour
         SoundManager.S.GameWinSound();
         statusText.enabled = false;
         gameState = GameState.gameOver;
-        endText.text = "Game Won";
+        endText.text = "Game Won!\nTotal Score = " + score + " * " + lives + " lives\n= " + (score * lives);
         gameOverPanel.SetActive(true);
         confetti1.GetComponent<ParticleSystem>().Play();
         confetti2.GetComponent<ParticleSystem>().Play();
@@ -496,6 +496,7 @@ public class GameManager : MonoBehaviour
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         yield return new WaitForSeconds(1);
         currentPlayer.GetComponent<Renderer>().enabled = false;
+        endText.text = "Game Over\nScore = " + score;
         gameOverPanel.SetActive(true);
     }
 
