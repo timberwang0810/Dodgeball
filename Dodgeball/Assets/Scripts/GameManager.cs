@@ -435,6 +435,9 @@ public class GameManager : MonoBehaviour
         gameState = GameState.gameOver;
         endText.text = "Game Won";
         gameOverPanel.SetActive(true);
+        confetti1.GetComponent<ParticleSystem>().Play();
+        confetti2.GetComponent<ParticleSystem>().Play();
+        confetti3.GetComponent<ParticleSystem>().Play();
     }
 
     // Called when the player has died
