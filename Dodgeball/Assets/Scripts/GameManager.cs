@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] cinematics;
     public GameObject cinematicEnemies;
     public Camera cam;
+    public TextMeshProUGUI skipText;
     public float panningSpeed;
     public float zoomingSpeed;
     private bool seenCinematic = false;
@@ -251,6 +252,7 @@ public class GameManager : MonoBehaviour
         powerUpBarCanvas.SetActive(false);
         progressBarCanvas.SetActive(false);
         statusText.enabled = false;
+        skipText.enabled = true;
         SoundManager.S.muteButton.gameObject.SetActive(false);
         for (int i = 0; i < cinematics.Length; i++)
         {
@@ -286,15 +288,16 @@ public class GameManager : MonoBehaviour
     private IEnumerator PostCinematic(bool skipped)
     {
         playingCinematic = false;
-
-        // Skip delay
-        yield return new WaitForSeconds(skipped ? 1.0f : 0);
+        skipText.enabled = false;
         cam.orthographicSize = 17.2f;
         cam.transform.position = new Vector3(0.4f, 0.1f, -10);
         if (cinematicEnemies) Destroy(cinematicEnemies);
         isZoomingIn = false;
         isZoomingOut = false;
         isPanning = false;
+
+        // Skip delay
+        yield return new WaitForSeconds(skipped ? 1.0f : 0);
 
         foreach (GameObject cinematic in cinematics)
         {
