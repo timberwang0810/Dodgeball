@@ -268,7 +268,13 @@ public class GameManager : MonoBehaviour
                 currentCinematic.transform.localScale = new Vector3(1, 1, 1);
                 isZoomingIn = true;
             }
-            yield return new WaitForSeconds(3);
+            else if (i == 2)
+            {
+                currentCinematic.transform.localScale = new Vector3(2, 2, 2);
+                isZoomingOut = true;
+                zoomingSpeed = 0.2f;
+            }
+            yield return new WaitForSeconds(6);
             currentCinematic.SetActive(false);
             isZoomingIn = false;
             isZoomingOut = false;
@@ -277,7 +283,7 @@ public class GameManager : MonoBehaviour
                 currentPlayer.SetActive(false);
                 cam.orthographicSize = 10;
                 isPanning = true;
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(6);
                 isPanning = false;
                 Destroy(cinematicEnemies, 2.0f);
             }
@@ -289,15 +295,16 @@ public class GameManager : MonoBehaviour
     {
         playingCinematic = false;
         skipText.enabled = false;
+        SoundManager.S.gameObject.GetComponent<AudioSource>().Stop(); // Stop Commentaries
+        // Skip delay
+        yield return new WaitForSeconds(skipped ? 1.0f : 0);
+
         cam.orthographicSize = 17.2f;
         cam.transform.position = new Vector3(0.4f, 0.1f, -10);
         if (cinematicEnemies) Destroy(cinematicEnemies);
         isZoomingIn = false;
         isZoomingOut = false;
         isPanning = false;
-
-        // Skip delay
-        yield return new WaitForSeconds(skipped ? 1.0f : 0);
 
         foreach (GameObject cinematic in cinematics)
         {
