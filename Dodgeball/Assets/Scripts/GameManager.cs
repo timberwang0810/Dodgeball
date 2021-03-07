@@ -206,6 +206,7 @@ public class GameManager : MonoBehaviour
         } else
         {
             StartCoroutine(showCinematic());
+            SoundManager.S.IntroCommentator();
             seenCinematic = true;
         }
     }

@@ -77,6 +77,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip KevinIntro1;
     public AudioClip KevinIntro2;
     public AudioClip JimIntro1;
+    public AudioClip GeneralIntro;
     public AudioClip JimStart;
     public AudioClip KevinStart;
 
@@ -236,6 +237,11 @@ public class SoundManager : MonoBehaviour
             StartCoroutine(KevinCommentary());
         }
 
+    }
+
+    public void IntroCommentator()
+    {
+        audio.PlayOneShot(GeneralIntro);
     }
 
     public void JimCommentary()

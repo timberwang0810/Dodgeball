@@ -4784,6 +4784,7 @@ MonoBehaviour:
   KevinIntro1: {fileID: 8300000, guid: 74b175ed1b436274ea04c204a6deb360, type: 3}
   KevinIntro2: {fileID: 8300000, guid: 5ff70a91d227ca0488c9b249e36e21ac, type: 3}
   JimIntro1: {fileID: 8300000, guid: dd7b98812305ce6439cdcff21acd1bbc, type: 3}
+  GeneralIntro: {fileID: 8300000, guid: 413ab272d0aaa8f47a326c41e4990250, type: 3}
   JimStart: {fileID: 8300000, guid: 00f0fe4272269114cab4c445197f16dc, type: 3}
   KevinStart: {fileID: 8300000, guid: a2e4aa690c7dbb64da2118ede367fc3a, type: 3}
   WinJingle: {fileID: 8300000, guid: 1143257514149834c972785d873d6443, type: 3}
