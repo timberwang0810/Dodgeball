@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public float panningSpeed;
     public float zoomingSpeed;
     private bool seenCinematic = false;
+    private bool playingCinematic = false;
     private bool isPanning = false;
     private bool isZoomingIn = false;
     private bool isZoomingOut = false;
@@ -132,23 +133,32 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (isPanning)
+        if (playingCinematic)
         {
-            Vector3 camPos = cam.transform.position;
-            camPos.x = Mathf.Clamp(camPos.x + panningSpeed * Time.deltaTime, -12, 12);
-            cam.transform.position = camPos;
-        }
+            // Skip cinematics
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                StopAllCoroutines();
+                StartCoroutine(PostCinematic(true));
+            }
+            if (isPanning)
+            {
+                Vector3 camPos = cam.transform.position;
+                camPos.x = Mathf.Clamp(camPos.x + panningSpeed * Time.deltaTime, -12, 12);
+                cam.transform.position = camPos;
+            }
 
-        if (isZoomingIn)
-        {
-            ZoomIn();
-        }
+            if (isZoomingIn)
+            {
+                ZoomIn();
+            }
 
-        if (isZoomingOut)
-        {
-            ZoomOut();
+            if (isZoomingOut)
+            {
+                ZoomOut();
+            }
         }
-
+        
         if (!powerFilled && currentPlayer != null) // edge case where you get hit then power up
         {
             SoundManager.S.StopPoweredUpSound();
@@ -236,6 +246,7 @@ public class GameManager : MonoBehaviour
     // Display the opening cinematic
     private IEnumerator showCinematic()
     {
+        playingCinematic = true;
         scoreText.enabled = false;
         powerUpBarCanvas.SetActive(false);
         progressBarCanvas.SetActive(false);
@@ -266,10 +277,28 @@ public class GameManager : MonoBehaviour
                 isPanning = true;
                 yield return new WaitForSeconds(3);
                 isPanning = false;
-                cam.orthographicSize = 17.2f;
-                cam.transform.position = new Vector3(0.4f, 0.1f, -10);
                 Destroy(cinematicEnemies, 2.0f);
             }
+        }
+        StartCoroutine(PostCinematic(false));
+    }
+
+    private IEnumerator PostCinematic(bool skipped)
+    {
+        playingCinematic = false;
+
+        // Skip delay
+        yield return new WaitForSeconds(skipped ? 1.0f : 0);
+        cam.orthographicSize = 17.2f;
+        cam.transform.position = new Vector3(0.4f, 0.1f, -10);
+        if (cinematicEnemies) Destroy(cinematicEnemies);
+        isZoomingIn = false;
+        isZoomingOut = false;
+        isPanning = false;
+
+        foreach (GameObject cinematic in cinematics)
+        {
+            cinematic.SetActive(false);
         }
         currentPlayer.SetActive(true);
         scoreText.enabled = true;
