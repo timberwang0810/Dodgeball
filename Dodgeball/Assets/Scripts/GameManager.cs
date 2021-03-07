@@ -516,8 +516,10 @@ public class GameManager : MonoBehaviour
         IncreasePower(hitPowerUp);
         IncreaseProgress();
 
+        if (numEnemies == 5) SoundManager.S.Jim5ToGoCommentary();
+        else if (numEnemies == 1) SoundManager.S.Jim1ToGoCommentary();
         // Round is won when all enemies are destroyed
-        if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
+        else if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
         {
             StartCoroutine(betweenRoundsWon());
         }
