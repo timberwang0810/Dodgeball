@@ -4787,6 +4787,11 @@ MonoBehaviour:
   GeneralIntro: {fileID: 8300000, guid: 413ab272d0aaa8f47a326c41e4990250, type: 3}
   JimStart: {fileID: 8300000, guid: 00f0fe4272269114cab4c445197f16dc, type: 3}
   KevinStart: {fileID: 8300000, guid: a2e4aa690c7dbb64da2118ede367fc3a, type: 3}
+  Jim1ToGo1: {fileID: 8300000, guid: 36a7559b11aa94346a4e26d4becdfd40, type: 3}
+  Jim1ToGo2: {fileID: 8300000, guid: 965ed60926723e64a88146fa93d6f82a, type: 3}
+  Jim1ToGo3: {fileID: 8300000, guid: d6b727c15f1e4bf4697b0c5b9622e16a, type: 3}
+  Jim5ToGo1: {fileID: 8300000, guid: 827ce12c38c552949ac671f191358d7a, type: 3}
+  Jim5ToGo2: {fileID: 8300000, guid: 827ce12c38c552949ac671f191358d7a, type: 3}
   WinJingle: {fileID: 8300000, guid: 1143257514149834c972785d873d6443, type: 3}
   Whistle: {fileID: 8300000, guid: b2a9f9995fcf58d429044a6d188b1edf, type: 3}
   LoseJingle: {fileID: 8300000, guid: 1143257514149834c972785d873d6443, type: 3}
