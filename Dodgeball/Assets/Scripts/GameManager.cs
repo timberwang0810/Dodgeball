@@ -383,7 +383,6 @@ public class GameManager : MonoBehaviour
     // Start a round (start spawning enemy)
     private void StartRound()
     {
-        Debug.Log(maxEnemies.Values.ElementAt(0));
         gameState = GameState.playing;
         StartCoroutine(SpawnEnemies());
     }

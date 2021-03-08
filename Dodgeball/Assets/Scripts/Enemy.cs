@@ -79,12 +79,14 @@ public abstract class Enemy : MonoBehaviour
         // Dies if hit by player ball
         if (collision.gameObject.tag == "PlayerBall")
         {
+            Time.timeScale = 0.5f;
             SoundManager.S.HitSound();
             OnHitSound();
             GetComponent<CapsuleCollider2D>().enabled = false;
             throwing = false;
             GameManager.S.OnScoreAdded(score);
             GameManager.S.OnEnemyDestroyed();
+            Time.timeScale = 1;
             rb.velocity = new Vector2(0, 0);
             animator.SetTrigger("die");
             GetComponent<SpriteRenderer>().flipX = false;

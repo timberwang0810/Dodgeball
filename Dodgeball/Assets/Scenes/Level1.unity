@@ -7907,9 +7907,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 543fa563a5af54e038c3fa3c35712eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currParryKeyCode: 0
-  currThrowKeyCode: 0
-  currDodgeKeyCode: 0
+  currParryKeyCode: 324
+  currThrowKeyCode: 323
+  currDodgeKeyCode: 304
 --- !u!4 &2019397177
 Transform:
   m_ObjectHideFlags: 0
