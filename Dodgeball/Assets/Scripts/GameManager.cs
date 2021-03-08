@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI skipText;
     public float panningSpeed;
     public float zoomingSpeed;
+    public float uiHorizontalPanningSpeed;
+    public float uiVerticalPanningSpeed;
     private bool seenCinematic = false;
     private bool playingCinematic = false;
     private bool isPanning = false;
@@ -126,6 +128,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SetInitialCursor());
     }
 
+    // Cursor reset
     private IEnumerator SetInitialCursor()
     {
         yield return null;
@@ -291,6 +294,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(PostCinematic(false));
     }
 
+    // Post-cinematic cleanups and setups
     private IEnumerator PostCinematic(bool skipped)
     {
         playingCinematic = false;
@@ -319,21 +323,30 @@ public class GameManager : MonoBehaviour
         StartNewGame();
     }
 
+    // Zoom in function (for canvas components)
     private void ZoomIn()
     {
         Vector3 currentScale = currentCinematic.transform.localScale;
         currentScale.x = Mathf.Clamp(currentScale.x + zoomingSpeed * Time.deltaTime, 1, 3);
         currentScale.y = Mathf.Clamp(currentScale.y + zoomingSpeed * Time.deltaTime, 1, 3);
         currentScale.z = Mathf.Clamp(currentScale.z + zoomingSpeed * Time.deltaTime, 1, 3);
+
+        Vector3 currentPosition = currentCinematic.transform.localPosition;
+        currentPosition.x = Mathf.Clamp(currentPosition.x - uiHorizontalPanningSpeed * Time.deltaTime, -60, 0);
+        currentPosition.y = Mathf.Clamp(currentPosition.y + uiVerticalPanningSpeed * Time.deltaTime, 0, 100);
+
         currentCinematic.transform.localScale = currentScale;
+        currentCinematic.transform.localPosition = currentPosition;
     }
 
+    // Zoom out function (for canvas components)
     private void ZoomOut()
     {
         Vector3 currentScale = currentCinematic.transform.localScale;
         currentScale.x = Mathf.Clamp(currentScale.x - zoomingSpeed * Time.deltaTime, 1, 3);
         currentScale.y = Mathf.Clamp(currentScale.y - zoomingSpeed * Time.deltaTime, 1, 3);
         currentScale.z = Mathf.Clamp(currentScale.z - zoomingSpeed * Time.deltaTime, 1, 3);
+
         currentCinematic.transform.localScale = currentScale;
     }
 
@@ -614,18 +627,21 @@ public class GameManager : MonoBehaviour
         powerUpTimer = 0;
     }
 
+    // Display the control panel
     public void ShowControlPanel()
     {
         controlPanel.SetActive(true);
         pausePanel.SetActive(false);
     }
 
+    // Display the volume panel
     public void ShowVolumePanel()
     {
         volumePanel.SetActive(true);
         pausePanel.SetActive(false);
     }
 
+    // Hide all sub-panels and show the pause panel
     public void HideAllPanels()
     {
         controlPanel.SetActive(false);

@@ -308,7 +308,9 @@ MonoBehaviour:
   cam: {fileID: 1978338043}
   skipText: {fileID: 1109159570}
   panningSpeed: 4
-  zoomingSpeed: 0.25
+  zoomingSpeed: 0.33
+  uiHorizontalPanningSpeed: 10
+  uiVerticalPanningSpeed: 16.66
   statusText: {fileID: 1207682432}
   scoreText: {fileID: 1281827725}
   endText: {fileID: 1509809046}
@@ -5353,7 +5355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1509809045
 RectTransform:
   m_ObjectHideFlags: 0

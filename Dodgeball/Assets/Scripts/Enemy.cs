@@ -67,25 +67,9 @@ public abstract class Enemy : MonoBehaviour
     // Delay sequence upon enemy entering the court
     private IEnumerator ReadyDelay()
     {
-        //Debug.Log("getting ready");
         yield return new WaitForSeconds(startDelay);
         ready = true;
     }
-
-    //// Start attack function
-    //private void StartAttack()
-    //{
-    //    StartCoroutine(Attack());
-    //}
-
-    //// Attack Sequence
-    //private IEnumerator Attack()
-    //{
-    //    //Throw();
-    //    gameObject.GetComponent<Animator>().SetTrigger("throw");
-    //    yield return new WaitForSeconds(startDelay);
-    //    StartAttack();
-    //}
 
     // Sound played when the enemy is hit
     protected abstract void OnHitSound();
@@ -112,7 +96,6 @@ public abstract class Enemy : MonoBehaviour
         // Move in a new direction if hit a wall or enemy
         else if (collision.gameObject.tag == "Walls" || collision.gameObject.tag == "Enemy")
         {
-            //Debug.Log("Hit Wall");
             GenerateRandomDirection();
         }
     }
@@ -137,7 +120,6 @@ public abstract class Enemy : MonoBehaviour
     private void Roam()
     {
         gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(speed * currentDirection.x, speed * currentDirection.y);
-        //Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity);
     }
 
     void Update()
@@ -229,7 +211,6 @@ public abstract class Enemy : MonoBehaviour
             // Attack the player after a certain time
             if (attackTimer >= actualAttackDelay)
             {
-                Debug.Log(actualAttackDelay);
                 animator.SetBool("moving", false);
                 StartCoroutine(throwFreezePos());
                 attackTimer = 0.0f;
