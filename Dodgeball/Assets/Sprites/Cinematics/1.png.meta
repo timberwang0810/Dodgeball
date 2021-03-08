@@ -1,19 +1,7 @@
 fileFormatVersion: 2
-guid: 891a0848fb17dcb4c9efb1ff29780b5d
+guid: 6772ba4c28b4b403d80e70b7afed08cd
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 1225185294595815596
-    second: jock_basic_sprites_0
-  - first:
-      213: 8283264567924215173
-    second: jock_basic_sprites_1
-  - first:
-      213: 232758411962932644
-    second: jock_basic_sprites_2
-  - first:
-      213: 8433603434847227738
-    second: jock_basic_sprites_3
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -53,12 +41,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 12
+  spritePixelsToUnits: 63
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -111,91 +99,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: jock_basic_sprites_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 44
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ca87a6cb88bb00110800000000000000
-      internalID: 1225185294595815596
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jock_basic_sprites_1
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 0
-        width: 44
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 58dc3b7ec3114f270800000000000000
-      internalID: 8283264567924215173
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jock_basic_sprites_2
-      rect:
-        serializedVersion: 2
-        x: 91
-        y: 0
-        width: 38
-        height: 63
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4add88fda8cea3300800000000000000
-      internalID: 232758411962932644
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jock_basic_sprites_3
-      rect:
-        serializedVersion: 2
-        x: 132
-        y: 0
-        width: 44
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a5f459e04ad2a0570800000000000000
-      internalID: 8433603434847227738
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []

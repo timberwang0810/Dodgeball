@@ -154,7 +154,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameState: 0
   ballPrefab: {fileID: 8545864731801137359, guid: 61bb5f8df0abb1540b42e21a169d892d, type: 3}
-  cinematic: {fileID: 0}
+  cinematics: []
+  cinematicEnemies: {fileID: 0}
+  cam: {fileID: 0}
+  panningSpeed: 0
+  zoomingSpeed: 0
   statusText: {fileID: 0}
   scoreText: {fileID: 0}
   endText: {fileID: 0}
@@ -5051,8 +5055,14 @@ MonoBehaviour:
   KevinIntro1: {fileID: 8300000, guid: 74b175ed1b436274ea04c204a6deb360, type: 3}
   KevinIntro2: {fileID: 8300000, guid: 5ff70a91d227ca0488c9b249e36e21ac, type: 3}
   JimIntro1: {fileID: 8300000, guid: dd7b98812305ce6439cdcff21acd1bbc, type: 3}
+  GeneralIntro: {fileID: 0}
   JimStart: {fileID: 8300000, guid: 00f0fe4272269114cab4c445197f16dc, type: 3}
   KevinStart: {fileID: 8300000, guid: a2e4aa690c7dbb64da2118ede367fc3a, type: 3}
+  Jim1ToGo1: {fileID: 8300000, guid: 36a7559b11aa94346a4e26d4becdfd40, type: 3}
+  Jim1ToGo2: {fileID: 8300000, guid: 965ed60926723e64a88146fa93d6f82a, type: 3}
+  Jim1ToGo3: {fileID: 8300000, guid: d6b727c15f1e4bf4697b0c5b9622e16a, type: 3}
+  Jim5ToGo1: {fileID: 8300000, guid: 827ce12c38c552949ac671f191358d7a, type: 3}
+  Jim5ToGo2: {fileID: 8300000, guid: 27110b37e5091c4409c350aca738f91c, type: 3}
   WinJingle: {fileID: 8300000, guid: 1143257514149834c972785d873d6443, type: 3}
   Whistle: {fileID: 8300000, guid: b2a9f9995fcf58d429044a6d188b1edf, type: 3}
   LoseJingle: {fileID: 8300000, guid: 1143257514149834c972785d873d6443, type: 3}
@@ -7413,7 +7423,7 @@ MonoBehaviour:
   - enemyPrefab: {fileID: 3797038715456643727, guid: 07698ac5e71dd4e53a592a6a3a6e6ca2, type: 3}
     enemyCount: 15
   - enemyPrefab: {fileID: 3408741559225374891, guid: 4479e88a15590fe43b06d67bf014ade0, type: 3}
-    enemyCount: 15
+    enemyCount: 10
 --- !u!4 &1970034123
 Transform:
   m_ObjectHideFlags: 0

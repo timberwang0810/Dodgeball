@@ -15,10 +15,9 @@ public class ButtonManager : MonoBehaviour
     public void btn_StartTheGame()
     {
         Time.timeScale = 1;
-        if (GameManager.S)
-        {
-            Destroy(GameManager.S.gameObject);
-        }
+        if (GameManager.S) Destroy(GameManager.S.gameObject);
+        if (SoundManager.S) Destroy(SoundManager.S.gameObject);
+        if (ControlManager.S) Destroy(ControlManager.S.gameObject);
         SceneManager.LoadScene("Level1");
         Destroy(this.gameObject, 1.0f);
     }

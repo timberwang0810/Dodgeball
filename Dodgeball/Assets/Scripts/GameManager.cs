@@ -16,8 +16,20 @@ public class GameManager : MonoBehaviour
     private GameObject currentPlayer;
 
     // Opening Cinematic image
-    public GameObject cinematic;
+    public GameObject[] cinematics;
+    public GameObject cinematicEnemies;
+    public Camera cam;
+    public TextMeshProUGUI skipText;
+    public float panningSpeed;
+    public float zoomingSpeed;
+    public float uiHorizontalPanningSpeed;
+    public float uiVerticalPanningSpeed;
     private bool seenCinematic = false;
+    private bool playingCinematic = false;
+    private bool isPanning = false;
+    private bool isZoomingIn = false;
+    private bool isZoomingOut = false;
+    private GameObject currentCinematic;
 
     // UI Variables
     [Header("Basic UI Variables")]
@@ -112,9 +124,11 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: " + 0;
         Time.timeScale = 1;
         cursorOffset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
+        currentPlayer = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(SetInitialCursor());
     }
 
+    // Cursor reset
     private IEnumerator SetInitialCursor()
     {
         yield return null;
@@ -123,12 +137,37 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (playingCinematic)
+        {
+            // Skip cinematics
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                StopAllCoroutines();
+                StartCoroutine(PostCinematic(true));
+            }
+            if (isPanning)
+            {
+                Vector3 camPos = cam.transform.position;
+                camPos.x = Mathf.Clamp(camPos.x + panningSpeed * Time.deltaTime, -12, 12);
+                cam.transform.position = camPos;
+            }
+
+            if (isZoomingIn)
+            {
+                ZoomIn();
+            }
+
+            if (isZoomingOut)
+            {
+                ZoomOut();
+            }
+        }
+        
         if (!powerFilled && currentPlayer != null) // edge case where you get hit then power up
         {
             SoundManager.S.StopPoweredUpSound();
             currentPlayer.GetComponent<ParticleSystem>().Stop();
         }
-
 
         if (gameState == GameState.playing)
         {
@@ -155,14 +194,14 @@ public class GameManager : MonoBehaviour
             hype -= Time.deltaTime;
             if (hype < 0) hype = 0;
 
-            // Dev button TODO: DELETE
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                numEnemies = 0;
-                numEnemiesOnCourt = 0;
-                numEnemiesToSpawn = 0;
-                StartCoroutine(betweenRoundsWon());
-            }
+            // Dev button 
+            //if (Input.GetKeyDown(KeyCode.P))
+            //{
+            //    numEnemies = 0;
+            //    numEnemiesOnCourt = 0;
+            //    numEnemiesToSpawn = 0;
+            //    StartCoroutine(betweenRoundsWon());
+            //}
         }
 
         else if (gameState == GameState.paused) {
@@ -181,6 +220,7 @@ public class GameManager : MonoBehaviour
         } else
         {
             StartCoroutine(showCinematic());
+            SoundManager.S.IntroCommentator();
             seenCinematic = true;
         }
     }
@@ -210,20 +250,104 @@ public class GameManager : MonoBehaviour
     // Display the opening cinematic
     private IEnumerator showCinematic()
     {
-        cinematic.SetActive(true);
+        playingCinematic = true;
         scoreText.enabled = false;
         powerUpBarCanvas.SetActive(false);
         progressBarCanvas.SetActive(false);
         statusText.enabled = false;
+        skipText.enabled = true;
         SoundManager.S.muteButton.gameObject.SetActive(false);
-        yield return new WaitForSeconds(3);
-        cinematic.SetActive(false);
+        for (int i = 0; i < cinematics.Length; i++)
+        {
+            currentCinematic = cinematics[i];
+            currentCinematic.SetActive(true);
+            if (i == 0)
+            {
+                currentCinematic.transform.localScale = new Vector3(3, 3, 3);
+                isZoomingOut = true;
+            }
+            else if (i == 1)
+            {
+                currentCinematic.transform.localScale = new Vector3(1, 1, 1);
+                isZoomingIn = true;
+            }
+            else if (i == 2)
+            {
+                currentCinematic.transform.localScale = new Vector3(2, 2, 2);
+                isZoomingOut = true;
+                zoomingSpeed = 0.2f;
+            }
+            yield return new WaitForSeconds(6);
+            currentCinematic.SetActive(false);
+            isZoomingIn = false;
+            isZoomingOut = false;
+            if (i == 0)
+            {
+                currentPlayer.SetActive(false);
+                cam.orthographicSize = 10;
+                isPanning = true;
+                yield return new WaitForSeconds(6);
+                isPanning = false;
+                Destroy(cinematicEnemies, 2.0f);
+            }
+        }
+        StartCoroutine(PostCinematic(false));
+    }
+
+    // Post-cinematic cleanups and setups
+    private IEnumerator PostCinematic(bool skipped)
+    {
+        playingCinematic = false;
+        skipText.enabled = false;
+        SoundManager.S.gameObject.GetComponent<AudioSource>().Stop(); // Stop Commentaries
+        // Skip delay
+        yield return new WaitForSeconds(skipped ? 1.0f : 0);
+
+        cam.orthographicSize = 17.2f;
+        cam.transform.position = new Vector3(0.4f, 0.1f, -10);
+        if (cinematicEnemies) Destroy(cinematicEnemies);
+        isZoomingIn = false;
+        isZoomingOut = false;
+        isPanning = false;
+
+        foreach (GameObject cinematic in cinematics)
+        {
+            cinematic.SetActive(false);
+        }
+        currentPlayer.SetActive(true);
         scoreText.enabled = true;
         powerUpBarCanvas.SetActive(true);
         progressBarCanvas.SetActive(true);
         statusText.enabled = true;
         SoundManager.S.muteButton.gameObject.SetActive(true);
         StartNewGame();
+    }
+
+    // Zoom in function (for canvas components)
+    private void ZoomIn()
+    {
+        Vector3 currentScale = currentCinematic.transform.localScale;
+        currentScale.x = Mathf.Clamp(currentScale.x + zoomingSpeed * Time.deltaTime, 1, 3);
+        currentScale.y = Mathf.Clamp(currentScale.y + zoomingSpeed * Time.deltaTime, 1, 3);
+        currentScale.z = Mathf.Clamp(currentScale.z + zoomingSpeed * Time.deltaTime, 1, 3);
+
+        Vector3 currentPosition = currentCinematic.transform.localPosition;
+        currentPosition.x = Mathf.Clamp(currentPosition.x - uiHorizontalPanningSpeed * Time.deltaTime, -60, 0);
+        currentPosition.y = Mathf.Clamp(currentPosition.y + uiVerticalPanningSpeed * Time.deltaTime, 0, 100);
+
+        currentCinematic.transform.localScale = currentScale;
+        currentCinematic.transform.localPosition = currentPosition;
+    }
+
+    // Zoom out function (for canvas components)
+    private void ZoomOut()
+    {
+        Vector3 currentScale = currentCinematic.transform.localScale;
+        currentScale.x = Mathf.Clamp(currentScale.x - zoomingSpeed * Time.deltaTime, 1, 3);
+        currentScale.y = Mathf.Clamp(currentScale.y - zoomingSpeed * Time.deltaTime, 1, 3);
+        currentScale.z = Mathf.Clamp(currentScale.z - zoomingSpeed * Time.deltaTime, 1, 3);
+
+        currentCinematic.transform.localScale = currentScale;
     }
 
     // Reset a round (called after new round or after player death)
@@ -254,13 +378,11 @@ public class GameManager : MonoBehaviour
         statusText.text = "Go!";
         yield return new WaitForSeconds(1);
         statusText.enabled = false;
-        
     }
 
     // Start a round (start spawning enemy)
     private void StartRound()
     {
-        Debug.Log(maxEnemies.Values.ElementAt(0));
         gameState = GameState.playing;
         StartCoroutine(SpawnEnemies());
     }
@@ -323,8 +445,11 @@ public class GameManager : MonoBehaviour
         SoundManager.S.GameWinSound();
         statusText.enabled = false;
         gameState = GameState.gameOver;
-        endText.text = "Game Won";
+        endText.text = "Game Won!\nTotal Score = " + score + " * " + lives + " lives\n= " + (score * lives);
         gameOverPanel.SetActive(true);
+        confetti1.GetComponent<ParticleSystem>().Play();
+        confetti2.GetComponent<ParticleSystem>().Play();
+        confetti3.GetComponent<ParticleSystem>().Play();
     }
 
     // Called when the player has died
@@ -383,6 +508,7 @@ public class GameManager : MonoBehaviour
         currentPlayer.GetComponent<CapsuleCollider2D>().enabled = false;
         yield return new WaitForSeconds(1);
         currentPlayer.GetComponent<Renderer>().enabled = false;
+        endText.text = "Game Over\nScore = " + score;
         gameOverPanel.SetActive(true);
     }
 
@@ -413,8 +539,10 @@ public class GameManager : MonoBehaviour
         IncreasePower(hitPowerUp);
         IncreaseProgress();
 
+        if (numEnemies == 5) SoundManager.S.Jim5ToGoCommentary();
+        else if (numEnemies == 1) SoundManager.S.Jim1ToGoCommentary();
         // Round is won when all enemies are destroyed
-        if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
+        else if (numEnemies <= 0 && numEnemiesToSpawn <= 0)
         {
             StartCoroutine(betweenRoundsWon());
         }
@@ -498,18 +626,21 @@ public class GameManager : MonoBehaviour
         powerUpTimer = 0;
     }
 
+    // Display the control panel
     public void ShowControlPanel()
     {
         controlPanel.SetActive(true);
         pausePanel.SetActive(false);
     }
 
+    // Display the volume panel
     public void ShowVolumePanel()
     {
         volumePanel.SetActive(true);
         pausePanel.SetActive(false);
     }
 
+    // Hide all sub-panels and show the pause panel
     public void HideAllPanels()
     {
         controlPanel.SetActive(false);

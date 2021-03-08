@@ -77,8 +77,16 @@ public class SoundManager : MonoBehaviour
     public AudioClip KevinIntro1;
     public AudioClip KevinIntro2;
     public AudioClip JimIntro1;
+    public AudioClip GeneralIntro;
     public AudioClip JimStart;
     public AudioClip KevinStart;
+
+    public AudioClip Jim1ToGo1;
+    public AudioClip Jim1ToGo2;
+    public AudioClip Jim1ToGo3;
+    public AudioClip Jim5ToGo1;
+    public AudioClip Jim5ToGo2;
+
 
     public AudioClip WinJingle;
     public AudioClip Whistle;
@@ -236,6 +244,11 @@ public class SoundManager : MonoBehaviour
             StartCoroutine(KevinCommentary());
         }
 
+    }
+
+    public void IntroCommentator()
+    {
+        audio.PlayOneShot(GeneralIntro);
     }
 
     public void JimCommentary()
@@ -722,5 +735,36 @@ public class SoundManager : MonoBehaviour
     public void StopPoweredUpSound()
     {
         poweredUp.GetComponent<AudioSource>().Stop();
+    }
+
+    public void Jim5ToGoCommentary()
+    {
+        int f = Random.Range(0, 1);
+        if (f == 0)
+        {
+            audio.PlayOneShot(Jim5ToGo1);
+        }
+        else
+        {
+            audio.PlayOneShot(Jim5ToGo2);
+
+        }
+    }
+    public void Jim1ToGoCommentary()
+    {
+        int d = Random.Range(0, 2);
+        if (d == 0)
+        {
+            audio.PlayOneShot(Jim1ToGo1);
+        }
+        else if (d == 1)
+        {
+            audio.PlayOneShot(Jim1ToGo2);
+        }
+        else
+        {
+            audio.PlayOneShot(Jim1ToGo3);
+
+        }
     }
 }
