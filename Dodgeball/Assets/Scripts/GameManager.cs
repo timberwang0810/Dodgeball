@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     private bool isZoomingIn = false;
     private bool isZoomingOut = false;
     private GameObject currentCinematic;
+    private int cinematicCount;
 
     // UI Variables
     [Header("Basic UI Variables")]
@@ -125,6 +126,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         cursorOffset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
         currentPlayer = GameObject.FindGameObjectWithTag("Player");
+        cinematicCount = cinematicEnemies.transform.childCount;
         StartCoroutine(SetInitialCursor());
     }
 
@@ -233,6 +235,7 @@ public class GameManager : MonoBehaviour
         spawnPos = currentPlayer.transform.position;
         gameState = GameState.getReady;
         numEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        Debug.Log("intiital enemie " + numEnemies);
         powerUpBarFill.fillAmount = 0;
         progressBarFill.fillAmount = 0;
         maxEnemies.Clear();
@@ -243,6 +246,7 @@ public class GameManager : MonoBehaviour
             numEnemiesToSpawn += p.enemyCount;
             currEnemies[p.enemyPrefab.name] = 0;
         }
+        numEnemies -= cinematicCount;
         totalNumEnemies = numEnemiesToSpawn;
         ResetLevel();
     }
@@ -538,6 +542,9 @@ public class GameManager : MonoBehaviour
         // Update progress and power-ups
         IncreasePower(hitPowerUp);
         IncreaseProgress();
+
+        Debug.Log("enemies " + numEnemies);
+        Debug.Log("enemies to spawn" + numEnemiesToSpawn);
 
         if (numEnemies == 5) SoundManager.S.Jim5ToGoCommentary();
         else if (numEnemies == 1) SoundManager.S.Jim1ToGoCommentary();
